@@ -15,7 +15,7 @@ SetKeyDelay, 2 ;IDK exactly what this does.
 #MaxHotkeysPerInterval 200
 #KeyHistory 200 ; https://autohotkey.com/docs/commands/_KeyHistory.htm ; useful for debugging.
 #WinActivateForce ;https://autohotkey.com/docs/commands/_WinActivateForce.htm ;prevent taskbar flashing.
-;#NoTrayIcon
+; #NoTrayIcon
 DetectHiddenWindows, On
 SetTitleMatchMode, 2
 SetDefaultMouseSpeed, 2
@@ -55,7 +55,7 @@ SetDefaultMouseSpeed, 2
 
 #include <Vis2>
 
-#Include <Lib>
+#Include %A_WorkingDir%\Lib\Lib1.ahk
 
 ; MsgBox % OCR("D:\AHK\test.jpg")
 
@@ -69,45 +69,40 @@ SetDefaultMouseSpeed, 2
 
 ; Run D:\AHK\Minimize_To_Tray.ahk
 
-; #Include %A_ScriptDir%.\Second_Keyboard_Shortcuts.ahk
+; #Include %A_ScriptDir%.\Second_Keyboard_Shortcuts.ah
 
-^!Up::ChangeBrightness( CurrentBrightness += Increments )
-
-^!Down::ChangeBrightness( CurrentBrightness -= Increments )
-
-
-^F7::
-GoSub,CheckActiveWindow
-return
+; ^F7::
+; GoSub,CheckActiveWindow
+; return
 
 
-#IfWinActive, ahk_exe Photoshop.exe
+; #IfWinActive, ahk_exe Photoshop.exe
 
-WheelUp::
-If GetKeyState("b")
-	SendInput "]"
-else
-	SendInput {WheelUp}
-Return
+; WheelUp::
+; If GetKeyState("b")
+; 	SendInput "]"
+; else
+; 	SendInput {WheelUp}
+; Return
 
-WheelDown::
-If GetKeyState("b")
-	SendInput "["
-else
-	SendInput {WheelDown}
-Return
+; WheelDown::
+; If GetKeyState("b")
+; 	SendInput "["
+; else
+; 	SendInput {WheelDown}
+; Return
 
-^y::
-SendInput, ^+z
-Return
+; ^y::
+; SendInput, ^+z
+; Return
 
-#IfWinActive, ahk_exe Adobe Premiere Pro.exe
+; #IfWinActive, ahk_exe Adobe Premiere Pro.exe
 
-^y::
-SendInput, ^+z
-Return
+; ^y::
+; SendInput, ^+z
+; Return
 
-#IfWinActive
+; #IfWinActive
 
 
 ;;*******************************************************************************************************************************;;
@@ -204,21 +199,20 @@ for index, value in programs_loc
 ; }
 ; Return
 
-~!del::
-p := Morse()
-If (p = "0"){
-	;pnputil /enable-device /class Display //To find the display;
-	Run, *runas cmd.exe /c pnputil /enable-device "ROOT\UNKNOWN\0000"
-}
-Else If (p = "00"){
-	Run, *runas cmd.exe /c pnputil /disable-device "ROOT\UNKNOWN\0000"
-}
-Else If (p = "1")
-{
-	Run, "D:\ADB\Sunshine.bat"
-	; Run, *runas cmd.exe cd /d "C:\Program Files\Sunshine" && tools\dxgi-info.exe
-}
-Return
+; ~!del::
+; p := Morse()
+; If (p = "0"){
+; 	;pnputil /enable-device /class Display //To find the display;
+; 	Run, *runas cmd.exe /c pnputil /enable-device "ROOT\UNKNOWN\0000"
+; }
+; Else If (p = "00"){
+; 	Run, *runas cmd.exe /c pnputil /disable-device "ROOT\UNKNOWN\0000"
+; }
+; Else If (p = "1")
+; {
+; 	Run, "D:\ADB\Sunshine.bat"
+; 	; Run, *runas cmd.exe cd /d "C:\Program Files\Sunshine" && tools\dxgi-info.exe
+; }
 
 ;======================================================================================================================================================================================================
 
@@ -360,67 +354,65 @@ Return
 ; Return
 
 
-^!x::
+; ^!x::
 
-p := Morse()
-If (p = "0")
-{
-IfWinNotExist, ahk_exe vlc.exe
-	Run, "C:\Program Files\VideoLAN\VLC\vlc.exe"
-if WinActive("ahk_exe vlc.exe")
-{
-	SendInput f
-	sleep 500
-	SendInput #{Down}
-}
-else
-	WinActivate, ahk_exe vlc.exe
-}
-Else If (p = "00")
-	SendInput {Space}
-Else
-	{
-	Tooltip, Press pattern %p%
-	SetTimer, RemoveToolTip, -1000
-}
+; p := Morse()
+; If (p = "0")
+; {
+; IfWinNotExist, ahk_exe vlc.exe
+; 	Run, "C:\Program Files\VideoLAN\VLC\vlc.exe"
+; if WinActive("ahk_exe vlc.exe")
+; {
+; 	SendInput f
+; 	sleep 500
+; 	SendInput #{Down}
+; }
+; else
+; 	WinActivate, ahk_exe vlc.exe
+; }
+; Else If (p = "00")
+; 	SendInput {Space}
+; Else
+; 	{
+; 	Tooltip, Press pattern %p%
+; 	SetTimer, RemoveToolTip, -1000
+; }
 Return
 
+; #IfWinActive, ahk_exe Overwatch.exe
+; :*:asdf::
+; SetKeyDelay, 30
+; sleep 500
+; Send, swimmingshamil@gmail.com
+; sleep 100
+; SendInput {Tab}
+; sleep 100
+; Send swimsham123{Enter}
+; SetKeyDelay, 0
+; Return
+; #IfWinActive
 
 
-#IfWinActive, ahk_exe Overwatch.exe
-:*:asdf::
-SetKeyDelay, 30
-sleep 500
-Send, swimmingshamil@gmail.com
-sleep 100
-SendInput {Tab}
-sleep 100
-Send swimsham123{Enter}
-SetKeyDelay, 0
-Return
-#IfWinActive
-
-
-#e::
-KeyWait, e, T0.2
-if !ErrorLevel
-{
-	GroupAdd, ExplorerGroup, ahk_class CabinetWClass
-	IfWinNotExist, ahk_class CabinetWClass
-		Run, explorer.exe
-		GroupAdd, myexplorers, ahk_class CabinetWClass
-	If WinActive("ahk_exe explorer.exe")
-		GroupActivate, ExplorerGroup, r
-	else
-		WinActivate ahk_class CabinetWClass
-	return
-}
-else
-{	
-	KeyWait, e, T1
-	Run, explorer.exe
-}
-Return
+; #e::
+; KeyWait, e, T0.2
+; if !ErrorLevel
+; {
+; 	GroupAdd, ExplorerGroup, ahk_class CabinetWClass
+; 	IfWinNotExist, ahk_class CabinetWClass
+; 		Run, explorer.exe
+; 		GroupAdd, myexplorers, ahk_class CabinetWClass
+; 	If WinActive("ahk_exe explorer.exe")
+; 		GroupActivate, ExplorerGroup, r
+; 	else
+; 		WinActivate ahk_class CabinetWClass
+; 	return
+; }
+; else
+; {	
+; 	KeyWait, e, T1
+; 	Run, explorer.exe
+; }
+; Return
 
 ; ^+'::
 ; Run *runas cmd.exe /c cd D:\ADB && dir /s /b D:\Shared > D:\Shared.bat
@@ -452,49 +444,49 @@ Return
 
 
 ==============================================================================================================================================================
-Return
+; Return
 
-~MButton & LButton::
-CoordMode, Mouse  ; Switch to screen/absolute coordinates.
-MouseGetPos, EWD_MouseStartX, EWD_MouseStartY, EWD_MouseWin
-WinGetPos, EWD_OriginalPosX, EWD_OriginalPosY,,, ahk_id %EWD_MouseWin%
-WinGet, EWD_WinState, MinMax, ahk_id %EWD_MouseWin%
-if EWD_WinState = 0  ; Only if the window isn't maximized
-	SetTimer, EWD_WatchMouse, 10 ; Track the mouse as the user drags it.
-return
+; ~MButton & LButton::
+; CoordMode, Mouse  ; Switch to screen/absolute coordinates.
+; MouseGetPos, EWD_MouseStartX, EWD_MouseStartY, EWD_MouseWin
+; WinGetPos, EWD_OriginalPosX, EWD_OriginalPosY,,, ahk_id %EWD_MouseWin%
+; WinGet, EWD_WinState, MinMax, ahk_id %EWD_MouseWin%
+; if EWD_WinState = 0  ; Only if the window isn't maximized
+; 	SetTimer, EWD_WatchMouse, 10 ; Track the mouse as the user drags it.
+; return
 
-EWD_WatchMouse:
-GetKeyState, EWD_LButtonState, LButton, P
-if EWD_LButtonState = U  ; Button has been released, so drag is complete.
-{
-	SetTimer, EWD_WatchMouse, Off
-	return
-}
-GetKeyState, EWD_EscapeState, Escape, P
-if EWD_EscapeState = D  ; Escape has been pressed, so drag is cancelled.
-{
-	SetTimer, EWD_WatchMouse, Off
-	WinMove, ahk_id %EWD_MouseWin%,, %EWD_OriginalPosX%, %EWD_OriginalPosY%
-	return
-}
-; Otherwise, reposition the window to match the change in mouse coordinates
-; caused by the user having dragged the mouse:
-CoordMode, Mouse
-MouseGetPos, EWD_MouseX, EWD_MouseY
-WinGetPos, EWD_WinX, EWD_WinY,,, ahk_id %EWD_MouseWin%
-SetWinDelay, -1   ; Makes the below move faster/smoother.
-WinMove, ahk_id %EWD_MouseWin%,, EWD_WinX + EWD_MouseX - EWD_MouseStartX, EWD_WinY + EWD_MouseY - EWD_MouseStartY
-EWD_MouseStartX := EWD_MouseX  ; Update for the next timer-call to this subroutine.
-EWD_MouseStartY := EWD_MouseY
-Return
+; EWD_WatchMouse:
+; GetKeyState, EWD_LButtonState, LButton, P
+; if EWD_LButtonState = U  ; Button has been released, so drag is complete.
+; {
+; 	SetTimer, EWD_WatchMouse, Off
+; 	return
+; }
+; GetKeyState, EWD_EscapeState, Escape, P
+; if EWD_EscapeState = D  ; Escape has been pressed, so drag is cancelled.
+; {
+; 	SetTimer, EWD_WatchMouse, Off
+; 	WinMove, ahk_id %EWD_MouseWin%,, %EWD_OriginalPosX%, %EWD_OriginalPosY%
+; 	return
+; }
+; ; Otherwise, reposition the window to match the change in mouse coordinates
+; ; caused by the user having dragged the mouse:
+; CoordMode, Mouse
+; MouseGetPos, EWD_MouseX, EWD_MouseY
+; WinGetPos, EWD_WinX, EWD_WinY,,, ahk_id %EWD_MouseWin%
+; SetWinDelay, -1   ; Makes the below move faster/smoother.
+; WinMove, ahk_id %EWD_MouseWin%,, EWD_WinX + EWD_MouseX - EWD_MouseStartX, EWD_WinY + EWD_MouseY - EWD_MouseStartY
+; EWD_MouseStartX := EWD_MouseX  ; Update for the next timer-call to this subroutine.
+; EWD_MouseStartY := EWD_MouseY
+; Return
 
-; This is the setting that runs smoothest on my
-; system. Depending on your video card and cpu
-; power, you may want to raise or lower this value.
-SetWinDelay,1
+; ; This is the setting that runs smoothest on my
+; ; system. Depending on your video card and cpu
+; ; power, you may want to raise or lower this value.
+; SetWinDelay,1
 
-CoordMode,Mouse
-return
+; CoordMode,Mouse
+; return
 
 
 
@@ -634,14 +626,14 @@ OutputDebug, [loading] desktops: %DesktopCount% current: %CurrentDesktop%
 ;LWin & 3::switchDesktopByNumber(3)
 ;LWin & 4::switchDesktopByNumber(4)
 ;LWin & 5::switchDesktopByNumber(5)
-;LWin & 6::switchDesktopByNumber(6)
+;LWin & 6::switchDesktopByumber(6)
 ;LWin & 7::switchDesktopByNumber(7)
 ;LWin & 8::switchDesktopByNumber(8)
 ;LWin & 9::switchDesktopByNumber(9)
 CapsLock & 1::switchDesktopByNumber(1)
 CapsLock & 2::switchDesktopByNumber(2)
 CapsLock & 3::switchDesktopByNumber(3)
-CapsLock & 4::switchDesktopByNumber(4)D
+CapsLock & 4::switchDesktopByNumber(4)
 CapsLock & 5::switchDesktopByNumber(5)
 ;CapsLock & 6::switchDesktopByNumber(6)
 ;CapsLock & 7::switchDesktopByNumber(7)NNn
