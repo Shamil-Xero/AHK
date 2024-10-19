@@ -8,11 +8,10 @@
 
 FileCount := 0
 FileList := Array()  ; Initialize to be blank.
-; SourceFolder := "G:\Backup\F\Wondershare UniConverter 15"
-SourceFolder := "C:\Wondershare"
+SourceFolder := "D:\Movies\Move"
 ; SourceFolder := DirSelect()
 ; DestinationFolder := DirSelect()
-DestinationFolder := "D:\Movies"
+DestinationFolder := "G:\Backup\F\Wondershare UniConverter 15"
 m := InputBox("Enter the Number of Files", "Files", "w40 h100", "10").value
 m := Integer(m)
 c := 1
@@ -25,15 +24,12 @@ loop files, SourceFolder "\*.*", "R" {
 
 loop m - 1 {
     for TheFile in FileList {
-        n := Random(FileCount)
-        if (n == A_Index) {
-            ; Result := MsgBox("File number " A_Index " is " TheFile "  Continue?", , "y/n")
-            ToolTip c
-            SetTimer RemoveToolTip, -1000
-            FileMove TheFile, DestinationFolder, 1
-            ; if Result == "n"
-            ; break
-        }
+        ; Result := MsgBox("File number " A_Index " is " TheFile "  Continue?", , "y/n")
+
+        FileMove TheFile, DestinationFolder, 1
+        ; if Result == "n"
+        ; break
+
     }
     c++
 }

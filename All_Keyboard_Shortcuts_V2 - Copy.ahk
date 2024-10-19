@@ -26,7 +26,7 @@ Persistent
 }
 
 !`:: {
-    Run "*RunAs " A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
+    ; Run "*RunAs " A_WorkingDir "\All_Keyboard_Shortcuts_V2.ahk"
     Reload
     Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
     ; Run, cmd.exe /c "taskkill /f /im autohotkey.exe"
@@ -155,55 +155,6 @@ $CapsLock::Backspace
         KeyWait(GetFilteredHotKey(), "T10")
         Run "E:\Programs\Terminal.lnk"
     }
-}
-
-^+g:: {
-    p := Morse()
-    if (p = "00") {
-        ;pnputil /enable-device /class Display //To find the display;
-        Run '*RunAs cmd.exe /k pnputil "/enable-device" "ROOT\UNKNOWN\0000"', , "Hide"
-        ToolTip "Virtual Display Enabled"
-        SetTimer RemoveToolTip, -500
-    }
-    else if (p = "01") {
-        Run '*RunAs cmd.exe /k pnputil "/disable-device" "ROOT\UNKNOWN\0000"', , "Hide"
-        ToolTip "Virtual Display Disabled"
-        SetTimer RemoveToolTip, -500
-    }
-    else if (p = "0") {
-        ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /c " 'ipconfig | find "IPv4"').StdOut.ReadAll()
-        i := 0
-        ToolTip ipadd
-        ; loop parse, ipadd, ":" "`n" {
-        ;     i++
-        ;     if (i == 60) {
-        ;         ToolTip "Local IP: " A_LoopField
-        ;         A_Clipboard := A_LoopField
-
-        ;         break
-        ;     }
-        ; }
-        SetTimer RemoveToolTip, -3000
-    }
-    else if (p = "1") {
-        ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /C " '"C:\Program Files\Sunshine\tools\dxgi-info.exe"').StdOut
-        .ReadAll()
-        i := 0
-        loop parse, ipadd, "`n" ":" {
-            i++
-            if (i = 24) {
-                tooltip "Display ID: " A_LoopField
-                A_Clipboard := A_LoopField
-                break
-            }
-        }
-        SetTimer RemoveToolTip, -3000
-    }
-    else if (p = "10") {
-        Run "D:Code\ADB\Sunshine.bat"
-    }
-    else
-        MsgBox p
 }
 
 ^+q:: {
@@ -375,10 +326,6 @@ $CapsLock::Backspace
     }
 }
 
-^!1:: Run "D:\Code\AHK\Files Move.ahk"
-
-^!2:: Run "D:\Code\AHK\Files Move2.ahk"
-
 ;================================= Ctrl Shortcuts =======================================;
 
 ; ^r::{
@@ -407,6 +354,68 @@ $CapsLock::Backspace
 }
 
 ;================================= Alt Shortcuts =======================================;
+
+^+g:: {
+    p := Morse()
+    if (p = "00") {
+        ;pnputil /enable-device /class Display //To find the display;
+        Run '*RunAs cmd.exe /k pnputil "/enable-device" "ROOT\UNKNOWN\0000"', , "Hide"
+        ToolTip "Virtual Display Enabled"
+        SetTimer RemoveToolTip, -500
+    }
+    else if (p = "01") {
+        Run '*RunAs cmd.exe /k pnputil "/disable-device" "ROOT\UNKNOWN\0000"', , "Hide"
+        ToolTip "Virtual Display Disabled"
+        SetTimer RemoveToolTip, -500
+    }
+    else if (p = "0") {
+        ; Runwait 'cmd /c ipconfig | find "IPv4" | find "192.168" > ip.txt', , "Hide"
+        ; sleep 100
+        ; FileName := A_WorkingDir "\ip.txt"
+        ; ipadd := FileRead(FileName)
+        ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /C " "ipconfig").StdOut.ReadAll()
+        ; MsgBox ipadd
+        i := 0
+        loop parse, ipadd, ":" "`n" {
+            i++
+            if (i == 60) {
+                ToolTip "Local IP: " A_LoopField
+                A_Clipboard := A_LoopField
+
+                break
+            }
+        }
+        SetTimer RemoveToolTip, -3000
+    }
+    else if (p = "1") {
+        ; Run 'cmd /c cd /d "C:\Program Files\Sunshine\tools" && dxgi-info.exe | find "Output Name" > "D:\Code\AHK\disp.txt"', ,
+        ;     "Hide"
+        ; sleep 100
+        ; FileName := A_WorkingDir "\disp.txt"
+        ; ipadd := FileRead(FileName)
+        ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /C " '"C:\Program Files\Sunshine\tools\dxgi-info.exe"').StdOut
+        .ReadAll()
+        ; msgbox ipadd
+        i := 0
+        loop parse, ipadd, "`n" ":" {
+            i++
+            if (i = 24) {
+                tooltip "Display ID: " A_LoopField
+                A_Clipboard := A_LoopField
+                break
+                ; tooltip i " " A_LoopField
+                ; sleep 500
+            }
+        }
+        SetTimer RemoveToolTip, -3000
+    }
+    else if (p = "10") {
+        Run "D:Code\ADB\Sunshine.bat"
+        ; Run, *runas cmd.exe cd /d "C:\Program Files\Sunshine" && tools\dxgi-info.exe"
+    }
+    else
+        MsgBox p
+}
 
 ;================================= Win Shortcuts =======================================;
 
