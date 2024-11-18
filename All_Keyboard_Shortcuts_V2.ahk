@@ -8,6 +8,10 @@ Persistent
 
 ; Run(A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk")
 
+Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
+
+; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
+
 ; Run A_WorkingDir "\All_Keyboard_Shortcuts.ahk"
 
 ; RunWait '*RunAs cmd.exe /c taskkill /IM intercept.exe /F', , "Hide"
@@ -16,19 +20,8 @@ Persistent
 
 ;===============================SPECIAL KEYS===================================::
 
-^!Up:: {
-    global CurrentBrightness
-    ChangeBrightness(CurrentBrightness += Brightness_Increments)
-}
-^!Down:: {
-    global CurrentBrightness
-    ChangeBrightness(CurrentBrightness -= Brightness_Increments)
-}
-
 !`:: {
-    Run "*RunAs " A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
     Reload
-    Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
     ; Run, cmd.exe /c "taskkill /f /im autohotkey.exe"
 }
 
@@ -94,17 +87,17 @@ $CapsLock::Backspace
 
 ;===================== Tap, Press & Hold Shortcuts ======================;
 
-~LWin:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
-        ; SendInput "{Lwin}"
-    }
-    else if (KeyWait(GetFilteredHotKey(), "T1")) {
-        ; msgbox "Press"
-    }
-    else if (KeyWait(GetFilteredHotKey(), "T10")) {
-        ; msgbox "Hold"
-    }
-}
+; ~LWin:: {
+;     if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+;         ; SendInput "{Lwin}"
+;     }
+;     else if (KeyWait(GetFilteredHotKey(), "T1")) {
+;         ; msgbox "Press"
+;     }
+;     else if (KeyWait(GetFilteredHotKey(), "T10")) {
+;         ; msgbox "Hold"
+;     }
+; }
 
 ;===================== Ctrl & Shift Shortcuts ======================;
 
@@ -113,7 +106,7 @@ $CapsLock::Backspace
     exe_name := " - Visual Studio Code"
     exe_location := "C:\Program Files\Microsoft VS Code\Code.exe"
 
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
 
         if WinActive(exe_name) {
             WinMinimize
@@ -138,7 +131,7 @@ $CapsLock::Backspace
 
 ^+e:: {
 
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         Run "C:\Users\Shamil\AppData\Local\Programs\Notion\Notion.exe"
     }
     else {
@@ -148,20 +141,20 @@ $CapsLock::Backspace
 }
 
 ^+f:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         Run '*RunAs cmd.exe'
     }
     else {
         KeyWait(GetFilteredHotKey(), "T10")
-        Run "E:\Programs\Terminal.lnk"
+        Run "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
     }
 }
 
 ^+g:: {
     p := Morse()
     if (p = "00") {
-        ;pnputil /enable-device /class Display //To find the display;
-        Run '*RunAs cmd.exe /k pnputil "/enable-device" "ROOT\UNKNOWN\0000"', , "Hide"
+        Run '*RunAs cmd.exe /k pnputil /enum-devices /class Display', , "Hide" ; //To find the display;
+        Run '*RunAs cmd.exe /c pnputil "/enable-device" "ROOT\UNKNOWN\0000"', , "Hide"
         ToolTip "Virtual Display Enabled"
         SetTimer RemoveToolTip, -500
     }
@@ -207,44 +200,43 @@ $CapsLock::Backspace
 }
 
 ^+q:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
-        Run "C:\Program Files (x86)\Internet Download Manager\IDMan.exe"
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+        Run("https://www.youtube.com/")
     }
     else {
         KeyWait(GetFilteredHotKey(), "T10")
-        Run "C:\Program Files\qBittorrent\qbittorrent.exe"
+        Run(
+            '"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"'
+        )
     }
 }
 
-^+s:: {
+$^+s:: {
     exe_process := "ahk_exe Spotify.exe"
     exe_name := "Spotify Free"
     exe_location := "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe"
 
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
-
-        {
-            if WinActive(exe_name) {
-                WinMinimize
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+        SendInput "^+s"
+    } else {
+        KeyWait(GetFilteredHotKey(), "T10")
+        if WinActive(exe_name) {
+            WinMinimize
+        }
+        else {
+            if not WinExist(exe_name) {
+                ; Run exe_location
+                SendInput "#3"
             }
             else {
-                if not WinExist(exe_name) {
-                    Run exe_location
-                }
-                else {
-                    WinActivate(exe_name)
-                }
+                WinActivate(exe_name)
             }
         }
-    }
-    else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        SendInput '{Media_Play_Pause}'
     }
 }
 
 ^+w:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         exe_name := "WhatsApp"
         exe_location := "D:\Programs\WhatsApp.lnk"
 
@@ -285,7 +277,7 @@ $CapsLock::Backspace
     exe_location := "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
     ; RunApplication(exe_name, exe_location)
 
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         if WinActive(exe_name) {
             SendInput "^{Tab}"
         }
@@ -325,14 +317,12 @@ $CapsLock::Backspace
 ; }
 
 ^+y:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
-        Run("https://www.youtube.com/feed/subscriptions")
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+        Run "C:\Program Files (x86)\Internet Download Manager\IDMan.exe"
     }
     else {
         KeyWait(GetFilteredHotKey(), "T10")
-        Run(
-            '"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/feed/subscriptions"'
-        )
+        Run "C:\Program Files\qBittorrent\qbittorrent.exe"
     }
 }
 
@@ -341,7 +331,7 @@ $CapsLock::Backspace
     exe_name := " - Microsoft​ Edge"
     exe_location := "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
 
         if WinActive(exe_name) {
             SendInput '^{Tab}'
@@ -362,11 +352,20 @@ $CapsLock::Backspace
     }
 }
 
+^+Up:: {
+    global CurrentBrightness
+    ChangeBrightness(CurrentBrightness += Brightness_Increments)
+}
+^+Down:: {
+    global CurrentBrightness
+    ChangeBrightness(CurrentBrightness -= Brightness_Increments)
+}
+
 ;=============================== Alt & Ctrl Shortcuts =================================;
 ^!s:: SendInput "^#v"
 
 ^!z:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         Run "D:\Programs\Shortcuts\Lenovo Vantage.lnk"
     }
     else {
@@ -375,38 +374,19 @@ $CapsLock::Backspace
     }
 }
 
-^!1:: Run "D:\Code\AHK\Files Move.ahk"
+; ^!1:: Run "D:\Code\AHK\Files Move.ahk"
 
-^!2:: Run "D:\Code\AHK\Files Move2.ahk"
+; ^!2:: Run "D:\Code\AHK\Files Move2.ahk"
+
+^!3:: Run "D:\Code\AHK\Files Move3.ahk"
 
 ;================================= Ctrl Shortcuts =======================================;
 
-; ^r::{
-;     if (KeyWait(GetFilteredHotKey(), "T0.2")){
-;         Run "Disconnect_Buds.ahk"
-;     }
-;     else{
-;         KeyWait(GetFilteredHotKey(), "T10")
-;         Run "Connect_Buds.ahk"
-;     }
-; }
-
-^F1:: {
-    t := !t
-    Devices := {}
-    if t = 1 {
-        SetDefaultEndpoint(GetDeviceID(Devices, "Headphone"))
-        ToolTip "Buds"
-        SetTimer RemoveToolTip, -1000
-    }
-    else {
-        SetDefaultEndpoint(GetDeviceID(Devices, "Speakers"))
-        ToolTip "Speakers"
-        SetTimer RemoveToolTip, -1000
-    }
-}
-
 ;================================= Alt Shortcuts =======================================;
+
+#HotIf WinActive("ahk_exe Photoshop.exe")
+
+#HotIf
 
 ;================================= Win Shortcuts =======================================;
 
@@ -414,7 +394,7 @@ $CapsLock::Backspace
 
 #e:: {
 
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         GroupAdd "ExplorerGroup", " - File Explorer"
         if !WinExist(" - File Explorer") {
 
@@ -439,7 +419,7 @@ $CapsLock::Backspace
 ^+WheelDown:: Run "D:\Programs\Nahimic.lnk"
 
 ^+/:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         Run "C:\Windows\System32\SndVol.exe"
     }
     else {
@@ -472,12 +452,12 @@ $CapsLock::Backspace
 !1:: MyMenu1.Show()
 !2:: MyMenu2.Show()
 !3:: MyMenu3.Show()
-!4:: MyMenu4.Show()
+!4:: MYMenu4.Show()
 !5:: MyMenu5.Show()
 !+z:: MyMenu6.Show()
 
 #HotIf WinActive("ahk_class Qt5QWindowIcon")
-/:: SendInput "jjjj"
+/:: SendInput "jjj"
 0:: Send "{Ctrl Down}{WheelUp}{Ctrl Up}"
 9:: Send "{Ctrl Down}{WheelDown}{Ctrl Up}"
 BS::
@@ -541,7 +521,7 @@ WheelDown::Volume_Down
 ; }
 
 `:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.2")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
         global Macro
         Macro := !Macro
         ToolTip Macro
@@ -553,7 +533,7 @@ WheelDown::Volume_Down
     }
 }
 
-; KeyWait, %A_ThisHotKey%, T0.2
+; KeyWait, %A_ThisHotKey%, T0.4
 ; if !ErrorLevel
 ; {
 ; 	Run, "D:\AHK\Get_KeyCodes.ahk"

@@ -17,9 +17,10 @@ keyboardId := AHI.GetKeyboardId(0xC0F4, 0x04F5)
 ; AHI.SendKeyEvent(keyboardId, GetKeySC("a"), 1)
 AHI.SubscribeKeyboard(keyboardId, true, TapFunction)
 
-ITH1 := InterceptionTapHold(AHI, keyboardId)
+ITH1 := InterceptionTapHold(AHI, keyboardId, 300, 300)
 THKeys := [
-    "Insert", "End", "Home", "End", "PgUp", "PgDown"
+    "Insert", "End", "Home", "End", "PgUp", "PgDown", "1",
+    "2", "3", "4", "5", "6"
 ]
 for key in THKeys
     ITH1.Add(key, TapHoldFunction)
@@ -33,69 +34,74 @@ return
 ; return
 
 TapFunction(sc_code, state) {
-    if state = 1 {
-        key_name := GetKeyName(Format("sc{:X}", sc_code))
+    key_name := GetKeyName(Format("sc{:X}", sc_code))
+    if state = 1
         switch key_name {
             case "NumpadEnd":
             {
                 ToolTip "Launching the Apps..."
-                RunApplication(" - Microsoft​ Edge", , "#1")
+                RunApplication("Microsoft​ Edge", , "#1")
                 Sleep 500
-                RunApplication(" - Brave", , "#2")
+                RunApplication("Brave", , "#2")
                 Sleep 500
                 RunApplication("Spotify Free", , "#3")
                 Sleep 500
-                RunApplication(" - Visual Studio Code", , "#4")
+                RunApplication("Visual Studio Code", , "#4")
                 ToolTip ""
             }
-            case "Space": SendInput("{Media_Play_Pause}")
+                ;========================= NumRow ==============================================;
+
+            case "7": Run("https://github.com/Shamil-Xero")
+            case "8":
+            case "9":
+            case "0": Run("C:\Program Files (x86)\Microsoft Office\root\Office16\WINWORD.EXE")
+            case "-": Run("C:\Program Files (x86)\Microsoft Office\root\Office16\POWERPNT.EXE")
+            case "=": Run("C:\Program Files (x86)\Microsoft Office\root\Office16\EXCEL.EXE")
+
+                ;========================= Alphabets ==============================================;
+
+            case "b": RunApplication("Notion Calendar", "D:\Programs\Notion Calendar.lnk")
+            case "c": RunApplication("Visual Studio Code", , "#4", "^{Tab}")
+            case "e": Run "C:\Program Files\qBittorrent\qbittorrent.exe"
+            case "d": Run "https://www.youtube.com/"
+            case "f": Run("C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"
+            )
+            case "n": RunApplication("ahk_exe Notion.exe", "C:\Users\shami\AppData\Local\Programs\Notion\Notion.exe")
+            case "q": RunApplication("WhatsApp", "D:\Programs\WhatsApp.lnk")
             case "r": ListLines
-            case "s": RunApplication("Spotify Free", , SendInput("#3"))
-            case "x":
-            {
-                if WinActive(" - Brave") {
-                    SendInput '^{Tab}'
-                }
-                else {
-                    if not WinExist(" - Brave") {
-                        SendInput "#1"
-                    }
-                    else {
-                        WinActivate " - Brave"
-                    }
-                }
-            }
-            case "z":
-            {
-                if WinActive(" - Microsoft​ Edge") {
-                    SendInput '^{Tab}'
-                }
-                else {
-                    if not WinExist(" - Microsoft​ Edge") {
-                        SendInput "#1"
-                    }
-                    else {
-                        WinActivate " - Microsoft​ Edge"
-                    }
-                }
-            }
-            
+            case "s": RunApplication("Spotify Free", , "#3")
+            case "v": RunApplication("TickTick", "D:\Programs\TickTick\TickTick.exe")
+            case "w": RunApplication("Telegram", "D:\Programs\Telegram Desktop.lnk")
+            case "x": RunApplication("Brave", , "#2", "^{Tab}")
+            case "z": RunApplication("Microsoft​ Edge", , "#1", "^{Tab}")
+
+                ;========================= Special keys ==============================================;
+            case "[": RunApplication("Adobe Photoshop", "C:\Program Files\Adobe\Adobe Photoshop 2024\Photoshop.exe", ,
+                "#{Down}")
+            case "]": RunApplication("Adobe Lightroom", "C:\Program Files\Adobe\Adobe Lightroom 2024\Lightroom.exe")
+            case ";": RunApplication("Adobe Premiere Pro",
+                "C:\Program Files\Adobe\Adobe Premiere Pro 2024\Adobe Premiere Pro.exe")
+            case "'": RunApplication("Adobe After Effects",
+                "C:\Program Files\Adobe\Adobe After Effects 2024\Adobe After Effects.exe")
+            case "\": RunApplication("Davinci Resolve")
+
+            case "Space": SendInput("{Media_Play_Pause}")
+            case "LWin": SendInput "{LWin}"
             case "Escape": Reload
             default:
             {
                 ToolTip("Keyboard Key : " key_name ", State: " state)
-
+                SetTimer RemoveToolTip, -2000
             }
         }
-    }
 }
 
 TapHoldFunction(keyname, isHold, taps, state) {
-    isheld := state
+    held := isHold
     switch keyname {
         case "End":
         {
-            if isheld {
+            if held {
                 if (taps == 1) {
                     Run 'cmd /c Shutdown /a', , "Hide"
                     ToolTip "PowerOff cancelled"
@@ -115,9 +121,70 @@ TapHoldFunction(keyname, isHold, taps, state) {
                 }
             }
         }
+
+        case "1":
+        {
+            if held {
+                Run("D:\Code\AHK.code-workspace")
+            }
+            else {
+                Run("D:\Code\AHK")
+            }
+        }
+        case "2":
+        {
+            if held {
+                Run("D:\Code\C.code-workspace")
+            }
+            else {
+                Run("D:\Code\C")
+            }
+        }
+        case "3":
+        {
+            if held {
+                Run("D:\Code\Python.code-workspace")
+            }
+            else {
+                Run("D:\Code\Python")
+            }
+        }
+        case "4":
+        {
+            if held {
+                Run("D:\Code\Java.code-workspace")
+            }
+            else {
+                Run("D:\Code\Java")
+            }
+        }
+        case "5":
+        {
+            if held {
+                Run("D:\Code\JavaScript.code-workspace")
+            }
+            else {
+                Run("D:\Code\JavaScript")
+            }
+        }
+        case "6":
+        {
+            if held {
+                Run("D:\Code\TSMS.code-workspace")
+            }
+            else {
+                Run("D:\Code\TSMS")
+            }
+
+        }
         default:
-            ToolTip("KB 1 Key " keyname "`n" (isHold ? "HOLD" : "TAP") "`nTaps: " taps "`nState: " state)
+        {
+            ToolTip("KB 1 Key " keyname "`n" (isHold ? "HOLD" : "TAP") "`nTaps: " taps "`nState: " state
+            )
+            SetTimer RemoveToolTip, -2000
+        }
     }
+
 }
 
 ; MouseButtonEvent(code, state){
