@@ -50,7 +50,7 @@ GetHotKey(&tout := 300) {
 }
 
 RunApplication(title, path, ifactive_send := "") {
-    GroupName := StrReplace(title, " ", "") . "Group"
+    GroupName := StrReplace(title, " .", "") . "Group"
     ; MsgBox GroupName
     if !WinExist(title) {
         if path

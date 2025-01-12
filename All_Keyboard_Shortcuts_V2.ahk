@@ -265,6 +265,11 @@ $^+/:: {
     }
 }
 
+^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
+^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
+^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
+^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
+
 ;=============================== Alt & Ctrl Shortcuts =================================;
 ^!s:: Send "^#v"
 
@@ -302,17 +307,7 @@ $^+/:: {
 #e:: {
 
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        GroupAdd "ExplorerGroup", " - File Explorer"
-        if !WinExist(" - File Explorer") {
-
-            Run "explorer.exe"
-            GroupAdd "ExplorerGroup", " - File Explorer"
-        }
-        else if WinActive("ahk_exe explorer.exe")
-            GroupActivate "ExplorerGroup", "r"
-        else
-            WinActivate " - File Explorer"
-        return
+        RunApplication(" - File Explorer", "explorer.exe")
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -342,32 +337,9 @@ $^+/:: {
 
 #Space::^Space
 
-; #e:: {
-
-;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-;         GroupAdd "ExplorerGroup", " - Files"
-;         if !WinExist(" - Files") {
-;             Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-;             GroupAdd "myexplorers", " - Files"
-;         }
-;         else if WinActive(" - Files.exe")
-;             GroupActivate "ExplorerGroup", "r"
-;         else
-;             WinActivate " - Files"
-;         return
-;     }
-;     else {
-;         KeyWait(GetFilteredHotKey())
-;         Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-;     }
-; }
-
 ;================================= Other Shortcuts =====================================;
 
-^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
-^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
-^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
-^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
+
 
 ; !w:: Send "!{F4}"
 #SC137:: Run "C:\Program Files\WindowsApps\Microsoft.ScreenSketch_11.2409.25.0_x64__8wekyb3d8bbwe\SnippingTool\SnippingTool.exe"
