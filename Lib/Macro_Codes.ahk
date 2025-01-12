@@ -1,5 +1,16 @@
 #Requires AutoHotkey v2.0
-#Include Credentials.ahk
+
+#Include Credentials.ahk ; Comment this line if don't wanna use this
+
+;Creat a Credentials.ahk file in the Lib folder and the following function to modify it.
+;
+; Credentials_Codes(key) {
+;     switch key {
+;         case "asdf1":
+;             Send "Password"
+;     }
+; }
+
 
 Keyboard_Codes() {
     global key, Macro
@@ -128,7 +139,7 @@ Keyboard_Codes() {
             Run "https://www.flipkart.com/"
     }
 
-    Credentials_Codes(key)
+    try Credentials_Codes(key)
 
     key := ""
     Macro := False
