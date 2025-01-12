@@ -145,14 +145,3 @@ Keyboard_Codes() {
     Macro := False
 
 }
-
-Overwatch_Login() {
-    SetKeyDelay 30
-    sleep 500
-    Send "swimmingshamil@gmail.com"
-    sleep 100
-    SendInput "{Tab}"
-    sleep 100
-    Send "swimsham123{Enter}"
-    SetKeyDelay 0
-}

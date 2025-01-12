@@ -66,32 +66,6 @@ Media_Stop:: return
 Launch_App1:: Msgbox "Hi"
 
 ;===============================END OF SPECIAL KEYS============================;;
-
-#HotIf WinActive("ahk_class CabinetWClass") ;Clicks the Folder path in File explorer like clicking the url in browsers
-
-^e:: Send "^l"
-
-^d:: Send "{Del}"
-
-#HotIf !WinActive("ahk_exe Overwatch.exe")
-~^c:: {
-    ToolTip "Copied"
-    SetTimer RemoveTooltip, -250
-}
-
-~^v:: {
-    ToolTip "Pasted"
-    SetTimer RemoveToolTip, -250
-}
-
-~^x:: {
-    ToolTip "Cuted"
-    SetTimer RemoveToolTip, -250
-}
-#HotIf
-
-; #e::Run "explorer.exe"
-
 !i:: Send "{Up}"
 !k:: Send "{Down}"
 !l:: Send "{Right}"
@@ -118,7 +92,7 @@ $CapsLock::Backspace
 
 ;===================== Ctrl & Shift Shortcuts ======================;
 
-^+d:: {
+$^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe", "^{Tab}")
     }
@@ -128,7 +102,7 @@ $CapsLock::Backspace
     }
 }
 
-^+e:: {
+$^+e:: {
 
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "C:\Users\Shamil\AppData\Local\Programs\Notion\Notion.exe"
@@ -139,7 +113,7 @@ $CapsLock::Backspace
     }
 }
 
-^+f:: {
+$^+f:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run '*RunAs cmd.exe'
     }
@@ -149,7 +123,7 @@ $CapsLock::Backspace
     }
 }
 
-^+g:: {
+$^+g:: {
     p := Morse()
     if (p = "00") {
         Run '*RunAs cmd.exe /k pnputil /enum-devices /class Display', , "Hide" ; //To find the display;
@@ -198,7 +172,7 @@ $CapsLock::Backspace
         MsgBox p
 }
 
-^+q:: {
+$^+q:: {
     SendInput "^c"
     sleep 10
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -225,7 +199,7 @@ $^+s:: {
     }
 }
 
-^+w:: {
+$^+w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
     }
@@ -235,7 +209,7 @@ $^+s:: {
     }
 }
 
-^+x:: {
+$^+x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Brave", "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe")
         ; GroupAdd "BraveGroup", "Brave"
@@ -247,7 +221,7 @@ $^+s:: {
     }
 }
 
-^+y:: {
+$^+y:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "C:\Program Files (x86)\Internet Download Manager\IDMan.exe"
     }
@@ -257,7 +231,7 @@ $^+s:: {
     }
 }
 
-^+z:: {
+$^+z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
         ; GroupAdd "EdgeGroup", "Microsoft​ Edge"
@@ -271,16 +245,17 @@ $^+s:: {
     }
 }
 
-^+Up:: {
+$^+Up:: {
     global CurrentBrightness
     ChangeBrightness(CurrentBrightness += Brightness_Increments)
 }
-^+Down:: {
+
+$^+Down:: {
     global CurrentBrightness
     ChangeBrightness(CurrentBrightness -= Brightness_Increments)
 }
 
-^+/:: {
+$^+/:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "C:\Windows\System32\SndVol.exe"
     }
@@ -407,10 +382,26 @@ $SC137:: Send "#{PrintScreen}" ; PrintScreen
 
 ;========================== Context Sensitive Shortcuts =======================================;
 
-#HotIf WinActive("ahk_exe Overwatch.exe")
+#HotIf WinActive("ahk_class CabinetWClass") ;Clicks the Folder path in File explorer like clicking the url in browsers
 
-:*:asdf:: {
-    Overwatch_Login()
+^e:: Send "^l"
+
+^d:: Send "{Del}"
+
+#HotIf !WinActive("ahk_exe Overwatch.exe") or !WinActive("Marvel Rivals")
+~^c:: {
+    ToolTip "Copied"
+    SetTimer RemoveTooltip, -250
+}
+
+~^v:: {
+    ToolTip "Pasted"
+    SetTimer RemoveToolTip, -250
+}
+
+~^x:: {
+    ToolTip "Cuted"
+    SetTimer RemoveToolTip, -250
 }
 
 #HotIf !WinActive("ahk_exe vlc.exe")
@@ -441,6 +432,10 @@ BS::
     MouseClick "Left", 1755, 922, , 0
     MouseMove x, y, 0
 }
+
+#HotIf WinActive("ahk_exe Code.exe")
+^!e::Send "^+e"
+^Up::
 
 #HotIf MouseIsOver("TrayNotifyWnd1")
 WheelUp:: ToolTip "#+m"
