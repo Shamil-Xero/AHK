@@ -105,11 +105,13 @@ $^+d:: {
 $^+e:: {
 
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run "C:\Users\Shamil\AppData\Local\Programs\Notion\Notion.exe"
+        Run("https://www.youtube.com/")
+        ; Run "C:\Users\Shamil\AppData\Local\Programs\Notion\Notion.exe"
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Users\Shamil\AppData\Local\Programs\cron-web\Notion Calendar.exe"
+        Run('"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"')
+        ; Run "C:\Users\Shamil\AppData\Local\Programs\cron-web\Notion Calendar.exe"
     }
 }
 
@@ -140,15 +142,6 @@ $^+g:: {
         ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /c " 'ipconfig | find "IPv4"').StdOut.ReadAll()
         i := 0
         ToolTip ipadd
-        ; loop parse, ipadd, ":" "`n" {
-        ;     i++
-        ;     if (i == 60) {
-        ;         ToolTip "Local IP: " A_LoopField
-        ;         A_Clipboard := A_LoopField
-
-        ;         break
-        ;     }
-        ; }
         SetTimer RemoveToolTip, -3000
     }
     else if (p = "1") {
@@ -177,12 +170,10 @@ $^+q:: {
     sleep 10
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "https://www.google.com/search?q=" A_Clipboard
-        ; Run("https://www.youtube.com/")
     }
     else if (KeyWait(GetFilteredHotKey(), "T2")) {
         Run "https://www.youtube.com/results?search_query=" A_Clipboard
         ; Run(
-        ;     '"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"'
         ; )
     }
     else {
@@ -339,8 +330,6 @@ $^+/:: {
 
 ;================================= Other Shortcuts =====================================;
 
-
-
 ; !w:: Send "!{F4}"
 #SC137:: Run "C:\Program Files\WindowsApps\Microsoft.ScreenSketch_11.2409.25.0_x64__8wekyb3d8bbwe\SnippingTool\SnippingTool.exe"
 $SC137:: Send "#{PrintScreen}" ; PrintScreen
@@ -406,7 +395,7 @@ BS::
 }
 
 #HotIf WinActive("ahk_exe Code.exe")
-^!e::Send "^+e"
+^!e:: Send "^+e"
 ^Up::
 
 #HotIf MouseIsOver("TrayNotifyWnd1")
