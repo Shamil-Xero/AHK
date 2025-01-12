@@ -1,12 +1,14 @@
 #Requires AutoHotkey v2.0
 SetWorkingDir A_WorkingDir  ; Ensures a consistent starting directory.
-TraySetIcon A_WorkingDir "`\AutoHotKeyV2.png"
+TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
+SendMode "Input"
+SetCapsLockState "Off"
+SetNumLockState "On"
+SetScrollLockState "Off"
 
 ;====================== ====================================;;
 #Include <Lib>
-
-; Run(A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk")
 
 Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
 
@@ -25,11 +27,24 @@ Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
     ; Run, cmd.exe /c "taskkill /f /im autohotkey.exe"
 }
 
+; r::ToolTip ThisHotkey
+
 Browser_Favorites:: {
     ; Speach := "dooooooont press this"
     ; Runwait A_WorkingDir '\voice.exe' ' -r' ' 2' ' -d' Speach,,'Hide'
-    SendInput "^+{Esc}"
+    Send "^+{Esc}"
     ; MsgBox A_ThisHotKey
+}
+
+^Numpad1:: {
+    TransDegree := WinGetTransparent("A")
+    ; MsgBox TransDegree
+    if (TransDegree) {
+        WinSetTransparent "Off", "A"
+    }
+    else {
+        WinSetTransparent 200, "A"
+    }
 }
 
 Launch_Mail:: return
@@ -54,7 +69,9 @@ Launch_App1:: Msgbox "Hi"
 
 #HotIf WinActive("ahk_class CabinetWClass") ;Clicks the Folder path in File explorer like clicking the url in browsers
 
-^e:: SendInput "^l"
+^e:: Send "^l"
+
+^d:: Send "{Del}"
 
 #HotIf !WinActive("ahk_exe Overwatch.exe")
 ~^c:: {
@@ -75,10 +92,10 @@ Launch_App1:: Msgbox "Hi"
 
 ; #e::Run "explorer.exe"
 
-!i:: SendInput "{Up}"
-!k:: SendInput "{Down}"
-!l:: SendInput "{Right}"
-!j:: SendInput "{Left}"
+!i:: Send "{Up}"
+!k:: Send "{Down}"
+!l:: Send "{Right}"
+!j:: Send "{Left}"
 
 >^\::AltTab
 RCtrl & RAlt::AppsKey
@@ -88,13 +105,13 @@ $CapsLock::Backspace
 ;===================== Tap, Press & Hold Shortcuts ======================;
 
 ; ~LWin:: {
-;     if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-;         ; SendInput "{Lwin}"
+;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+;         ; Send "{Lwin}"
 ;     }
 ;     else if (KeyWait(GetFilteredHotKey(), "T1")) {
 ;         ; msgbox "Press"
 ;     }
-;     else if (KeyWait(GetFilteredHotKey(), "T10")) {
+;     else if (KeyWait(GetFilteredHotKey())) {
 ;         ; msgbox "Hold"
 ;     }
 ; }
@@ -102,50 +119,32 @@ $CapsLock::Backspace
 ;===================== Ctrl & Shift Shortcuts ======================;
 
 ^+d:: {
-    exe_process := "ahk_exe Code.exe"
-    exe_name := " - Visual Studio Code"
-    exe_location := "C:\Program Files\Microsoft VS Code\Code.exe"
-
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-
-        if WinActive(exe_name) {
-            WinMinimize
-            ; SendInput "#4"
-        }
-        else {
-            if not WinExist(exe_name) {
-                ; Run exe_location
-                SendInput "#4"
-            }
-            else {
-                WinActivate(exe_name)
-                ; SendInput "#4"
-            }
-        }
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe", "^{Tab}")
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        Run exe_location
+        KeyWait(GetFilteredHotKey())
+        Run "C:\Program Files\Microsoft VS Code\Code.exe"
     }
 }
 
 ^+e:: {
 
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "C:\Users\Shamil\AppData\Local\Programs\Notion\Notion.exe"
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
+        KeyWait(GetFilteredHotKey())
         Run "C:\Users\Shamil\AppData\Local\Programs\cron-web\Notion Calendar.exe"
     }
 }
 
 ^+f:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run '*RunAs cmd.exe'
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
+        KeyWait(GetFilteredHotKey())
         Run "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
     }
 }
@@ -200,156 +199,75 @@ $CapsLock::Backspace
 }
 
 ^+q:: {
-
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-        Run("https://www.youtube.com/")
+    SendInput "^c"
+    sleep 10
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        Run "https://www.google.com/search?q=" A_Clipboard
+        ; Run("https://www.youtube.com/")
+    }
+    else if (KeyWait(GetFilteredHotKey(), "T2")) {
+        Run "https://www.youtube.com/results?search_query=" A_Clipboard
+        ; Run(
+        ;     '"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"'
+        ; )
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        Run(
-            '"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"'
-        )
+        KeyWait(GetFilteredHotKey())
+        Run "https://chat.openai.com"
     }
 }
 
 $^+s:: {
-    exe_process := "ahk_exe Spotify.exe"
-    exe_name := "Spotify Free"
-    exe_location := "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe"
-
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-        SendInput "^+s"
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        Send "^+s"
     } else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        if WinActive(exe_name) {
-            WinMinimize
-        }
-        else {
-            if not WinExist(exe_name) {
-                ; Run exe_location
-                SendInput "#3"
-            }
-            else {
-                WinActivate(exe_name)
-            }
-        }
+        RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
     }
 }
 
 ^+w:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-        exe_name := "WhatsApp"
-        exe_location := "D:\Programs\WhatsApp.lnk"
-
-        if WinActive(exe_name) {
-            WinMinimize
-        }
-        else {
-            if not WinExist(exe_name) {
-                Run exe_location
-            }
-            else {
-                Run exe_location
-            }
-        }
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        exe_name := "Unigram"
-        exe_process := "ahk_exe Unigram.exe"
-        exe_location := "D:\Programs\Unigram.lnk"
-
-        if WinActive(exe_name) {
-            WinMinimize
-        }
-        else {
-            Run exe_location
-            ; if not WinExist(exe_name) {
-            ; }
-            ; else {
-            ;     WinActivate(exe_name)
-            ; }
-        }
+        KeyWait(GetFilteredHotKey())
+        RunApplication("Unigram", "D:\Programs Files\Unigram.lnk")
     }
 }
 
 ^+x:: {
-    exe_name := " - Brave"
-    exe_location := "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-    ; RunApplication(exe_name, exe_location)
-
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-        if WinActive(exe_name) {
-            SendInput "^{Tab}"
-        }
-        else {
-            if not WinExist(exe_name) {
-                ; Run exe_location
-                SendInput "#2"
-            }
-            else {
-                WinActivate exe_name
-                ; SendInput "#2"
-            }
-        }
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("Brave", "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe")
+        ; GroupAdd "BraveGroup", "Brave"
+        ; GroupActivate "BraveGroup", "r"
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        Run exe_location
+        KeyWait(GetFilteredHotKey())
+        Run "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
     }
 }
 
-; j:: {
-;     ActiveHwnd := WinActive("A")
-;     WinActivate("- Brave")
-;     ControlSend("{Right}", , " - Brave")
-;     ; if TargetError
-;     ;     msgbox "Window/ Class not found"
-;     WinActivate(ActiveHwnd)
-; }
-
-; k:: {
-;     MyGui := Gui()
-;     MyGui.Add("Edit", "r10 w500")
-;     MyGui.Show()
-;     ControlSend "This is a line of text in the edit control.{Enter}", "Edit1", MyGui
-;     ControlSendText "Notice that {Enter} is not sent as an Enter keystroke with ControlSendText.", "Edit1", MyGui
-
-; }
-
 ^+y:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "C:\Program Files (x86)\Internet Download Manager\IDMan.exe"
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
+        KeyWait(GetFilteredHotKey())
         Run "C:\Program Files\qBittorrent\qbittorrent.exe"
     }
 }
 
 ^+z:: {
-    exe_process := "ahk_exe msedge.exe"
-    exe_name := " - Microsoft​ Edge"
-    exe_location := "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-
-        if WinActive(exe_name) {
-            SendInput '^{Tab}'
-        }
-        else {
-            if not WinExist(exe_name) {
-                ; Run exe_location
-                SendInput "#1"
-            }
-            else {
-                WinActivate exe_name
-            }
-        }
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
+        ; GroupAdd "EdgeGroup", "Microsoft​ Edge"
     }
+    ; else if (KeyWait(GetFilteredHotKey(), "T1")) {
+    ;     GroupActivate "EdgeGroup", "r"
+    ; }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        Run exe_location
+        KeyWait(GetFilteredHotKey())
+        Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     }
 }
 
@@ -362,17 +280,34 @@ $^+s:: {
     ChangeBrightness(CurrentBrightness -= Brightness_Increments)
 }
 
-;=============================== Alt & Ctrl Shortcuts =================================;
-^!s:: SendInput "^#v"
-
-^!z:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-        Run "D:\Programs\Shortcuts\Lenovo Vantage.lnk"
+^+/:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        Run "C:\Windows\System32\SndVol.exe"
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
+        KeyWait(GetFilteredHotKey())
+        Run "D:\Programs Files\Nahimic.lnk"
+    }
+}
+
+;=============================== Alt & Ctrl Shortcuts =================================;
+^!s:: Send "^#v"
+
+^!z:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        Run "D:\Programs Files\Shortcuts\Lenovo Vantage.lnk"
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
         Run "C:\Users\Shamil\AppData\Local\Playnite\Playnite.DesktopApp.exe"
     }
+}
+
+^!b:: {
+    if WinExist("Window Spy for AHKv2")
+        WinActivate("Window Spy for AHKv2")
+    else
+        Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
 }
 
 ; ^!1:: Run "D:\Code\AHK\Files Move.ahk"
@@ -385,17 +320,13 @@ $^+s:: {
 
 ;================================= Alt Shortcuts =======================================;
 
-#HotIf WinActive("ahk_exe Photoshop.exe")
-
-#HotIf
-
 ;================================= Win Shortcuts =======================================;
 
-#c:: Run "D:\Programs\Copilot.lnk"
+#c:: Run "D:\Programs Files\Copilot.lnk"
 
 #e:: {
 
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         GroupAdd "ExplorerGroup", " - File Explorer"
         if !WinExist(" - File Explorer") {
 
@@ -409,14 +340,36 @@ $^+s:: {
         return
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
+        KeyWait(GetFilteredHotKey())
         Run "explorer.exe"
     }
 }
 
+#s:: Send "#{PrintScreen}"
+
+#w:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        if !WinExist(" - Files") {
+            Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+            GroupAdd "ExplorerGroup", " - Files"
+        }
+        else if WinActive("ahk_exe explorer.exe")
+            GroupActivate "ExplorerGroup", "r"
+        else
+            WinActivate " - Files"
+        return
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+    }
+}
+
+#Space::^Space
+
 ; #e:: {
 
-;     if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
 ;         GroupAdd "ExplorerGroup", " - Files"
 ;         if !WinExist(" - Files") {
 ;             Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
@@ -429,7 +382,7 @@ $^+s:: {
 ;         return
 ;     }
 ;     else {
-;         KeyWait(GetFilteredHotKey(), "T10")
+;         KeyWait(GetFilteredHotKey())
 ;         Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
 ;     }
 ; }
@@ -437,28 +390,14 @@ $^+s:: {
 ;================================= Other Shortcuts =====================================;
 
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
-^+WheelDown:: Run "D:\Programs\Nahimic.lnk"
+^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
+^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
+^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
 
-^+/:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
-        Run "C:\Windows\System32\SndVol.exe"
-    }
-    else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        Run "D:\Programs\Nahimic.lnk"
-    }
-}
-
-!w:: SendInput "!{F4}"
-; ^+WheelDown::
-#s:: SendInput "{Printscreen}"
-#+s:: SendInput "#+t"
-^!b:: {
-    if WinExist("Window Spy for AHKv2")
-        WinActivate("Window Spy for AHKv2")
-    else
-        Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
-}
+; !w:: Send "!{F4}"
+#SC137:: Run "C:\Program Files\WindowsApps\Microsoft.ScreenSketch_11.2409.25.0_x64__8wekyb3d8bbwe\SnippingTool\SnippingTool.exe"
+$SC137:: Send "#{PrintScreen}" ; PrintScreen
+#+s:: Send "#+t"
 ^+m:: Run "C:\Windows\System32\mblctr.exe"
 
 >^Up::Volume_Up
@@ -483,17 +422,17 @@ $^+s:: {
 !+z:: MyMenu6.Show()
 
 #HotIf WinActive("ahk_class Qt5QWindowIcon")
-/:: SendInput "jjj"
+/:: Send "jjj"
 0:: Send "{Ctrl Down}{WheelUp}{Ctrl Up}"
 9:: Send "{Ctrl Down}{WheelDown}{Ctrl Up}"
 BS::
 \:: Send "^{Right}{Right}{Right}+{Right}+{Right}+{Right}"
->^Left:: SendInput "^{Left}"
->^Right:: SendInput "^{Right}"
+>^Left:: Send "^{Left}"
+>^Right:: Send "^{Right}"
 
 #HotIf WinActive("ahk_exe Spotify.exe")
->^Up:: SendInput "^{Up}"
->^Down:: SendInput "^{Down}"
+>^Up:: Send "^{Up}"
+>^Down:: Send "^{Down}"
 
 #HotIf WinActive("ahk_exe brave.exe")
 !q:: {
@@ -514,19 +453,19 @@ WheelDown:: ToolTip "#m"
 ; #HotIf GetKeyState("Joy11", "P")
 ; Joy2:: {
 ;     if GetKeyState("Joy11", "P") {
-;         SendInput "{Media_Play_Pause}"
+;         Send "{Media_Play_Pause}"
 ;         Current_Window := WinGetTitle("A")
 ;         WinActivate("-YouTube")
 ;         ; ControlGetPos, conX, conY, conW, conH, Chrome_RenderWidgetHostHWND1, A
 ;         ; ControlClick, , A, , , , %" X" (conX + 1) " Y" (conY + 1)
-;         SendInput "k"
+;         Send "k"
 ;         WinActivate(Current_Window)
 ;     }
 ; }
 
 ; Joy1:: {
 ;     if GetKeyState("Joy11", "P") {
-;         SendInput "{Media_Play_Pause}"
+;         Send "{Media_Play_Pause}"
 ;     }
 ; }
 #HotIf
@@ -547,19 +486,19 @@ WheelDown:: ToolTip "#m"
 ; }
 
 `:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.4")) {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         global Macro
         Macro := !Macro
         ToolTip Macro
         SetTimer RemoveToolTip, -200
     }
     else {
-        KeyWait(GetFilteredHotKey(), "T10")
-        SendInput "{ASC 96}"
+        KeyWait(GetFilteredHotKey())
+        Send "{ASC 96}"
     }
 }
 
-; KeyWait, %A_ThisHotKey%, T0.4
+; KeyWait, %A_ThisHotKey%, T0.3
 ; if !ErrorLevel
 ; {
 ; 	Run, "D:\AHK\Get_KeyCodes.ahk"
@@ -569,7 +508,7 @@ WheelDown:: ToolTip "#m"
 ; else
 ; {
 ;     KeyWait, %A_ThisHotKey%, T0.5
-;     SendInput, {ASC 96}
+;     Send, {ASC 96}
 ; }
 ;
 
