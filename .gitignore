@@ -1,1 +1,2 @@
-/Lib/Credentials.ahk
+# Ignore the Credentials.ahk file in the Lib folder
+Lib/Credentials.ahk
