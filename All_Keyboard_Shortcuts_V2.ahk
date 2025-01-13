@@ -192,11 +192,9 @@ $^+s:: {
 
 $^+w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        RunApplication("Unigram", "D:\Programs Files\Unigram.lnk")
     }
 }
 
@@ -252,12 +250,10 @@ $^+/:: {
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "D:\Programs Files\Nahimic.lnk"
     }
 }
 
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
-^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
 ^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
 ^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
 
@@ -266,7 +262,6 @@ $^+/:: {
 
 ^!z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run "D:\Programs Files\Shortcuts\Lenovo Vantage.lnk"
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -293,7 +288,6 @@ $^+/:: {
 
 ;================================= Win Shortcuts =======================================;
 
-#c:: Run "D:\Programs Files\Copilot.lnk"
 
 #e:: {
 
