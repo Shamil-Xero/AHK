@@ -281,11 +281,11 @@ $^+/:: {
         Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
 }
 
-; ^!1:: Run "D:\Code\AHK\Files Move.ahk"
+; ^!1:: Run "D:\01_Programs\01_AHK\Files Move.ahk"
 
-; ^!2:: Run "D:\Code\AHK\Files Move2.ahk"
+; ^!2:: Run "D:\01_Programs\01_AHK\Files Move2.ahk"
 
-!+3:: Run "D:\Code\AHK\Files Move3.ahk"
+!+3:: Run "D:\01_Programs\01_AHK\Files Move3.ahk"
 
 ;================================= Ctrl Shortcuts =======================================;
 
@@ -457,7 +457,7 @@ WheelDown:: ToolTip "#m"
 ; KeyWait, %A_ThisHotKey%, T0.3
 ; if !ErrorLevel
 ; {
-; 	Run, "D:\AHK\Get_KeyCodes.ahk"
+; 	Run, "D:\01_AHK\Get_KeyCodes.ahk"
 ; 	Tooltip, `
 ; 	Settimer, RemoveToolTip, -500
 ; }

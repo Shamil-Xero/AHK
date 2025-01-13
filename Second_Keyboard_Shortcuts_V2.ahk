@@ -60,50 +60,51 @@ F12::
 }
 1:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\Code\AHK")
+        Run("D:\01_Programs\01_AHK\")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\Code\AHK.code-workspace")
+        Run("D:\01_Programs\AHK.code-workspace")
     }
 }
 2:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\Code\C")
+        Run("D:\01_Programs\03_Python")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\Code\C.code-workspace")
+        Run("D:\01_Programs\Python.code-workspace")
+
     }
 }
 3:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\Code\Python")
+        Run("D:\01_Programs\04_FrontEnd")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\Code\Python.code-workspace")
-
+        Run("D:\01_Programs\JavaScript.code-workspace")
     }
 }
 4:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\Code\Java")
+        Run("D:\01_Programs\05_C")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\Code\Java.code-workspace")
+        Run("D:\01_Programs\C.code-workspace")
     }
 }
 5:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\Code\JavaScript")
+        Run("D:\01_Programs\06_Java")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\Code\JavaScript.code-workspace")
+        Run("D:\01_Programs\Java.code-workspace")
     }
 }
+
 ; 6::
 7:: Run("https://github.com/Shamil-Xero")
 ; 8::
@@ -142,8 +143,8 @@ o:: RunApplication("ahk_class TankWindowClass",
     "C:\Users\Shamil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Steam\Overwatch® 2.url")
 p:: RunApplication("ahk_class TankWindowClass",
     "C:\Users\Shamil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Steam\Marvel Rivals.url")
-[::RunApplication("Adobe Photoshop", "D:\Programs Files\Adobe Photoshop 2025\Photoshop.exe", "#{Down}")
-]::RunApplication("Adobe Lightroom", "C:\Program Files\Adobe\Adobe Lightroom 2024\Lightroom.exe", "#{Down}")
+[:: RunApplication("Adobe Photoshop", "D:\Programs Files\Adobe Photoshop 2025\Photoshop.exe", "#{Down}")
+]:: RunApplication("Adobe Lightroom", "C:\Program Files\Adobe\Adobe Lightroom 2024\Lightroom.exe", "#{Down}")
 \:: {
     ToolTip A_ThisHotkey
     SetTimer RemoveToolTip, -200
@@ -169,8 +170,10 @@ h:: {
 j::
 k::
 l::
-`;::RunApplication("Adobe Premiere Pro", "D:\Programs Files\Adobe Premiere Pro 2025\Adobe Premiere Pro.exe", "#{Down}")
-'::RunApplication("Adobe After Effects", "C:\Program Files\Adobe\Adobe After Effects 2024\Adobe After Effects.exe", "#{Down}")
+`;:: RunApplication("Adobe Premiere Pro", "D:\Programs Files\Adobe Premiere Pro 2025\Adobe Premiere Pro.exe", "#{Down}"
+)
+':: RunApplication("Adobe After Effects", "C:\Program Files\Adobe\Adobe After Effects 2024\Adobe After Effects.exe",
+    "#{Down}")
 Enter:: {
     ToolTip A_ThisHotkey
     SetTimer RemoveToolTip, -200
@@ -186,7 +189,7 @@ b:: RunApplication("Notion Calendar", "D:\Programs Files\Notion Calendar.lnk")
 n:: RunApplication("ahk_exe Notion.exe", "C:\Users\shami\AppData\Local\Programs\Notion\Notion.exe")
 m::
 ,::
-.::{
+.:: {
     ToolTip A_ThisHotkey
     SetTimer RemoveToolTip, -200
 }
