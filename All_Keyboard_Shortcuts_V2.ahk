@@ -262,6 +262,19 @@ $^+/:: {
 ^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
 
 ;=============================== Alt & Ctrl Shortcuts =================================;
+
+^!:: {
+    if !WinExist
+        Run "C:\Users\Shamil\AppData\Roaming\AltSnap\AltSnap.exe"
+}
+
+^!b:: {
+    if WinExist("Window Spy for AHKv2")
+        WinActivate("Window Spy for AHKv2")
+    else
+        Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
+}
+
 ^!s:: Send "^#v"
 
 ^!z:: {
@@ -273,14 +286,6 @@ $^+/:: {
         Run "C:\Users\Shamil\AppData\Local\Playnite\Playnite.DesktopApp.exe"
     }
 }
-
-^!b:: {
-    if WinExist("Window Spy for AHKv2")
-        WinActivate("Window Spy for AHKv2")
-    else
-        Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
-}
-
 ; ^!1:: Run "D:\01_Programs\01_AHK\Files Move.ahk"
 
 ; ^!2:: Run "D:\01_Programs\01_AHK\Files Move2.ahk"
