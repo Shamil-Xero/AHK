@@ -256,6 +256,10 @@ $^+/:: {
     }
 }
 
+^!Numpad1::{
+    Run 'cmd.exe /c python D:\01_Programs\03_Python\Random_Video.py', , "Hide"
+}
+
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
 ^+WheelDown:: Run "D:\00_Programs Files\Nahimic.lnk"
 ^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
@@ -286,11 +290,8 @@ $^+/:: {
         Run "C:\Users\Shamil\AppData\Local\Playnite\Playnite.DesktopApp.exe"
     }
 }
-; ^!1:: Run "D:\01_Programs\01_AHK\Files Move.ahk"
 
-; ^!2:: Run "D:\01_Programs\01_AHK\Files Move2.ahk"
-
-!+3:: Run "D:\01_Programs\01_AHK\Files Move3.ahk"
+!+3:: Run "D:\01_Programs\00_Github\AHK-Depricated\Files Move3.ahk"
 
 ;================================= Ctrl Shortcuts =======================================;
 
