@@ -156,25 +156,25 @@ MyMenu1.Add("ADB", MenuHandler1)
 MyMenu1.Add("Code", MenuHandler1)
 MyMenu1.Add("VS Code", MySubMenu1)
 MenuHandler1(Item, *) {
-    if (Item == "ADB") {
-        Run "D:\01_Programs\02_ADB"
-    } else if (Item == "AHK") {
-        Run "D:\\01_AHK"
+    if (Item == "AHK") {
+        Run "D:\Programs\AHK"
+    } else if (Item == "ADB") {
+        Run "D:\Programs\ADB"
     } else if (Item == "Code") {
-        Run "D:\01_Programs"
+        Run "D:\Programs"
     }
 }
 SubMenuHandler1(Item, *) {
     if (Item == "AHK") {
-        Run "D:\01_Programs\AHK.code-workspace"
+        Run "D:\Programs\AHK.code-workspace"
     } else if (Item == "SE") {
-        Run "D:\01_Programs\TSMS.code-workspace"
+        Run "D:\Programs\TSMS.code-workspace"
     } else if (Item == "Java") {
-        Run "D:\01_Programs\Java.code-workspace"
+        Run "D:\Programs\Java.code-workspace"
     } else if (Item == "DS") {
-        Run "D:\01_Programs\Data Structure.code-workspace"
+        Run "D:\Programs\Data Structure.code-workspace"
     } else if (Item == "OS") {
-        Run "D:\01_Programs\Operating System.code-workspace"
+        Run "D:\Programs\Operating System.code-workspace"
     }
 }
 
@@ -236,13 +236,13 @@ MyMenu5.Add("TCPIP", MenuHandler5)
 MyMenu5.Add("OTG", MenuHandler5)
 MenuHandler5(Item, *) {
     if (Item = "USB") {
-        Run "D:\01_Programs\02_ADB\scrcpy-usb.vbs"
+        Run "D:\Programs\ADB\scrcpy-usb.vbs"
     }
     else if (Item = "TCPIP") {
-        Run "D:\01_Programs\02_ADB\TCPIP.vbs"
+        Run "D:\Programs\ADB\TCPIP.vbs"
     }
     else if (Item = "OTG") {
-        Run "D:\01_Programs\02_ADB\OTG.vbs"
+        Run "D:\Programs\ADB\OTG.vbs"
     }
     else {
         ToolTip Item
