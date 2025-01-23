@@ -60,48 +60,48 @@ F12::
 }
 1:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\01_Programs\01_AHK\")
+        Run("D:\Programs\AHK\")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\01_Programs\AHK.code-workspace")
+        Run("D:\Programs\AHK.code-workspace")
     }
 }
 2:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\01_Programs\03_Python")
+        Run("D:\Programs\Python")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\01_Programs\Python.code-workspace")
+        Run("D:\Programs\Python.code-workspace")
 
     }
 }
 3:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\01_Programs\04_FrontEnd")
+        Run("D:\Programs\FrontEnd")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\01_Programs\JavaScript.code-workspace")
+        Run("D:\Programs\JavaScript.code-workspace")
     }
 }
 4:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\01_Programs\05_C")
+        Run("D:\Programs\C")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\01_Programs\C.code-workspace")
+        Run("D:\Programs\C.code-workspace")
     }
 }
 5:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("D:\01_Programs\06_Java")
+        Run("D:\Programs\Java")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("D:\01_Programs\Java.code-workspace")
+        Run("D:\Programs\Java.code-workspace")
     }
 }
 

@@ -49,14 +49,21 @@ GetHotKey(&tout := 300) {
     return
 }
 
-RunApplication(title, path, ifactive_send := "") {
+RunApplication(title, path := "", ifactive_send := "") {
     GroupName := StrReplace(StrReplace(StrReplace(StrReplace(title, " "), "."), "_"), "-") . "Group"
-    ; MsgBox GroupName
     if !WinExist(title) {
-        if path
-            Run path
+        if path {
+            try {
+                Run path
+            }
+            catch {
+                ToolTip "An error occurred while running the application: " title ", Specify a valid location!"
+                SetTimer RemoveToolTip, -1000
+                return
+            }
+        }
         else {
-            ToolTip "The application doesn't exist, please specify a path"
+            ToolTip "Please specify the application's location"
             SetTimer RemoveToolTip, -1000
             return
         }
@@ -67,8 +74,6 @@ RunApplication(title, path, ifactive_send := "") {
             Send(ifactive_send)
         }
         else {
-            ; ToolTip "Windows is already active"
-            ; SetTimer RemoveToolTip, -1000
             GroupActivate(GroupName, "r")
         }
     }
@@ -152,24 +157,24 @@ MyMenu1.Add("Code", MenuHandler1)
 MyMenu1.Add("VS Code", MySubMenu1)
 MenuHandler1(Item, *) {
     if (Item == "ADB") {
-        Run "D:\Code\ADB"
+        Run "D:\01_Programs\02_ADB"
     } else if (Item == "AHK") {
-        Run "D:\Code\AHK"
+        Run "D:\\01_AHK"
     } else if (Item == "Code") {
-        Run "D:\Code"
+        Run "D:\01_Programs"
     }
 }
 SubMenuHandler1(Item, *) {
     if (Item == "AHK") {
-        Run "D:\Code\AHK.code-workspace"
+        Run "D:\01_Programs\AHK.code-workspace"
     } else if (Item == "SE") {
-        Run "D:\Code\TSMS.code-workspace"
+        Run "D:\01_Programs\TSMS.code-workspace"
     } else if (Item == "Java") {
-        Run "D:\Code\Java.code-workspace"
+        Run "D:\01_Programs\Java.code-workspace"
     } else if (Item == "DS") {
-        Run "D:\Code\Data Structure.code-workspace"
+        Run "D:\01_Programs\Data Structure.code-workspace"
     } else if (Item == "OS") {
-        Run "D:\Code\Operating System.code-workspace"
+        Run "D:\01_Programs\Operating System.code-workspace"
     }
 }
 
@@ -231,13 +236,13 @@ MyMenu5.Add("TCPIP", MenuHandler5)
 MyMenu5.Add("OTG", MenuHandler5)
 MenuHandler5(Item, *) {
     if (Item = "USB") {
-        Run "D:\Code\ADB\scrcpy-usb.vbs"
+        Run "D:\01_Programs\02_ADB\scrcpy-usb.vbs"
     }
     else if (Item = "TCPIP") {
-        Run "D:\Code\ADB\TCPIP.vbs"
+        Run "D:\01_Programs\02_ADB\TCPIP.vbs"
     }
     else if (Item = "OTG") {
-        Run "D:\Code\ADB\OTG.vbs"
+        Run "D:\01_Programs\02_ADB\OTG.vbs"
     }
     else {
         ToolTip Item

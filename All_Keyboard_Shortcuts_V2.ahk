@@ -182,29 +182,21 @@ $^+q:: {
     }
 }
 
-$^+s:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Send "^+s"
-    } else {
-        RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
-    }
-}
+$^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
 
 $^+w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("WhatsApp", "D:\00_Programs Files\WhatsApp.lnk")
+        RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        RunApplication("Unigram", "D:\00_Programs Files\Unigram.lnk")
+        RunApplication("Unigram", "D:\Programs Files\Unigram.lnk")
     }
 }
 
 $^+x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Brave", "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe")
-        ; GroupAdd "BraveGroup", "Brave"
-        ; GroupActivate "BraveGroup", "r"
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -225,11 +217,7 @@ $^+y:: {
 $^+z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
-        ; GroupAdd "EdgeGroup", "Microsoft​ Edge"
     }
-    ; else if (KeyWait(GetFilteredHotKey(), "T1")) {
-    ;     GroupActivate "EdgeGroup", "r"
-    ; }
     else {
         KeyWait(GetFilteredHotKey())
         Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -252,16 +240,16 @@ $^+/:: {
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "D:\00_Programs Files\Nahimic.lnk"
+        Run "D:\Programs Files\Nahimic.lnk"
     }
 }
 
-^!Numpad1::{
-    Run 'cmd.exe /c python D:\01_Programs\03_Python\Random_Video.py', , "Hide"
+^!Numpad1:: {
+    Run 'cmd.exe /c python D:\Programs\Python\Random_Video.py', , "Hide"
 }
 
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
-^+WheelDown:: Run "D:\00_Programs Files\Nahimic.lnk"
+^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
 ^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
 ^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
 
@@ -283,7 +271,7 @@ $^+/:: {
 
 ^!z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run "D:\00_Programs Files\Shortcuts\Lenovo Vantage.lnk"
+        Run "D:\Programs Files\Shortcuts\Lenovo Vantage.lnk"
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -291,15 +279,17 @@ $^+/:: {
     }
 }
 
-!+3:: Run "D:\01_Programs\00_Github\AHK-Depricated\Files Move3.ahk"
+!+3:: Run "D:\Programs\Github\AHK-Depricated\Files Move3.ahk"
 
-;================================= Ctrl Shortcuts =======================================;
+;================================= Ctrl & Win Shortcuts =======================================;
+
+^#s::Send "{F20}" ; To disable windows speech recognition hotkey
 
 ;================================= Alt Shortcuts =======================================;
 
 ;================================= Win Shortcuts =======================================;
 
-#c:: Run "D:\00_Programs Files\Copilot.lnk"
+#c:: Run "D:\Programs Files\Copilot.lnk"
 
 #e:: {
 
@@ -312,7 +302,7 @@ $^+/:: {
     }
 }
 
-#s:: Send "#{PrintScreen}"
+#s:: WinMinimize "A"
 
 #w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -337,9 +327,8 @@ $^+/:: {
 ;================================= Other Shortcuts =====================================;
 
 ; !w:: Send "!{F4}"
-#SC137:: Run "C:\Program Files\WindowsApps\Microsoft.ScreenSketch_11.2409.25.0_x64__8wekyb3d8bbwe\SnippingTool\SnippingTool.exe"
-$SC137:: Send "#{PrintScreen}" ; PrintScreen
-#+s:: Send "#+t"
+; $SC137:: Send "#{PrintScreen}" ; PrintScreen
+; #+s:: Send "#+t"
 ^+m:: Run "C:\Windows\System32\mblctr.exe"
 
 >^Up::Volume_Up
@@ -463,7 +452,7 @@ WheelDown:: ToolTip "#m"
 ; KeyWait, %A_ThisHotKey%, T0.3
 ; if !ErrorLevel
 ; {
-; 	Run, "D:\01_AHK\Get_KeyCodes.ahk"
+; 	Run, "D:\AHK\Get_KeyCodes.ahk"
 ; 	Tooltip, `
 ; 	Settimer, RemoveToolTip, -500
 ; }
