@@ -52,16 +52,16 @@ Browser_Favorites:: {
     ; MsgBox A_ThisHotKey
 }
 
-^Numpad1:: {
-    TransDegree := WinGetTransparent("A")
-    ; MsgBox TransDegree
-    if (TransDegree) {
-        WinSetTransparent "Off", "A"
-    }
-    else {
-        WinSetTransparent 200, "A"
-    }
-}
+; ^Numpad1:: {
+;     TransDegree := WinGetTransparent("A")
+;     ; MsgBox TransDegree
+;     if (TransDegree) {
+;         WinSetTransparent "Off", "A"
+;     }
+;     else {
+;         WinSetTransparent 200, "A"
+;     }
+; }
 
 Launch_Mail:: return
 
@@ -202,16 +202,6 @@ $^+q:: {
 
 $^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
 
-$^+w:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        RunApplication("Unigram", "D:\Programs Files\Unigram.lnk")
-    }
-}
-
 $^+x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Brave", "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe")
@@ -312,33 +302,43 @@ $^+/:: {
 #c:: Run "D:\Programs Files\Copilot.lnk"
 
 #e:: {
-
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication(" - File Explorer", "explorer.exe")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run "explorer.exe"
-    }
+    Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+    ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+    ;     if !WinExist(" - Files") {
+    ;         Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+    ;         GroupAdd "ExplorerGroup", " - Files"
+    ;     }
+    ;     else if WinActive("ahk_exe explorer.exe")
+    ;         GroupActivate "ExplorerGroup", "r"
+    ;     else
+    ;         WinActivate " - Files"
+    ;     return
+    ; }
+    ; else {
+    ;     KeyWait(GetFilteredHotKey())
+    ;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+    ; }
 }
+; {
+
+;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+;         RunApplication(" - File Explorer", "explorer.exe")
+;     }
+;     else {
+;         KeyWait(GetFilteredHotKey())
+;         Run "explorer.exe"
+;     }
+; }
 
 #s:: WinMinimize "A"
 
 #w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        if !WinExist(" - Files") {
-            Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-            GroupAdd "ExplorerGroup", " - Files"
-        }
-        else if WinActive("ahk_exe explorer.exe")
-            GroupActivate "ExplorerGroup", "r"
-        else
-            WinActivate " - Files"
-        return
+        RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+        RunApplication("Unigram", "D:\Programs Files\Unigram.lnk")
     }
 }
 
@@ -411,11 +411,10 @@ BS::
 
 #HotIf WinActive("ahk_exe Code.exe")
 ^!e:: Send "^+e"
-^Up::
 
-#HotIf MouseIsOver("TrayNotifyWnd1")
-WheelUp:: ToolTip "#+m"
-WheelDown:: ToolTip "#m"
+; #HotIf MouseIsOver("TrayNotifyWnd1")
+; WheelUp:: ToolTip "#+m"
+; WheelDown:: ToolTip "#m"
 
 #HotIf
 

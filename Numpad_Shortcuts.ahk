@@ -16,6 +16,13 @@ ToolTip "Interception Enabled"  ; Show temporary tooltip when script starts
 SetTimer RemoveToolTip, -500    ; Remove tooltip after 500ms
 return
 
+#SuspendExempt
+Numpad1::{
+if GetKeyState("Numpad0", P)
+    Suspend
+}
+#SuspendExempt False
+
 ; Only activate these hotkeys when the specific numpad is active
 #HotIf cm1.IsActive
 
