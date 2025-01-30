@@ -10,7 +10,9 @@ SetScrollLockState "Off"
 ;====================== ====================================;;
 #Include <Lib>
 
-Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
+; Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
+
+Run A_WorkingDir "\Numpad_Shortcuts.ahk"
 
 ; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
 
@@ -92,6 +94,7 @@ $CapsLock::Backspace
 
 ;===================== Ctrl & Shift Shortcuts ======================;
 
+#HotIf !WinActive("ahk_class Photoshop")
 $^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe", "^{Tab}")
@@ -101,6 +104,7 @@ $^+d:: {
         Run "C:\Program Files\Microsoft VS Code\Code.exe"
     }
 }
+#HotIf 
 
 $^+e:: {
 
@@ -214,6 +218,7 @@ $^+y:: {
     }
 }
 
+#HotIf !WinActive("ahk_class Photoshop")
 $^+z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
@@ -223,6 +228,7 @@ $^+z:: {
         Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     }
 }
+#HotIf 
 
 $^+Up:: {
     global CurrentBrightness
@@ -245,7 +251,7 @@ $^+/:: {
 }
 
 ^!Numpad1:: {
-    Run 'cmd.exe /c python D:\Programs\Python\Random_Video.py', , "Hide"
+    RunWait 'cmd.exe /c python "D:\Programs\AHK\Random-Youtube-Video.py"', , "Hide"
 }
 
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
@@ -283,7 +289,7 @@ $^+/:: {
 
 ;================================= Ctrl & Win Shortcuts =======================================;
 
-^#s::Send "{F20}" ; To disable windows speech recognition hotkey
+^#s:: Send "{F20}" ; To disable windows speech recognition hotkey
 
 ;================================= Alt Shortcuts =======================================;
 

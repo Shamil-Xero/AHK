@@ -5,6 +5,7 @@ Persistent
 #Include <Lib>
 #include Lib\AutoHotInterception.ahk
 ; #Include "%A_WorkingDir%\V2_Lib.ahk"
+TraySetIcon A_WorkingDir "`\Lib\Numpad.png"
 
 AHI := AutoHotInterception()
 id1 := AHI.GetKeyboardId(0x32C2, 0x0012, 1)
@@ -24,9 +25,17 @@ Numpad5::
 Numpad6::
 Numpad7::
 Numpad8::
-Numpad9::ToolTip A_ThisHotkey
+Numpad9::
+NumpadDot::ToolTip A_ThisHotkey
+NumpadDiv:: {
+    RunWait 'cmd.exe /c python "D:\Programs\AHK\Random-Youtube-Video.py"', , "Hide"
+}
+NumpadMult::
+NumpadAdd::
+NumpadSub::ToolTip A_ThisHotkey
+NumpadEnter::Media_Play_Pause
 
-Numpad0 UP::
+
 Numpad1 UP::
 Numpad2 UP::
 Numpad3 UP::
@@ -35,4 +44,11 @@ Numpad5 UP::
 Numpad6 UP::
 Numpad7 UP::
 Numpad8 UP::
-Numpad9 UP::ToolTip ""
+Numpad9 UP::
+NumpadDot UP::
+NumLock UP::
+NumpadDiv UP::
+NumpadMult UP::
+NumpadAdd UP::
+NumpadSub UP::
+NumpadEnter UP::ToolTip ""
