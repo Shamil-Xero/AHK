@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+; Basic settings and configuration
 SetWorkingDir A_WorkingDir  ; Ensures a consistent starting directory.
 TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
@@ -7,12 +8,13 @@ SetCapsLockState "Off"
 SetNumLockState "On"
 SetScrollLockState "Off"
 
-;====================== ====================================;;
+; Include external library files
 #Include <Lib>
 
-; Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
-
+; Launch additional AutoHotkey scripts
 Run A_WorkingDir "\Numpad_Shortcuts.ahk"
+
+; Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
 
 ; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
 
@@ -21,6 +23,18 @@ Run A_WorkingDir "\Numpad_Shortcuts.ahk"
 ; RunWait '*RunAs cmd.exe /c taskkill /IM intercept.exe /F', , "Hide"
 
 ; Run '*RunAs cmd.exe /c "Intercept\intercept.exe " /apply', , "Hide"
+
+;====================== HOTKEY SECTIONS ======================
+
+; 1. Special Keys - System and media control hotkeys
+; 2. Basic Navigation - Arrow key alternatives (Alt + IJKL)
+; 3. Tap, Press & Hold - Shortcuts with different behaviors based on press duration
+; 4. Ctrl & Shift - Application launchers and system functions
+; 5. Alt & Ctrl - Window management and system utilities
+; 6. Win - Windows key combinations for common tasks
+; 7. Context Sensitive - Application-specific shortcuts
+; 8. Controller Controls - Gamepad/controller mappings
+; 9. Macro System - Custom macro functionality
 
 ;===============================SPECIAL KEYS===================================::
 
@@ -104,7 +118,7 @@ $^+d:: {
         Run "C:\Program Files\Microsoft VS Code\Code.exe"
     }
 }
-#HotIf 
+#HotIf
 
 $^+e:: {
 
@@ -228,7 +242,7 @@ $^+z:: {
         Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     }
 }
-#HotIf 
+#HotIf
 
 $^+Up:: {
     global CurrentBrightness
@@ -471,8 +485,8 @@ WheelDown:: ToolTip "#m"
 
 ; #Include "%A_WorkingDir%\Second_Keyboard_Shortcuts_V2.ahk"
 
-;{====================== Macros ===============================;
-
+;================================= Macro System =======================================;
+; Enables macro functionality when ScrollLock is on or Macro variable is true
 #HotIf GetKeyState("ScrollLock", "T") || Macro
 F1::
 F2::
