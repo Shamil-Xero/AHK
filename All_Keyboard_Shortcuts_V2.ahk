@@ -111,11 +111,11 @@ $CapsLock::Backspace
 #HotIf !WinActive("ahk_class Photoshop")
 $^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe", "^{Tab}")
+        RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe", "^{Tab}")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Program Files\Microsoft VS Code\Code.exe"
+        Run "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe"
     }
 }
 #HotIf
