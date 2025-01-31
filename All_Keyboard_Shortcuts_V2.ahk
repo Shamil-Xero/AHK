@@ -204,11 +204,11 @@ $^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\S
 
 $^+x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Brave", "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe")
+        RunApplication("Brave", "C:\Users\Shamil\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+        Run "C:\Users\Shamil\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe"
     }
 }
 
