@@ -17,9 +17,9 @@ SetTimer RemoveToolTip, -500    ; Remove tooltip after 500ms
 return
 
 #SuspendExempt
-Numpad1::{
-if GetKeyState("Numpad0", P)
+NumpadDot:: {
     Suspend
+; if GetKeyState("Numpad0", P)
 }
 #SuspendExempt False
 
@@ -37,8 +37,7 @@ Numpad5::
 Numpad6::
 Numpad7::
 Numpad8::
-Numpad9::
-NumpadDot:: ToolTip A_ThisHotkey
+Numpad9:: ToolTip A_ThisHotkey
 
 ; NumpadDiv (/) runs a Python script that presumably selects a random YouTube video
 NumpadDiv:: {

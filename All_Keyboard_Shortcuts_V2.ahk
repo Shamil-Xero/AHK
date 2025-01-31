@@ -120,7 +120,7 @@ $^+d:: {
 }
 #HotIf
 
-$^+e:: {
+$^+w:: {
 
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run("https://www.youtube.com/")
@@ -301,34 +301,35 @@ $^+/:: {
 
 #c:: Run "D:\Programs Files\Copilot.lnk"
 
-#e:: {
-    Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-    ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-    ;     if !WinExist(" - Files") {
-    ;         Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-    ;         GroupAdd "ExplorerGroup", " - Files"
-    ;     }
-    ;     else if WinActive("ahk_exe explorer.exe")
-    ;         GroupActivate "ExplorerGroup", "r"
-    ;     else
-    ;         WinActivate " - Files"
-    ;     return
-    ; }
-    ; else {
-    ;     KeyWait(GetFilteredHotKey())
-    ;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-    ; }
-}
+#e:: 
 ; {
-
-;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-;         RunApplication(" - File Explorer", "explorer.exe")
-;     }
-;     else {
-;         KeyWait(GetFilteredHotKey())
-;         Run "explorer.exe"
-;     }
+;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+;     ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+;     ;     if !WinExist(" - Files") {
+;     ;         Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+;     ;         GroupAdd "ExplorerGroup", " - Files"
+;     ;     }
+;     ;     else if WinActive("ahk_exe explorer.exe")
+;     ;         GroupActivate "ExplorerGroup", "r"
+;     ;     else
+;     ;         WinActivate " - Files"
+;     ;     return
+;     ; }
+;     ; else {
+;     ;     KeyWait(GetFilteredHotKey())
+;     ;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
+;     ; }
 ; }
+{
+
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication(" - File Explorer", "explorer.exe")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "explorer.exe"
+    }
+}
 
 #s:: WinMinimize "A"
 
