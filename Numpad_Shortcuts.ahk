@@ -28,27 +28,20 @@ NumpadDot:: {
 
 ; Define hotkeys for numpad keys
 ; Most keys currently just show a tooltip with the key name
-; Numpad0::
-; Numpad1::
-; Numpad2::
-; Numpad3::
-; Numpad4::
-; Numpad5::
-Numpad6:: {
-    Send "^c"
-    sleep 10
-    Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
+Numpad0::{
+    RunWait 'cmd.exe /c python "D:\Programs\Python-Scripts\Random-Youtube-Video-from-Playlist.py"', , "Hide"
 }
-; Numpad7::
-; Numpad8::
-; Numpad9::
-
-; NumpadDiv (/) runs a Python script that presumably selects a random YouTube video
-NumpadDiv:: {
-    RunWait 'cmd.exe /c python "D:\Programs\AHK\Random-Youtube-Video.py"', , "Hide"
-}
-
+Numpad1:: 
+Numpad2::
+Numpad3::
+Numpad4::
+Numpad5::
+Numpad6:: 
 ; More numpad keys that show tooltips
+Numpad7::
+Numpad8::
+Numpad9::
+NumpadDiv::
 NumpadMult::
 NumpadAdd::
 NumpadSub:: ToolTip A_ThisHotkey

@@ -272,10 +272,6 @@ $^+/:: {
     }
 }
 
-Numpad1:: {
-    RunWait 'cmd.exe /c python "D:\Programs\Python\Random-Youtube-Video.py"', , "Hide"
-}
-
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
 ^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
 
