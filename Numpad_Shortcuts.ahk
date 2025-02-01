@@ -19,7 +19,7 @@ return
 #SuspendExempt
 NumpadDot:: {
     Suspend
-; if GetKeyState("Numpad0", P)
+    ; if GetKeyState("Numpad0", P)
 }
 #SuspendExempt False
 
@@ -28,16 +28,20 @@ NumpadDot:: {
 
 ; Define hotkeys for numpad keys
 ; Most keys currently just show a tooltip with the key name
-Numpad0::
-Numpad1::
-Numpad2::
-Numpad3::
-Numpad4::
-Numpad5::
-Numpad6::
-Numpad7::
-Numpad8::
-Numpad9:: ToolTip A_ThisHotkey
+; Numpad0::
+; Numpad1::
+; Numpad2::
+; Numpad3::
+; Numpad4::
+; Numpad5::
+Numpad6:: {
+    Send "^c"
+    sleep 10
+    Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
+}
+; Numpad7::
+; Numpad8::
+; Numpad9::
 
 ; NumpadDiv (/) runs a Python script that presumably selects a random YouTube video
 NumpadDiv:: {

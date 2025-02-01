@@ -33,11 +33,11 @@ rowH := 35		; Distance between each row of devices
 maxWidths := Map("K", 0, "M", 0)					; Max Width of device entries for each column
 totalWidths := Map("K", 0, "M", 0)					; Total Width of each column
 tW := Map("K", 0, "M", 0)
-devTypes := ["K", "M"
-]								; Lookup table for device type
+devTypes := ["K", "M"]								; Lookup table for device type
 starts := Map("K", 0, "M", 10)						; Start IDs for each device type
 columnTitles := Map("K", "Keyboards", "M", "Mice")	; Column Titles
 columnX := Map("K", 0, "M", 0)
+lowest := 500
 
 loop 2 {
     strings := Map()
@@ -60,8 +60,7 @@ loop 2 {
         chkDevice.OnEvent("Click", CheckboxChanged.Bind(dev.id))
 
         lowest := UpdateLowest(chkDevice)
-        strings[A_index] := { vid: FormatHex(dev.VID), pid: FormatHex(dev.PID), handle: dev.Handle
-        }
+        strings[A_index] := { vid: FormatHex(dev.VID), pid: FormatHex(dev.PID), handle: dev.Handle }
 
         textVidPid := monitorGui.Add("Text", "x" columnX[devType] + idW " y" rowY - vhOff, "VID / PID:`t0x" strings[
             A_index].vid ", 0x" strings[A_index].pid)
@@ -115,13 +114,11 @@ lowest += 30
 
 ; Output
 lvKeyboard := monitorGui.Add("ListView", "x" columnX["K"] " y" lowest " w" totalWidths["K"] " h" outputH, ["ID", "Code",
-    "State", "Key Name"
-])
+    "State", "Key Name"])
 lvKeyboard.ModifyCol(4, 100)
 
 lvMouse := monitorGui.Add("ListView", "x" columnX["M"] " yp w" totalWidths["M"] " h" outputH, ["ID", "Code", "State",
-    "X", "Y", "Info"
-])
+    "X", "Y", "Info"])
 lvMouse.ModifyCol(6, 200)
 
 lowest += outputH

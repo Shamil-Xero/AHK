@@ -120,16 +120,22 @@ $^+d:: {
 }
 #HotIf
 
-$^+w:: {
-
+$^+e:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("https://www.youtube.com/")
-        ; Run "C:\Users\Shamil\AppData\Local\Programs\Notion\Notion.exe"
+        Send "^c"
+        sleep 10
+        Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
+    }
+    else if (KeyWait(GetFilteredHotKey(), "T1")) {
+        Send "^c"
+        Run 'cmd.exe /k ollama run llama3.1:8b '
+        Sleep 10
+        Send "^v{Enter}"
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run('"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"')
-        ; Run "C:\Users\Shamil\AppData\Local\Programs\cron-web\Notion Calendar.exe"
+        Run 'cmd.exe /k ollama run llama3.1:8b '
+
     }
 }
 
@@ -201,6 +207,17 @@ $^+q:: {
 }
 
 $^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
+
+$^+w:: {
+
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        Run("https://www.youtube.com/")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run('"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"')
+    }
+}
 
 $^+x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
