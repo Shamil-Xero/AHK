@@ -12,7 +12,6 @@ global Brightness_Increments := 5
 global CurrentBrightness := GetCurrentBrightNess()
 WorkingDir := A_WorkingDir
 Macro := False
-Credentials := A_ScriptDir . "\Credentials.ahk"
 p := 0
 
 A_HotkeyInterval := 2000

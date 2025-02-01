@@ -1,12 +1,12 @@
 #Requires AutoHotkey v2.0
 ; Basic settings and configuration
-SetWorkingDir A_WorkingDir  ; Ensures a consistent starting directory.
 TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
 SendMode "Input"
 SetCapsLockState "Off"
 SetNumLockState "On"
 SetScrollLockState "Off"
+
 
 ; Include external library files
 #Include <Lib>
@@ -111,7 +111,8 @@ $CapsLock::Backspace
 #HotIf !WinActive("ahk_class Photoshop")
 $^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe", "^{Tab}")
+        RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe",
+            "^{Tab}")
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -141,11 +142,11 @@ $^+e:: {
 
 $^+f:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run '*RunAs cmd.exe'
+        Run "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.21.3231.0_x64__8wekyb3d8bbwe\WindowsTerminal.exe"
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+        Run '*RunAs cmd.exe'
     }
 }
 
@@ -211,11 +212,11 @@ $^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\S
 $^+w:: {
 
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("https://www.youtube.com/")
+        Run("https://www.youtube.com/", , "max")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run('"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"')
+        Run('"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"', , "max")
     }
 }
 
@@ -246,7 +247,7 @@ $^+z:: {
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+        Run("C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe", , "max")
     }
 }
 #HotIf
@@ -271,14 +272,12 @@ $^+/:: {
     }
 }
 
-^!Numpad1:: {
-    RunWait 'cmd.exe /c python "D:\Programs\AHK\Random-Youtube-Video.py"', , "Hide"
+Numpad1:: {
+    RunWait 'cmd.exe /c python "D:\Programs\Python\Random-Youtube-Video.py"', , "Hide"
 }
 
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
 ^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
-^+v:: Run A_WorkingDir "\Bluetooth Connect.ahk"
-^+b:: Run A_WorkingDir "\Bluetooth Disconnect.ahk"
 
 ;=============================== Alt & Ctrl Shortcuts =================================;
 
@@ -318,7 +317,7 @@ $^+/:: {
 
 #c:: Run "D:\Programs Files\Copilot.lnk"
 
-#e:: 
+#e::
 ; {
 ;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
 ;     ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -472,6 +471,9 @@ BS::
 ;     MsgBox "Press pattern " p
 ; }
 ; }
+
+^+b:: Send "taklehunter21@gmail.com"
+^+v:: Send "{ASC 35}Notenoughcookies21"
 
 `:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
