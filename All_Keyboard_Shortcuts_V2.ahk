@@ -216,7 +216,7 @@ $^+w:: {
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run('"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"', , "max")
+        Run('"C:\Users\Shamil\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"', , "max")
     }
 }
 
