@@ -121,21 +121,13 @@ $^+d:: {
 }
 #HotIf
 
-$^+e:: {
+$^+e::{
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Send "^c"
-        sleep 10
-        Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
-    }
-    else if (KeyWait(GetFilteredHotKey(), "T1")) {
-        Send "^c"
-        Run 'cmd.exe /k ollama run llama3.1:8b '
-        Sleep 10
-        Send "^v{Enter}"
+        Run 'cmd.exe /c cd.. && cd.. && cd Downloads && python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run 'cmd.exe /k ollama run llama3.1:8b '
+        Run 'cmd.exe /c cd.. && cd.. && cd Downloads && python D:\Programs\Python-Scripts\YouTube-Downloader.py ' A_Clipboard
 
     }
 }
@@ -190,26 +182,28 @@ $^+g:: {
         MsgBox p
 }
 
-$^+q:: {
-    SendInput "^c"
-    sleep 10
+$^+r:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run "https://www.google.com/search?q=" A_Clipboard
+        Send "^c"
+        sleep 10
+        Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
     }
-    else if (KeyWait(GetFilteredHotKey(), "T2")) {
-        Run "https://www.youtube.com/results?search_query=" A_Clipboard
-        ; Run(
-        ; )
+    else if (KeyWait(GetFilteredHotKey(), "T1")) {
+        Send "^c"
+        Run 'cmd.exe /k ollama run llama3.1:8b '
+        Sleep 10
+        Send "^v{Enter}"
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "https://chat.openai.com"
+        Run 'cmd.exe /k ollama run llama3.1:8b '
+
     }
 }
 
 $^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
 
-$^+w:: {
+$^+q:: {
 
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run("https://www.youtube.com/", , "max")
@@ -217,6 +211,21 @@ $^+w:: {
     else {
         KeyWait(GetFilteredHotKey())
         Run('"C:\Users\Shamil\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"', , "max")
+    }
+}
+
+$^+w:: {
+    SendInput "^c"
+    sleep 10
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        Run "https://www.google.com/search?q=" A_Clipboard
+    }
+    else if (KeyWait(GetFilteredHotKey(), "T2")) {
+        Run "https://www.youtube.com/results?search_query=" A_Clipboard
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "https://chat.openai.com"
     }
 }
 
@@ -301,7 +310,7 @@ $^+/:: {
     }
 }
 
-!+3:: Run "D:\Programs\Github\AHK-Depricated\Files Move3.ahk"
+!+3:: Run "D:\Programs\Stash\AHK-Depricated\Files Move3.ahk"
 
 ;================================= Ctrl & Win Shortcuts =======================================;
 
