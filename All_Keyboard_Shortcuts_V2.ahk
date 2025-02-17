@@ -188,7 +188,7 @@ $^+r:: {
         sleep 10
         Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
     }
-    else if (KeyWait(GetFilteredHotKey(), "T1")) {
+    else if (KeyWait(GetFilteredHotKey(), "T2")) {
         Send "^c"
         Run 'cmd.exe /k ollama run llama3.1:8b '
         Sleep 10
@@ -249,7 +249,7 @@ $^+y:: {
     }
 }
 
-#HotIf !WinActive("ahk_class Photoshop")
+#HotIf !WinActive("ahk_class Photoshop") and !WinActive("ahk_class Premiere Pro")
 $^+z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")

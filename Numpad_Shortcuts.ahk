@@ -28,16 +28,22 @@ NumpadDot:: {
 
 ; Define hotkeys for numpad keys
 ; Most keys currently just show a tooltip with the key name
-Numpad0::{
-    RunWait 'cmd.exe /c python "D:\Programs\Python-Scripts\Random-Youtube-Video-from-Playlist.py"', , "Hide"
+Numpad0:: {
+    RunWait 'cmd.exe /c python "D:\Programs\Python-Scripts\Random-Youtube-Video-from-Playlist.py" "https://www.youtube.com/playlist?list=PLb-MR2Hfk3tlmemTNdCG_K4QiTehgJAr9"', ,
+        "Min"
 }
-Numpad1:: 
+Numpad1::
 Numpad2::
 Numpad3::
 Numpad4::
-Numpad5::
-Numpad6:: 
-; More numpad keys that show tooltips
+Numpad5:: return
+Numpad6:: {
+    Runwait A_WorkingDir '\voice.exe' ' -f -r 3 -k D:\Downloads\Response.txt'
+    ; loop read "D:\hello.txt"{
+    ;     Runwait A_WorkingDir '\voice.exe' ' -f -r' ' 3' ' -d' A_LoopReadLine,,'Hide'
+    ; }
+
+}
 Numpad7::
 Numpad8::
 Numpad9::
