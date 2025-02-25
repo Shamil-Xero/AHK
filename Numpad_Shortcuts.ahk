@@ -44,7 +44,10 @@ Numpad6:: {
     ; }
 
 }
-Numpad7::
+Numpad7::{
+    shutdown_time := 0
+    Run 'cmd /c Shutdown /s /t ' shutdown_time, , "Hide"
+}
 Numpad8::
 Numpad9::
 NumpadDiv::
