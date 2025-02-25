@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-SetTitleMatchMode 2
 ; #WinActivateForce
 SendMode "Input"
 SetWorkingDir A_ScriptDir
@@ -177,11 +176,11 @@ SubMenuHandler1(Item, *) {
     }
 }
 
+MyMenu2.Add("Android", MenuHandler2)
+MyMenu2.Add("Setups", MenuHandler2)
 MyMenu2.Add("Downlaods", MenuHandler2)
 MyMenu2.Add("Documents", MenuHandler2)
 MyMenu2.Add("Pictures", MenuHandler2)
-MyMenu2.Add("Setups", MenuHandler2)
-MyMenu2.Add("Android", MenuHandler2)
 MyMenu2.Add("ROM", MenuHandler2)
 MenuHandler2(Item, *) {
     if (Item == "Downloads") {
@@ -193,9 +192,9 @@ MenuHandler2(Item, *) {
     } else if (Item == "Setups") {
         Run "E:\Setups"
     } else if (Item == "Android") {
-        Run "E:\Apps"
+        Run "E:\Backup\Apps"
     } else if (Item == "ROM") {
-        Run "E:\OS\Android\Poco X4 Pro"
+        Run "E:\OS\Android\Poco F6"
     }
 }
 
@@ -231,17 +230,21 @@ SubMenuHandler4(Item, *) {
 }
 
 MyMenu5.Add("USB", MenuHandler5)
+MyMenu5.Add("Enable TCPIP", MenuHandler5)
 MyMenu5.Add("TCPIP", MenuHandler5)
 MyMenu5.Add("OTG", MenuHandler5)
 MenuHandler5(Item, *) {
     if (Item = "USB") {
-        Run "D:\Programs\ADB\scrcpy-usb.vbs"
+        Run "D:\Programs\ADB\scrcpy-USB.vbs"
+    }
+    else if (Item = "Enable TCPIP") {
+        Run "D:\Programs\ADB\scrcpy-enable-TCPIP.vbs"
     }
     else if (Item = "TCPIP") {
-        Run "D:\Programs\ADB\TCPIP.vbs"
+        Run "D:\Programs\ADB\scrcpy-TCPIP.vbs"
     }
     else if (Item = "OTG") {
-        Run "D:\Programs\ADB\OTG.vbs"
+        Run "D:\Programs\ADB\scrcpy-OTG.vbs"
     }
     else {
         ToolTip Item

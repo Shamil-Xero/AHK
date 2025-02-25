@@ -2,6 +2,7 @@
 ; Basic settings and configuration
 TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
+SetTitleMatchMode 2
 SendMode "Input"
 SetCapsLockState "Off"
 SetNumLockState "On"
@@ -123,11 +124,11 @@ $^+d:: {
 
 $^+e::{
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run 'cmd.exe /c cd.. && cd.. && cd Downloads && python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
+        Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run 'cmd.exe /c cd.. && cd.. && cd Downloads && python D:\Programs\Python-Scripts\YouTube-Downloader.py ' A_Clipboard
+        Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Downloader.py ' A_Clipboard
 
     }
 }
@@ -480,6 +481,7 @@ BS::
 ^+b:: Send "taklehunter21@gmail.com"
 ^+v:: Send "{ASC 35}Notenoughcookies21"
 
+#HotIf !WinActive("ahk_class Premiere Pro")
 `:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         global Macro
@@ -492,6 +494,8 @@ BS::
         Send "{ASC 96}"
     }
 }
+
+#HotIf 
 
 ; KeyWait, %A_ThisHotKey%, T0.3
 ; if !ErrorLevel
