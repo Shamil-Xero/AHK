@@ -184,11 +184,11 @@ MyMenu2.Add("Pictures", MenuHandler2)
 MyMenu2.Add("ROM", MenuHandler2)
 MenuHandler2(Item, *) {
     if (Item == "Downloads") {
-        Run "F:\Downloads"
+        Run "S:\Downloads"
     } else if (Item == "Documents") {
-        Run "F:\Documents"
+        Run "S:\Documents"
     } else if (Item == "Pictures") {
-        Run "F:\Pictures"
+        Run "S:\Pictures"
     } else if (Item == "Setups") {
         Run "E:\Setups"
     } else if (Item == "Android") {
@@ -219,7 +219,7 @@ MenuHandler3(Item, *) {
 MyMenu4.Add("C", MenuHandler4)
 MyMenu4.Add("D", MenuHandler4)
 MyMenu4.Add("E", MenuHandler4)
-MyMenu4.Add("F", MenuHandler4)
+MyMenu4.Add("S", MenuHandler4)
 ; MyMenu5.Add("Drives", MySubMenu5)
 MenuHandler4(Item, *) {
     Run(Item ":\")
