@@ -8,7 +8,6 @@ SetCapsLockState "Off"
 SetNumLockState "On"
 SetScrollLockState "Off"
 
-
 ; Include external library files
 #Include <Lib>
 
@@ -109,20 +108,7 @@ $CapsLock::Backspace
 
 ;===================== Ctrl & Shift Shortcuts ======================;
 
-#HotIf !WinActive("ahk_class Photoshop")
-$^+d:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe",
-            "^{Tab}")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe"
-    }
-}
-#HotIf
-
-$^+e::{
+$^+e:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
     }
@@ -211,7 +197,9 @@ $^+q:: {
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run('"C:\Users\Shamil\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"', , "max")
+        Run(
+            '"C:\Users\Shamil\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe" "https://www.youtube.com/"', ,
+            "max")
     }
 }
 
@@ -251,6 +239,20 @@ $^+y:: {
 }
 
 #HotIf !WinActive("ahk_class Photoshop") and !WinActive("ahk_class Premiere Pro")
+
+$^+d:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe",
+            "^{Tab}")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+    }
+}
+^+m:: Run "C:\Windows\System32\mblctr.exe"
+
+
 $^+z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
@@ -311,7 +313,7 @@ $^+/:: {
     }
 }
 
-!+3:: Run "D:\Programs\Stash\AHK-Depricated\Files Move3.ahk"
+!+3:: Run "D:\Programs\AHK\Random_File_Picker.ahk"
 
 ;================================= Ctrl & Win Shortcuts =======================================;
 
@@ -372,7 +374,6 @@ $^+/:: {
 ; !w:: Send "!{F4}"
 ; $SC137:: Send "#{PrintScreen}" ; PrintScreen
 ; #+s:: Send "#+t"
-^+m:: Run "C:\Windows\System32\mblctr.exe"
 
 >^Up::Volume_Up
 >^Down::Volume_Down
@@ -495,7 +496,7 @@ BS::
     }
 }
 
-#HotIf 
+#HotIf
 
 ; KeyWait, %A_ThisHotKey%, T0.3
 ; if !ErrorLevel
