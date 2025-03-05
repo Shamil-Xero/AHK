@@ -1,11 +1,5 @@
 #Requires AutoHotkey v2.0
 #Include <Lib>
-; FolderSizeKB := 0
-; WhichFolder := DirSelect()  ; Ask the user to pick a folder.
-; loop files, WhichFolder "\*.*", "R"
-;     FolderSizeKB += A_LoopFileSizeKB
-; MsgBox "Size of " WhichFolder " is " FolderSizeKB " KB."
-
 MoveFile(TheFile, DestinationFolder, overwrite := true) {
 
 }
@@ -18,23 +12,8 @@ m := Integer(ib.value)
 loop m {
 
     FileList := Array()  ; Initialize to be blank.
-    ; SourceFolder := "D:\Movies"
-    ; SourceFolder := "E:\Wonders?hare Uniconverter 15"
-    ; SourceFolder := "F:\Wondershare Uniconverter 15"
-    ; SourceFolder := "G:\Backup\F\Wondershare UniConverter 15"
-    ; SourceFolder := "G:\Backup\F\New"
     SourceFolder := "D:\Movies"
-    ; SourceFolder := "G:\Backup\F\Sort"
-    ; SourceFolder := "E:\Wondershare Uniconverter 15\Folder"
-    ; SourceFolder := "G:\Videos\Web Series\.Nothing\VR"
-    ; SourceFolder := DirSelect()
-    ; DestinationFolder := DirSelect()
-    ; DestinationFolder := "C:\To Move"
-    ; DestinationFolder := "D:\"
-    ; DestinationFolder := "G:\Backup\F\New Folder"
-    DestinationFolder := "E:\Backup\Sync\VR"
-    ; DestinationFolder := "E:\Wondershare Uniconverter 15"
-
+    DestinationFolder := "E:\Movies"
 
     fileCount := 0
     loop files, SourceFolder "\*.*", "R" {
@@ -54,8 +33,7 @@ loop m {
                     JustFileName := A_LoopField
                 }
                 global FileSizeMB := FileObj.Length/1048576
-                ; global Result := MsgBox("Move this file: " TheFile " (" Integer(FileSizeMB) " mb) ?", , "Y/N/C")
-                global Result := MsgBox(JustFileName " (" Integer(FileSizeMB) " mb) ?", , "Y/N/C")
+                global Result := MsgBox("Move this file: " TheFile " (" Integer(FileSizeMB) " mb) ?", , "Y/N/C")
             }
             catch as e  ; Handles the first error thrown by the block above.
             {
@@ -64,7 +42,7 @@ loop m {
                 SetTimer RemoveToolTip, -2000
             }
             if (Result == "Yes") {
-                Run 'cmd.exe /c move `"' TheFile "`" `"" DestinationFolder "`"" ;, , "Hide"
+                Run 'cmd.exe /c move `"' TheFile "`" `"" DestinationFolder "`"" , , "Hide"
             } else if (Result == "No") {
                 FileDelete TheFile
             }
