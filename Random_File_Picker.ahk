@@ -1,8 +1,5 @@
 #Requires AutoHotkey v2.0
 #Include <Lib>
-MoveFile(TheFile, DestinationFolder, overwrite := true) {
-
-}
 
 ib := InputBox("Enter the Number of Files", "Files", "w40 h100", "10")
 if ib.Result = "Cancel"
