@@ -119,16 +119,11 @@ class AutoHotInterception {
 	}
 
 	; --------------- Querying ------------------------
-	RemoveToolTip(){
-		ToolTip ""
-	}
-
 	GetDeviceId(IsMouse, VID, PID, instance := 1) {
 		static devType := Map(0, "Keyboard", 1, "Mouse")
 		dev := this.Instance.GetDeviceId(IsMouse, VID, PID, instance)
 		if (dev == 0) {
-			ToolTip("Could not get " devType[isMouse] " with VID " VID ", PID " PID ", Instance " instance)
-			SetTimer RemoveToolTip, -2000
+			MsgBox("Could not get " devType[isMouse] " with VID " VID ", PID " PID ", Instance " instance)
 			ExitApp
 		}
 		return dev
@@ -138,8 +133,7 @@ class AutoHotInterception {
 		static devType := Map(0, "Keyboard", 1, "Mouse")
 		dev := this.Instance.GetDeviceIdFromHandle(IsMouse, handle, instance)
 		if (dev == 0) {
-			Tooltip("Could not get " devType[isMouse] " with Handle " handle ", Instance " instance)
-			SetTimer RemoveToolTip, -2000
+			MsgBox("Could not get " devType[isMouse] " with Handle " handle ", Instance " instance)
 			ExitApp
 		}
 		return dev
