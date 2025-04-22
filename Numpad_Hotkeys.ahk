@@ -194,6 +194,8 @@ NumpadMult:: {
     ; Run 'cmd /c Shutdown /r /t ' restart_timer, , "Hide"
 }
 
+
+
 NumpadEnter::Media_Play_Pause
 
 Numpad1:: {
@@ -216,13 +218,7 @@ Numpad5:: {
     Run "D:\Programs\Python-Scripts.code-workspace"
 }
 
-Numpad6:: {
-    Tooltip ""
-    ; Runwait A_WorkingDir '\voice.exe' ' -f -r 3 -k D:\Downloads\Response.txt'
-    ; loop read "D:\hello.txt"{
-    ;     Runwait A_WorkingDir '\voice.exe' ' -f -r' ' 3' ' -d' A_LoopReadLine,,'Hide'
-    ; }
-}
+Numpad6::Tooltip A_ThisHotkey
 
 Numpad7:: {
     Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
@@ -233,7 +229,7 @@ Numpad8:: {
 
 }
 
-Numpad9:: ToolTip A_ThisHotkey
+Numpad9:: ToolTip 
 
 Numpad0:: {
     RunWait 'cmd.exe /c python "D:\Programs\Python-Scripts\Random-Youtube-Video-from-Playlist.py" "https://www.youtube.com/playlist?list=PLb-MR2Hfk3tlmemTNdCG_K4QiTehgJAr9"', ,
