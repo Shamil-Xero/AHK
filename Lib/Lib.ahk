@@ -6,17 +6,20 @@ SetWorkingDir A_ScriptDir
 SetTitleMatchMode 2
 DetectHiddenWindows true
 
+; // cspell:disable (This is for disabling the spell check in VSCode)
+
 ;========================== Variables =================================;
 global Brightness_Increments := 5
 global CurrentBrightness := GetCurrentBrightNess()
 WorkingDir := A_WorkingDir
 Macro := False
 p := 0
+mytick := 0
 
 A_HotkeyInterval := 2000
 A_MaxHotkeysPerInterval := 200
 
-;========================== Functions ======================
+;========================== Functions =================================;
 
 Morse(timeout := 300) {
     tout := timeout / 1000
@@ -98,10 +101,12 @@ SetDefaultEndpoint(DeviceID) {
 }
 
 GetCurrentBrightNess() {
-    for property in ComObjGet("winmgmts:\\.\root\WMI").ExecQuery("SELECT * FROM WmiMonitorBrightness")
-        global CurrentBrightness := property.CurrentBrightness
+    try {
+        for property in ComObjGet("winmgmts:\\.\root\WMI").ExecQuery("SELECT * FROM WmiMonitorBrightness")
+            global CurrentBrightness := property.CurrentBrightness
 
-    return CurrentBrightness
+        return CurrentBrightness
+    }
 }
 
 ChangeBrightness(brightness, timeout := 1) {
@@ -184,17 +189,17 @@ MyMenu2.Add("Pictures", MenuHandler2)
 MyMenu2.Add("ROM", MenuHandler2)
 MenuHandler2(Item, *) {
     if (Item == "Downloads") {
-        Run "S:\Downloads"
+        Run "E:\Downloads"
     } else if (Item == "Documents") {
-        Run "S:\Documents"
+        Run "E:\Documents"
     } else if (Item == "Pictures") {
-        Run "S:\Pictures"
+        Run "E:\Pictures"
     } else if (Item == "Setups") {
-        Run "E:\Setups"
+        Run "F:\Setups"
     } else if (Item == "Android") {
-        Run "E:\Backup\Apps"
+        Run "F:\Backup\Android Apps"
     } else if (Item == "ROM") {
-        Run "E:\OS\Android\Poco F6"
+        Run "F:\OS\Android\Poco F6"
     }
 }
 
@@ -204,12 +209,12 @@ MyMenu3.Add("Shows", MenuHandler3)
 MyMenu3.Add("Games", MenuHandler3)
 MenuHandler3(Item, *) {
     if (Item = "Movies") {
-        Run "E:\Movies"
+        Run "F:\Movies"
     }
     else if (Item = "Anime") {
-        Run "E:\Anime"
+        Run "F:\Anime"
     } else if (Item = "Shows") {
-        Run "E:\Shows"
+        Run "F:\Shows"
     } else {
         ToolTip Item
         SetTimer RemoveTooltip, -500
