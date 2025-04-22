@@ -132,9 +132,8 @@ DestroyGUI() {
 numpadMode1() {
     global interception
     global currentMode
-    MsgBox currentMode
     if currentMode == 1 {
-        if interception.IsActive {
+        if interception {
             return currentMode == 1 and interception.IsActive
         }
         else {
@@ -150,17 +149,20 @@ numpadMode2() {
     global interception
     global currentMode
     if currentMode == 2 {
-        if interception.IsActive {
+        if interception {
             return currentMode == 2 and interception.IsActive
         }
         else {
             return currentMode == 2
         }
     }
+    else {
+        return false
+    }
 }
 
 ; Mode 1: Normal Mode
-#HotIf numpadMode1
+#HotIf numpadMode1()
 Numpad1::
 Numpad2::
 Numpad3::
@@ -179,7 +181,7 @@ NumpadDiv::
 NumpadEnter:: Send "{" A_ThisHotkey "}"
 
 ; Mode 2: Macros
-#HotIf numpadMode2
+#HotIf numpadMode2()
 NumpadAdd:: ToolTip A_ThisHotkey
 
 NumpadSub:: {

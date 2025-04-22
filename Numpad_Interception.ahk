@@ -28,7 +28,7 @@ numpad_intercepted(){
 NumpadDiv::{
     global currentMode
     currentMode := Mod(currentMode, 2) + 1
-    ShowNumpadGUI(MyGui, currentMode)
+    ShowNumpadGUI()
 }
 
 #Include Numpad_Hotkeys.ahk

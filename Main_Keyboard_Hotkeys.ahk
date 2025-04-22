@@ -12,13 +12,13 @@ SetScrollLockState "Off"
 
 global MyGui := ""
 global currentMode := 1
-global interception := 0
+global interception := ""
 
 ; Include external library files
 #Include <Lib>
 
 ; Launch additional AutoHotkey scripts
-; Run A_WorkingDir "\Numpad_Interception.ahk"
+Run A_WorkingDir "\Numpad_Interception.ahk"
 
 ; Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
 
@@ -509,7 +509,9 @@ BS::
 NumLock:: {
     global MyGui
     global currentMode := Mod(currentMode, 2) + 1
-    ShowNumpadGUI()
+    ToolTip "Mode - " currentMode
+    SetTimer RemoveToolTip, -1000
+    ; ShowNumpadGUI()
 }
 
 ^r:: ListLines
