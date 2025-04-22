@@ -10,11 +10,15 @@ SetScrollLockState "Off"
 
 ; // cspell:disable (This is for disabling the spell check in VSCode)
 
+global MyGui := ""
+global currentMode := 1
+global interception := 0
+
 ; Include external library files
 #Include <Lib>
 
 ; Launch additional AutoHotkey scripts
-Run A_WorkingDir "\Numpad_Hotkeys.ahk"
+; Run A_WorkingDir "\Numpad_Interception.ahk"
 
 ; Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
 
@@ -93,14 +97,6 @@ Launch_App1:: Msgbox "Hi"
 RCtrl & RAlt::AppsKey
 $CapsLock::Backspace
 +CapsLock::CapsLock
-
-; NumLock:: {
-;     global currentMode
-;     currentMode := Mod(currentMode, 4) + 1
-;     ToolTip "Current Mode - " currentMode
-;     SetTimer(RemoveToolTip, -2000)
-;     ; ShowNumpadGUI()
-; }
 
 ;===================== Tap, Press & Hold Shortcuts ======================;
 
@@ -510,35 +506,17 @@ BS::
 
 #HotIf
 
-; KeyWait, %A_ThisHotKey%, T0.3
-; if !ErrorLevel
-; {
-; 	Run, "D:\AHK\Get_KeyCodes.ahk"
-; 	Tooltip, `
-; 	Settimer, RemoveToolTip, -500
-; }
-; else
-; {
-;     KeyWait, %A_ThisHotKey%, T0.5
-;     Send, {ASC 96}
-; }
-;
+NumLock:: {
+    global MyGui
+    global currentMode := Mod(currentMode, 2) + 1
+    ShowNumpadGUI()
+}
 
-; Numpad1::
-; Numpad2::
-; Numpad3::
-; Numpad4::
-; Numpad5::
-; Numpad6::
-; Numpad7::
-; Numpad8::
-; Numpad9::
-; Numpad0::
-; NumpadDot::
-; NumpadAdd::
-; NumPadSub::
-; NumpadMult::
-; NumpadDiv::Return
+^r:: ListLines
+
+#Include Numpad_Hotkeys.ahk
+
+
 
 ;================================= Macro System =======================================;
 
