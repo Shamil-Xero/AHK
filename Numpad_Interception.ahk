@@ -14,18 +14,19 @@ Persistent
 Run "D:\Programs\AHK\Developement\HidMacros\HIDMacros.exe"
 
 global MyGui := ""
-global currentMode := 1
+global currentMode := 2
 
 AHI := AutoHotInterception()
-keyboard1Id := AHI.GetKeyboardId(0x32C2, 0x0012, 1)
+; keyboard1Id := AHI.GetKeyboardId(0x32C2, 0x0012, 1)
+keyboard1Id := AHI.GetKeyboardId(0x048D, 0xC986, 1) ; Laptop
 interception := AHI.CreateContextManager(keyboard1Id)
 
-numpad_intercepted(){
+numpad_intercepted() {
     return interception.IsActive
 }
 
 #HotIf interception.IsActive
-NumpadDiv::{
+NumpadDiv:: {
     global currentMode
     currentMode := Mod(currentMode, 2) + 1
     ShowNumpadGUI()
