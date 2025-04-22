@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#SingleInstance Force
 ; Basic settings and configuration
 TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
@@ -396,7 +397,7 @@ $#z:: {
 
 ^d:: Send "{Del}"
 
-#HotIf !WinActive("ahk_exe Overwatch.exe") or !WinActive("Marvel Rivals")
+#HotIf
 ~^c:: {
     ToolTip "Copied"
     SetTimer RemoveTooltip, -250
@@ -514,9 +515,9 @@ NumLock:: {
     ; ShowNumpadGUI()
 }
 
-^r:: ListLines
+; ^r:: ListLines
 
-#Include Numpad_Hotkeys.ahk
+; #Include Numpad_Hotkeys.ahk
 
 
 

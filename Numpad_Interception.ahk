@@ -11,15 +11,17 @@ Persistent
 #include <TapHoldManager>
 
 ; Run "cmd.exe /c regsvr32 HIDMacros.exe", , "Hide"
-Run "D:\Programs\AHK\Developement\HidMacros\HIDMacros.exe"
 
 global MyGui := ""
 global currentMode := 2
 
 AHI := AutoHotInterception()
-; keyboard1Id := AHI.GetKeyboardId(0x32C2, 0x0012, 1)
-keyboard1Id := AHI.GetKeyboardId(0x048D, 0xC986, 1) ; Laptop
+keyboard1Id := AHI.GetKeyboardId(0x32C2, 0x0012, 1)
+; keyboard1Id := AHI.GetKeyboardId(0x048D, 0xC986, 1) ; Laptop(For Testing)
 interception := AHI.CreateContextManager(keyboard1Id)
+Run "D:\Programs\AHK\Developement\HidMacros\HIDMacros.exe"
+ToolTip "Interception Enabled"
+SetTimer RemoveToolTip, -1000
 
 numpad_intercepted() {
     return interception.IsActive
