@@ -12,133 +12,22 @@ SendMode "Input"
 ; }
 ; #SuspendExempt False
 
-; Function to handle button clicks
-ButtonClick(btn, info) {
-    ; Temporarily disable the destroy timer
-    SetTimer(DestroyGUI, 0)
 
-    ; Show file dialog to select an image
-    selectedFile := FileSelect(3, , "Select an image", "Image Files (*.png; *.jpg; *.jpeg; *.bmp; *.gif)")
-    if (selectedFile != "") {
-        ; Hide the button text
-        btn.Text := ""
-
-        ; Get button position and size
-        btn.GetPos(&x, &y, &w, &h)
-
-        ; Create a new picture control
-        pic := MyGui.Add("Picture", "x" x " y" y " w" w " h" h, selectedFile)
-        pic.Opt("+BackgroundTrans")
-    }
-
-    ; Restart the destroy timer
-    SetTimer(DestroyGUI, -2000)
-}
 
 ;Function to create and show the Numpad GUI
 ShowNumpadGUI() {
-    ; Destroy existing GUI if it exists
-    global MyGui
     global currentMode
-
-    if (MyGui != "") {
-        MyGui.Destroy()
-        MyGui := ""
-    }
-
-    ; Create a new GUI instance
-    MyGui := Gui()
-    MyGui.Opt("+AlwaysOnTop -Caption +ToolWindow")  ; Removed +Owner as it can cause issues
-    MyGui.BackColor := "EEAA99"
-    MyGui.SetFont("s12", "Consolas")
-
-    ; Create a grid of buttons with arithmetic operations
-    keys := [
-        ["NumLock", "/", "*", "-"],
-        ["7", "8", "9", "+"],
-        ["4", "5", "6"],
-        ["1", "2", "3", "Enter"],
-        ["0", "", "."]  ; Merged 0 and Add keys
-    ]
-
-    ; Add mode indicator at the top
-    modeText := "Mode " currentMode
-    if (currentMode = 1)
-        modeText .= " - Normal"
-    else if (currentMode = 2)
-        modeText .= " - Macros"
-    else if (currentMode = 3)
-        modeText .= " - Apps"
-    else if (currentMode = 4)
-        modeText .= " - Special"
-
-    MyGui.Add("Text", "w400 h30 Center", modeText)
-
-    ; Create the numpad grid
-    for rowIndex, row in keys {
-        for colIndex, key in row {
-            if (key != "") {
-                xPos := (colIndex - 1) * 90
-                yPos := (rowIndex - 1) * 90
-                switch (key) {
-                    case "0":
-                        MyGui.Add("Button", "w170 h80 x" xPos " y" yPos, key)
-                    case "+":
-                        MyGui.Add("Button", "w80 h170 x" xPos " y" yPos, key)
-                    case "Enter":
-                        MyGui.Add("Button", "w80 h170 x" xPos " y" yPos, key)
-                    default:
-                        MyGui.Add("Button", "w80 h80 x" xPos " y" yPos, key)
-                }
-            }
-        }
-    }
-
-    ; Get the Hwnd of the GUI
-    hwnd := MyGui.Hwnd
-
-    ; First apply the NoActivate style
-    WinSetExStyle("+0x08000000", "ahk_id " hwnd)  ; WS_EX_NOACTIVATE
-
-    ; Apply transparency
-    WinSetTransColor(MyGui.BackColor " 100", "ahk_id " hwnd)
-
-    ; Position and size the window before showing
-    WinMove(50, A_ScreenHeight - 500, 360, 450, "ahk_id " hwnd)  ; Added width and height
-
-    ; Show the GUI without activating it
-    DllCall("ShowWindow", "Ptr", hwnd, "Int", 4)  ; SW_SHOWNOACTIVATE = 4
-
-    ; Make sure it's topmost
-    WinSetAlwaysOnTop(true, "ahk_id " hwnd)
-
-    ; Show debug tooltip
-    ToolTip(modeText)
-    SetTimer(RemoveToolTip, -1000)
-
-    ; Hide the GUI after 2 seconds
-    SetTimer(DestroyGUI, -2000)
-}
-
-; Function to destroy the GUI
-DestroyGUI() {
-    global MyGui
-    if (MyGui != "") {
-        MyGui.Destroy()
-        MyGui := ""
-    }
+    ToolTip "Mode : " currentMode
+    SetTimer ToolTip, -500
+    Run "D:\Programs\AHK\Numpad_GUI.ahk"
 }
 
 numpadMode1() {
-    global interception
     global currentMode
-    if currentMode == 1 {
-        if interception {
-            return currentMode == 1 and interception.IsActive
-        }
-        else {
-            return currentMode == 1
-        }
+    global keyboardIntercepted
+
+    if (currentMode == 1 and keyboardIntercepted) {
+        return true
     }
     else {
         return false
@@ -146,15 +35,35 @@ numpadMode1() {
 }
 
 numpadMode2() {
-    global interception
     global currentMode
-    if currentMode == 2 {
-        if interception {
-            return currentMode == 2 and interception.IsActive
-        }
-        else {
-            return currentMode == 2
-        }
+    global keyboardIntercepted
+
+    if (currentMode == 2 and keyboardIntercepted) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+numpadMode3() {
+    global currentMode
+    global keyboardIntercepted
+
+    if (currentMode == 3 and keyboardIntercepted) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+numpadMode4() {
+    global currentMode
+    global keyboardIntercepted
+
+    if (currentMode == 4 and keyboardIntercepted) {
+        return true
     }
     else {
         return false
@@ -185,16 +94,14 @@ NumpadEnter:: Send "{" A_ThisHotkey "}"
 NumpadAdd:: ToolTip A_ThisHotkey
 
 NumpadSub:: {
-    ; shutdown_timer := 0
-    ; Run 'cmd /c Shutdown /s /t ' shutdown_timer, , "Hide"
+    shutdown_timer := 0
+    Run 'cmd /c Shutdown /s /t ' shutdown_timer, , "Hide"
 }
 
 NumpadMult:: {
-    ; restart_timer := 0
-    ; Run 'cmd /c Shutdown /r /t ' restart_timer, , "Hide"
+    restart_timer := 0
+    Run 'cmd /c Shutdown /r /t ' restart_timer, , "Hide"
 }
-
-
 
 NumpadEnter::Media_Play_Pause
 
@@ -211,14 +118,54 @@ Numpad3:: {
 }
 
 Numpad4:: {
-    Run "D:\Programs\AHK.code-workspace"
+    P := Morse()
+    if (p == "0") {
+        Run("https://www.youtube.com/", , "max")
+    } else if (p == "1") {
+        Run(
+            '"C:\Users\Shamil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
+            "max")
+    } else {
+        ToolTip "Morse Code: " p
+        SetTimer RemoveToolTip, -1000
+    }
+
 }
 
 Numpad5:: {
+
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication(" - File Explorer", "explorer.exe")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "explorer.exe"
+    }
+}
+
+Numpad6:: return
+
+Numpad7:: {
+    Run "D:\Programs\AHK.code-workspace"
+}
+
+Numpad8:: {
     Run "D:\Programs\Python-Scripts.code-workspace"
 }
 
-Numpad6::Tooltip A_ThisHotkey
+Numpad9:: {
+    Run "calc.exe"
+}
+
+Numpad0:: {
+    RunWait 'cmd.exe /c python "D:\Programs\Python-Scripts\Random-Youtube-Video-from-Playlist.py" "https://www.youtube.com/playlist?list=PLb-MR2Hfk3tlmemTNdCG_K4QiTehgJAr9"', ,
+        "Min"
+}
+
+NumpadDot:: ToolTip A_ThisHotkey
+
+; Mode 3: Youtube
+#HotIf numpadMode3()
 
 Numpad7:: {
     Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
@@ -229,13 +176,28 @@ Numpad8:: {
 
 }
 
-Numpad9:: ToolTip 
-
-Numpad0:: {
-    RunWait 'cmd.exe /c python "D:\Programs\Python-Scripts\Random-Youtube-Video-from-Playlist.py" "https://www.youtube.com/playlist?list=PLb-MR2Hfk3tlmemTNdCG_K4QiTehgJAr9"', ,
-        "Min"
+Numpad9:: {
+    shutdown_timer := 0
+    Run 'cmd /c Shutdown /s /t ' shutdown_timer, , "Hide"
 }
 
-NumpadDot:: ToolTip A_ThisHotkey
+Numpad4::{
+    if (p == "1") {
+        Send "^c"
+        sleep 10
+        Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
+    }
+    else if (p == "11") {
+        Send "^c"
+        Run 'cmd.exe /k ollama run llama3.1:8b '
+        Sleep 10
+        Send "^v{Enter}"
+    }
+    else if (p == "111") {
+        KeyWait(GetFilteredHotKey())
+        Run 'cmd.exe /k ollama run llama3.1:8b '
+
+    }
+}
 
 #HotIf
