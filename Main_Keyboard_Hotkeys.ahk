@@ -11,25 +11,17 @@ SetScrollLockState "Off"
 
 ; // cspell:disable (This is for disabling the spell check in VSCode)
 
-global MyGui := ""
 global currentMode := 1
-global interception := ""
+global keyboardIntercepted := ""
 
 ; Include external library files
 #Include <Lib>
 
 ; Launch additional AutoHotkey scripts
-Run A_WorkingDir "\Numpad_Interception.ahk"
-
-; Run A_WorkingDir "\Second_Keyboard_Shortcuts_V2.ahk"
+Run "Lib\Credentials.ahk"
+Run A_WorkingDir "\Macro-Pad.ahk"
 
 ; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
-
-; Run A_WorkingDir "\All_Keyboard_Shortcuts.ahk"
-
-; RunWait '*RunAs cmd.exe /c taskkill /IM intercept.exe /F', , "Hide"
-
-; Run '*RunAs cmd.exe /c "Intercept\intercept.exe " /apply', , "Hide"
 
 ;====================== HOTKEY SECTIONS ======================
 
@@ -45,7 +37,7 @@ Run A_WorkingDir "\Numpad_Interception.ahk"
 
 ;===============================SPECIAL KEYS===================================::
 
-!`:: {
+!^Tab:: {
     Reload
     ; Run, cmd.exe /c "taskkill /f /im autohotkey.exe"
 }
@@ -178,24 +170,6 @@ $^+g:: {
         MsgBox p
 }
 
-$^+r:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Send "^c"
-        sleep 10
-        Run 'cmd.exe /k ollama run llama3.1:8b ' A_Clipboard
-    }
-    else if (KeyWait(GetFilteredHotKey(), "T2")) {
-        Send "^c"
-        Run 'cmd.exe /k ollama run llama3.1:8b '
-        Sleep 10
-        Send "^v{Enter}"
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run 'cmd.exe /k ollama run llama3.1:8b '
-
-    }
-}
 
 $^+q:: {
 
@@ -205,7 +179,7 @@ $^+q:: {
     else {
         KeyWait(GetFilteredHotKey())
         Run(
-            '"C:\Users\Shamil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
+            '"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
             "max")
     }
 }
@@ -290,6 +264,8 @@ $^+/:: {
         Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
 }
 
+^!v::Run "C:\Program Files\AutoHotkey\v2\AutoHotkey.chm"
+
 ^!s:: Send "^#v"
 
 ^!z:: {
@@ -302,7 +278,8 @@ $^+/:: {
     }
 }
 
-!+3:: Run "D:\Programs\AHK\Random_File_Picker.ahk"
+!+3:: Run "D:\Programs\AHK\Random_File_Opener.ahk"
+!+4:: Run "D:\Programs\AHK\Random_File_Copier.ahk"
 
 ;================================= Ctrl & Win Shortcuts =======================================;
 
@@ -358,11 +335,11 @@ $^+/:: {
 
 $#x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Brave", "C:\Users\Shamil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Brave.lnk")
+        RunApplication("Brave", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Users\Shamil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
+        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
     }
 }
 
@@ -383,6 +360,12 @@ $#z:: {
 ; !w:: Send "!{F4}"
 ; $SC137:: Send "#{PrintScreen}" ; PrintScreen
 ; #+s:: Send "#+t"
+
+^+!d:: {
+    shutdown_timer := 0
+    Run 'cmd /c Shutdown /s /t ' shutdown_timer, , "Hide"
+}
+
 
 >^Up::Volume_Up
 >^Down::Volume_Down
@@ -413,13 +396,25 @@ $#z:: {
     SetTimer RemoveToolTip, -250
 }
 
-#HotIf !WinActive("ahk_exe vlc.exe")
-!1:: MyMenu1.Show()
-!2:: MyMenu2.Show()
-!3:: MyMenu3.Show()
-!4:: MYMenu4.Show()
-!5:: MyMenu5.Show()
+^!1:: MyMenu1.Show()
+^!2:: MyMenu2.Show()
+^!3:: MyMenu3.Show()
+^!4:: MYMenu4.Show()
+^!5:: MyMenu5.Show()
 !+z:: MyMenu6.Show()
+
+!1::
+!2::
+!3::
+!4::
+!5::
+!6::
+!7::
+!8::
+!9::
+!0::
+!-::
+!=::Send("{F" GetFilteredHotKey() "}")
 
 #HotIf WinActive("ahk_class Qt5QWindowIcon")
 /:: Send "jjjjj"
@@ -474,36 +469,19 @@ BS::
 #HotIf
 ;================================= Secret Codes =======================================;
 
-; z:: {
-;     p := Morse()
-; ToolTip p
-; if (p = "0") {
-;     MsgBox "Short press"
-; } else if (p = "00") {
-;     MsgBox "Two short presses"
-; } else if (p = "01") {
-;     MsgBox "Short+Long press"
-; } else {
-;     MsgBox "Press pattern " p
-; }
-; }
-
-^+b:: Send "taklehunter21@gmail.com"
-^+v:: Send "{ASC 35}Notenoughcookies21"
-
 #HotIf !WinActive("ahk_class Premiere Pro")
-`:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        global Macro
-        Macro := !Macro
-        ToolTip Macro
-        SetTimer RemoveToolTip, -200
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Send "{ASC 96}"
-    }
-}
+; `:: {
+;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+;         global Secret_Mode
+;         Secret_Mode := !Secret_Mode
+;         ToolTip "Secret Mode: " (Secret_Mode ? "ON" : "OFF")
+;         SetTimer RemoveToolTip, -500
+;     }
+;     else {
+;         KeyWait(GetFilteredHotKey())
+;         Send "{ASC 96}"
+;     }
+; }
 
 #HotIf
 
@@ -517,14 +495,11 @@ NumLock:: {
 
 ; ^r:: ListLines
 
-; #Include Numpad_Hotkeys.ahk
-
-
 
 ;================================= Macro System =======================================;
 
 ; Enables macro functionality when ScrollLock is on or Macro variable is true
-#HotIf GetKeyState("ScrollLock", "T") || Macro
+/*HotIf Secret_Mode
 F1::
 F2::
 F3::
@@ -595,4 +570,7 @@ Up::
 Down::
 Right::
 Left:: GetHotKey()
+
+*/
+
 #Hotif
