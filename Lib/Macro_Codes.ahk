@@ -1,57 +1,17 @@
 #Requires AutoHotkey v2.0
 
-#Include Credentials.ahk ; Comment this line if don't wanna use this
-
-;Creat a Credentials.ahk file in the Lib folder and the following function to modify it.
-;
-; Credentials_Codes(key) {
-;     switch key {
-;         case "asdf1":
-;             Send "Password"
-;     }
-; }
-
+Credentials_Codes(key) {
+    switch key {
+        case "asdf1":
+            Send "Password"
+    }
+}
 
 Keyboard_Codes() {
     global key, Macro
     ToolTip key
     SetTimer RemoveToolTip, -500
     switch key {
-        case "w":
-        {
-            exe_name := "WhatsApp"
-            exe_location := "D:\Programs\WhatsApp.lnk"
-
-            if WinActive(exe_name) {
-                WinMinimize
-            }
-            else {
-                if not WinExist(exe_name) {
-                    Run exe_location
-                }
-                else {
-                    Run exe_location
-                }
-            }
-        }
-        case "ww":
-        {
-            exe_name := "Telegram"
-            exe_process := "ahk_exe Telegram.exe"
-            exe_location := "D:\Programs\Telegram Desktop.lnk"
-
-            if WinActive(exe_name) {
-                WinMinimize
-            }
-            else {
-                Run exe_location
-                ; if not WinExist(exe_name) {
-                ; }
-                ; else {
-                ;     WinActivate(exe_name)
-                ; }
-            }
-        }
         case "t":
         {
             Run "F:\Pictures\TimeTable.png"
@@ -143,5 +103,4 @@ Keyboard_Codes() {
 
     key := ""
     Macro := False
-
 }

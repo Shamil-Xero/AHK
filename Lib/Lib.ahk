@@ -1,5 +1,4 @@
 #Requires AutoHotkey v2.0
-#SingleInstance Force
 ; #WinActivateForce
 SendMode "Input"
 SetWorkingDir A_ScriptDir
@@ -12,7 +11,7 @@ DetectHiddenWindows true
 global Brightness_Increments := 5
 global CurrentBrightness := GetCurrentBrightNess()
 WorkingDir := A_WorkingDir
-Macro := False
+Secret_Mode := False
 p := 0
 mytick := 0
 
@@ -135,11 +134,6 @@ RemoveToolTip() {
     ToolTip ""
 }
 
-Nothing() {
-    ToolTip ""
-    return
-}
-
 MyMenu1 := Menu()
 MySubMenu1 := Menu()
 MyMenu2 := Menu()
@@ -197,9 +191,9 @@ MenuHandler2(Item, *) {
     } else if (Item == "Setups") {
         Run "F:\Setups"
     } else if (Item == "Android") {
-        Run "F:\Backup\Android Apps"
+        Run "F:\Backup\Apps"
     } else if (Item == "ROM") {
-        Run "F:\OS\Android\Poco F6"
+        Run "F:\OS\Android\!POCO F6"
     }
 }
 
