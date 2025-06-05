@@ -485,13 +485,12 @@ BS::
 
 #HotIf
 
-NumLock:: {
-    global MyGui
-    global currentMode := Mod(currentMode, 2) + 1
-    ToolTip "Mode - " currentMode
-    SetTimer RemoveToolTip, -1000
-    ; ShowNumpadGUI()
-}
+; NumLock:: {
+;     global currentMode := Mod(currentMode, 2) + 1
+;     ToolTip "Mode - " currentMode
+;     SetTimer RemoveToolTip, -1000
+;     ; ShowNumpadGUI()
+; }
 
 ; ^r:: ListLines
 
