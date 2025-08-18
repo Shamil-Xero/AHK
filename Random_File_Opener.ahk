@@ -1,20 +1,25 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "H:\Backup\F\To Sort"
-global DestinationFolder := "H:\Backup\F\Sorted"
+global SourceFolder := "J:\Backup\F\To Sort"
+global DestinationFolder := "J:\Backup\F\Sorted"
 global FileList := []
 global TotalFiles := 0
-global CurrentIndex := 0
-global Locked := 0
 global FileCount := 0
-global RemainingFiles := 0
-global IsProcessing := false
-global FilePath := ""
-global PrevFilePath := ""
+global CurrentIndex := 0
+global MoveList := []
+global DeleteList := []
+global SkipList := []
 global CurrentFileObj := ""
 global CurrentFilePid := 0
 global WaitingForInput := false
+global FileSizeMB := 0
+global FilePath := ""
+global FileName := ""
+
+global ReviewList := []
+
+global ReviewResults := [] ; Holds objects: {file: path, action: "move"|"delete"|"skip"}
 
 RemoveToolTip() {
     ToolTip ""
@@ -22,7 +27,6 @@ RemoveToolTip() {
 
 InitializeFileList() {
     global
-    ; ToolTip "Initializing file list..."
     FileList := []
     TotalFiles := 0
     loop files, SourceFolder "\*.*", "R" {
@@ -39,73 +43,18 @@ GetFileCount() {
     return Integer(ib.value)
 }
 
-GetRandomFileName() {
+BuildRandomReviewList(count) {
     global
-    if (FileList.Length == 0) {
-        return ""
+    local tempList := FileList.Clone()
+    local review := []
+    loop count {
+        if (tempList.Length == 0)
+            break
+        n := Random(1, tempList.Length)
+        review.Push(tempList[n])
+        tempList.RemoveAt(n)
     }
-    n := Random(1, FileList.Length)
-    try {
-        FilePath := FileList[n]
-        FileList.RemoveAt(n)
-        return FilePath
-    }
-    catch {
-        return ""
-    }
-}
-
-DeleteFile() {
-    global
-    if (PrevFilePath != "" && FileExist(PrevFilePath)) {
-        try {
-            FileDelete(PrevFilePath)
-            ToolTip "File deleted: " . GetFileName(PrevFilePath)
-            SetTimer RemoveToolTip, -1000
-        }
-        catch as e {
-            ToolTip "Error deleting file: " . e.Message
-            SetTimer RemoveToolTip, -3000
-        }
-    }
-    IsProcessing := false
-    if (CurrentFileObj)
-        CurrentFileObj.Close()
-}
-
-MoveFile() {
-    global
-    if (PrevFilePath != "" && FileExist(PrevFilePath)) {
-        try {
-            DirCreate DestinationFolder
-            FileMove(PrevFilePath, DestinationFolder "\" . GetFileName(PrevFilePath))
-            ToolTip "File moved: " . GetFileName(PrevFilePath)
-            SetTimer RemoveToolTip, -1000
-        }
-        catch as e {
-            ToolTip "Error moving file: " . e.Message
-            SetTimer RemoveToolTip, -3000
-        }
-    }
-    IsProcessing := false
-    if (CurrentFileObj)
-        CurrentFileObj.Close()
-}
-
-CloseFile() {
-    global
-    PrevFilePath := FilePath
-    try{
-        WinClose("ahk_pid " CurrentFilePid)
-    }
-    catch as e{
-        Tooltip "Cannot find window: " . e.Message
-        SetTimer RemoveToolTip, -2000
-    } 
-    if (CurrentFileObj) {
-        CurrentFileObj.Close()
-        CurrentFileObj := ""
-    }
+    return review
 }
 
 GetFileName(FullPath) {
@@ -117,14 +66,13 @@ GetFileName(FullPath) {
 
 ShowFileInfo() {
     global
-    ; Display file info
     if (FileSizeMB >= 1000) {
         FileSizeGB := FileSizeMB / 1024
-        ToolTip "(" . (FileCount - RemainingFiles + 1) . "/" . FileCount . ") " . FileName . "`n`nFile Size: " .
-        Round(FileSizeGB, 2) . " GB"
+        ToolTip "(" . (CurrentIndex + 1) . "/" . FileCount . ") " . FileName . "`n`nFile Size: " . Round(FileSizeGB, 2) .
+        " GB"
     } else {
-        ToolTip "(" . (FileCount - RemainingFiles + 1) . "/" . FileCount . ") " . FileName . "`n`nFile Size: " .
-        Round(FileSizeMB, 1) . " MB"
+        ToolTip "(" . (CurrentIndex + 1) . "/" . FileCount . ") " . FileName . "`n`nFile Size: " . Round(FileSizeMB, 1) .
+        " MB"
     }
     SetTimer RemoveToolTip, -2000
     try {
@@ -132,28 +80,21 @@ ShowFileInfo() {
     }
 }
 
-ProcessFile() {
+ProcessFile(FilePath) {
     global
     if (FilePath == "" || !FileExist(FilePath)) {
         ToolTip "File doesn't exist or path is empty"
         SetTimer RemoveToolTip, -2000
         return false
     }
-
     FileName := GetFileName(FilePath)
-
-    ; Get file size
     CurrentFileObj := FileOpen(FilePath, "r")
     FileSizeMB := CurrentFileObj.Length / 1048576
-
     ShowFileInfo()
-
     try {
-        ; Try to open the file
         Run(FilePath, , , &CurrentFilePid)
-        Sleep(1000) ; Give time for the file to open
+        Sleep(1000)
         WinActivate("ahk_pid " CurrentFilePid)
-
         WaitingForInput := true
         return true
     }
@@ -168,64 +109,114 @@ ProcessFile() {
     }
 }
 
+CloseFile() {
+    global
+    try {
+        WinClose("ahk_pid " CurrentFilePid)
+    }
+    catch as e {
+        Tooltip "Cannot find window: " . e.Message
+        SetTimer RemoveToolTip, -2000
+    }
+    if (CurrentFileObj) {
+        CurrentFileObj.Close()
+        CurrentFileObj := ""
+    }
+}
+
 Main() {
     global
-
     InitializeFileList()
-
     if (TotalFiles == 0) {
         ToolTip "No Files Found in: " . SourceFolder
         SetTimer RemoveToolTip, -3000
         return
     }
-
     FileCount := GetFileCount()
-    RemainingFiles := FileCount
-
     if (FileCount > TotalFiles) {
         FileCount := TotalFiles
-        RemainingFiles := FileCount
     }
-
-    ; ToolTip "Starting processing of " . FileCount . " files..."
-    ; SetTimer RemoveToolTip, -2000
-    ; Sleep(2000)
-
+    ReviewList := BuildRandomReviewList(FileCount)
+    CurrentIndex := 0
     loop FileCount {
-        if (RemainingFiles <= 0)
-            break
-
-        FilePath := GetRandomFileName()
-        if (FilePath == "") {
-            ToolTip "No more files available"
-            SetTimer RemoveToolTip, -2000
-            break
-        }
-
-        if (ProcessFile()) {
-            ; Wait for user input
+        FilePath := ReviewList[CurrentIndex + 1]
+        if (ProcessFile(FilePath)) {
             while (WaitingForInput) {
                 Sleep(100)
             }
-
         }
-
-        RemainingFiles--
-
-        ; if (RemainingFiles > 0) {
-        ;     Sleep(500) ; Brief pause between files
-        ; }
+        CurrentIndex++
     }
+    ; After review, process actions
+    Sleep 1000
+    ToolTip "Processing move/delete actions..."
+    SetTimer RemoveToolTip, -2000
+    ProcessMoveDeleteLists()
+}
 
-    ; Wait for any processing to complete
-    while (IsProcessing) {
-        Sleep(100)
+FormatList(list) {
+    out := ""
+    for idx, file in list {
+        out .= GetFileName(file) . "`n"
+        if (idx >= 10) {
+            out .= "..."
+            break
+        }
     }
+    return out
+}
 
-    ToolTip "Processing complete!"
-    ; SetTimer RemoveToolTip, -1000
-    Sleep(1000)
+ProcessMoveDeleteLists() {
+    global
+    moved := []
+    deleted := []
+    msg := "Move files (" . MoveList.Length . "):`n" . FormatList(MoveList) . "`nDelete files (" . DeleteList.Length .
+    "):`n" . FormatList(DeleteList) . "`nSkip files (" . SkipList.Length . "):`n" . FormatList(SkipList)
+    result := MsgBox(msg "`n Do you want to proceed with this action?", "OKCancel")
+    if (result == "OK") {
+        ; Move files
+        for idx, filePath in MoveList {
+            try {
+                DirCreate DestinationFolder
+                FileMove(filePath, DestinationFolder "\" . GetFileName(filePath), 1)
+                moved.Push(filePath)
+                sleep 100
+            } catch as e {
+                MsgBox "Error moving: " . filePath . "`n" . e.Message
+                Sleep(1000)
+            }
+        }
+        ; Delete files
+        for idx, filePath in DeleteList {
+            try {
+                FileDelete(filePath)
+                deleted.Push(filePath)
+                sleep 100
+            } catch as e {
+                MsgBox "Error deleting: " . filePath . "`n" . e.Message
+                Sleep(1000)
+            }
+        }
+        ToolTip "Processing completed..."
+        Sleep(2000)
+    }
+    else {
+        ToolTip "File actions cancelled..."
+        Sleep(2000)
+    }
     ExitApp
+}
+
+ToMoveList() {
+    global
+    ; ToolTip "To Move:`n" . FormatList(MoveList)
+    SetTimer RemoveToolTip, -1500
+}
+
+ToDeleteList() {
+    global
+    ; ToolTip "To Delete:`n" . FormatList(DeleteList)
+    SetTimer RemoveToolTip, -1500
 }
 
 ; Hotkey implementations
@@ -236,26 +227,30 @@ Delete:: {
     global
     if (WaitingForInput) {
         CloseFile()
+        SkipList.Push(FilePath)
+        ToolTip "Skipped:`n" . FormatList(SkipList)
+        SetTimer RemoveToolTip, -1500
+        WaitingForInput := false
     }
 }
 
 PgUp:: {
     global
     if (WaitingForInput) {
-        IsProcessing := true
-        WaitingForInput := false
         CloseFile()
-        SetTimer DeleteFile, -3000
+        DeleteList.Push(FilePath)
+        ; SetTimer ToDeleteList, -1500
+        WaitingForInput := false
     }
 }
 
 PgDn:: {
     global
     if (WaitingForInput) {
-        IsProcessing := true
-        WaitingForInput := false
         CloseFile()
-        SetTimer MoveFile, -3000
+        MoveList.Push(FilePath)
+        ; SetTimer ToMoveList, -1500
+        WaitingForInput := false
     }
 }
 

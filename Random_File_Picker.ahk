@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "H:\Backup\F\To Sort"
-global DestinationFolder := "H:\Backup\F\Sorted"
+global SourceFolder := "J:\Backup\F\To Sort"
+global DestinationFolder := "J:\Backup\F\Sorted"
 global FileList := []
 global TotalFiles := 0
 global CurrentIndex := 0
