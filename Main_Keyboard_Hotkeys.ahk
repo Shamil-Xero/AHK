@@ -1,6 +1,17 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-; Basic settings and configuration
+
+; =============================================================================
+; MAIN KEYBOARD HOTKEYS SCRIPT
+; =============================================================================
+; This script provides comprehensive keyboard shortcuts and automation for Windows
+; Features include: system controls, application launchers, context-sensitive
+; shortcuts, and custom macro functionality
+; =============================================================================
+
+; =============================================================================
+; BASIC SETTINGS AND CONFIGURATION
+; =============================================================================
 TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
 SetTitleMatchMode 2
@@ -9,22 +20,210 @@ SetCapsLockState "Off"
 SetNumLockState "AlwaysOn"
 SetScrollLockState "Off"
 
-; // cspell:disable (This is for disabling the spell check in VSCode)
+; Disable spell check in VSCode for this file
+; // cspell:disable
 
+; =============================================================================
+; GLOBAL VARIABLES
+; =============================================================================
 global currentMode := 1
 global keyboardIntercepted := ""
 
-; Include external library files
+; =============================================================================
+; LIBRARY INCLUDES
+; =============================================================================
 #Include <Lib>
+#Include "Lib\Credentials.ahk"
 
-; Launch additional AutoHotkey scripts
-Run "Lib\Credentials.ahk"
-Run A_WorkingDir "\Macro-Pad.ahk"
+; =============================================================================
+; AUTOSTART SCRIPTS
+; =============================================================================
+; Launch MacroPad script automatically
+Run "D:\Programs\AHK\MacroPad\Macro-Pad.ahk"
 
+; Uncomment to run Minimize_To_Tray script with admin privileges
 ; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
 
-;====================== HOTKEY SECTIONS ======================
+; =============================================================================
+; CONTEXT MENU SYSTEM
+; =============================================================================
+; Create main menu structure for quick access to various programs and locations
 
+; Main menu for development tools
+MyMenu1 := Menu()
+MySubMenu1 := Menu()
+MyMenu2 := Menu()
+MyMenu3 := Menu()
+MyMenu4 := Menu()
+MyMenu5 := Menu()
+MySubMenu5 := Menu()
+MyMenu6 := Menu()
+
+; =============================================================================
+; MENU 1: DEVELOPMENT TOOLS
+; =============================================================================
+; Add VS Code workspace submenu items
+MySubMenu1.Add("AHK", SubMenuHandler1)
+MySubMenu1.Add("SE", SubMenuHandler1)
+MySubMenu1.Add("Java", SubMenuHandler1)
+MySubMenu1.Add("DS", SubMenuHandler1)
+MySubMenu1.Add("OS", SubMenuHandler1)
+
+MyMenu1.Add("AHK", MenuHandler1)
+MyMenu1.Add("ADB", MenuHandler1)
+MyMenu1.Add("Code", MenuHandler1)
+MyMenu1.Add("VS Code", MySubMenu1)
+
+; Menu handler for development tools
+MenuHandler1(Item, *) {
+    if (Item == "AHK") {
+        Run "D:\Programs\AHK"
+    } else if (Item == "ADB") {
+        Run "D:\Programs\ADB"
+    } else if (Item == "Code") {
+        Run "D:\Programs"
+    }
+}
+
+; Submenu handler for VS Code workspaces
+SubMenuHandler1(Item, *) {
+    if (Item == "AHK") {
+        Run "D:\Programs\AHK.code-workspace"
+    } else if (Item == "SE") {
+        Run "D:\Programs\TSMS.code-workspace"
+    } else if (Item == "Java") {
+        Run "D:\Programs\Java.code-workspace"
+    } else if (Item == "DS") {
+        Run "D:\Programs\Data Structure.code-workspace"
+    } else if (Item == "OS") {
+        Run "D:\Programs\Operating System.code-workspace"
+    }
+}
+
+; =============================================================================
+; MENU 2: FILE LOCATIONS
+; =============================================================================
+MyMenu2.Add("Android", MenuHandler2)                 ; Android apps backup
+MyMenu2.Add("Setups", MenuHandler2)                  ; Software installations
+MyMenu2.Add("Downlaods", MenuHandler2)               ; Downloads folder
+MyMenu2.Add("Documents", MenuHandler2)               ; Documents folder
+MyMenu2.Add("Pictures", MenuHandler2)                ; Pictures folder
+MyMenu2.Add("ROM", MenuHandler2)                     ; Android ROMs
+
+; Menu handler for file locations
+MenuHandler2(Item, *) {
+    if (Item == "Downloads") {
+        Run "E:\Downloads"                           ; Open Downloads drive
+    } else if (Item == "Documents") {
+        Run "E:\Documents"                           ; Open Documents drive
+    } else if (Item == "Pictures") {
+        Run "E:\Pictures"                            ; Open Pictures drive
+    } else if (Item == "Setups") {
+        Run "F:\Setups"                              ; Open Setups drive
+    } else if (Item == "Android") {
+        Run "F:\Backup\Apps"                         ; Open Android apps backup
+    } else if (Item == "ROM") {
+        Run "F:\OS\Android\!POCO F6"                 ; Open Android ROMs folder
+    }
+}
+
+; =============================================================================
+; MENU 3: MEDIA LOCATIONS
+; =============================================================================
+MyMenu3.Add("Anime", MenuHandler3)                   ; Anime folder
+MyMenu3.Add("Movies", MenuHandler3)                  ; Movies folder
+MyMenu3.Add("Shows", MenuHandler3)                   ; TV Shows folder
+MyMenu3.Add("Games", MenuHandler3)                   ; Games folder
+
+; Menu handler for media locations
+MenuHandler3(Item, *) {
+    if (Item = "Movies") {
+        Run "F:\Movies"                              ; Open Movies folder
+    }
+    else if (Item = "Anime") {
+        Run "F:\Anime"                               ; Open Anime folder
+    } else if (Item = "Shows") {
+        Run "F:\Shows"                               ; Open TV Shows folder
+    } else {
+        ToolTip Item                                 ; Show tooltip for unknown items
+        SetTimer RemoveTooltip, -500                 ; Remove tooltip after 500ms
+    }
+}
+
+; =============================================================================
+; MENU 4: DRIVE ACCESS
+; =============================================================================
+MyMenu4.Add("C", MenuHandler4)
+MyMenu4.Add("D", MenuHandler4)
+MyMenu4.Add("E", MenuHandler4)
+MyMenu4.Add("S", MenuHandler4)
+
+; Menu handler for drive access
+MenuHandler4(Item, *) {
+    Run(Item ":\")
+}
+
+; Submenu handler for drive operations
+SubMenuHandler4(Item, *) {
+    ToolTip Item                                     ; Show tooltip
+    SetTimer RemoveTooltip, -500                     ; Remove tooltip after 500ms
+}
+
+; =============================================================================
+; MENU 5: ANDROID/ADB TOOLS
+; =============================================================================
+MyMenu5.Add("USB", MenuHandler5)                     ; USB connection mode
+MyMenu5.Add("Enable TCPIP", MenuHandler5)            ; Enable TCP/IP mode
+MyMenu5.Add("TCPIP", MenuHandler5)                   ; TCP/IP connection mode
+MyMenu5.Add("OTG", MenuHandler5)                     ; OTG connection mode
+
+; Menu handler for Android/ADB tools
+MenuHandler5(Item, *) {
+    if (Item = "USB") {
+        Run "D:\Programs\ADB\scrcpy-USB.vbs"        ; Launch USB scrcpy
+    }
+    else if (Item = "Enable TCPIP") {
+        Run "D:\Programs\ADB\scrcpy-enable-TCPIP.vbs" ; Enable TCP/IP mode
+    }
+    else if (Item = "TCPIP") {
+        Run "D:\Programs\ADB\scrcpy-TCPIP.vbs"      ; Launch TCP/IP scrcpy
+    }
+    else if (Item = "OTG") {
+        Run "D:\Programs\ADB\scrcpy-OTG.vbs"        ; Launch OTG scrcpy
+    }
+    else {
+        ToolTip Item                                 ; Show tooltip for unknown items
+        SetTimer RemoveToolTip, -500                 ; Remove tooltip after 500ms
+    }
+}
+
+; =============================================================================
+; MENU 6: POWER MANAGEMENT
+; =============================================================================
+MyMenu6.Add("Power Saver", MenuHandler6)             ; Power saver mode
+MyMenu6.Add("Balanced", MenuHandler6)                ; Balanced power mode
+MyMenu6.Add("Performance", MenuHandler6)             ; High performance mode
+
+; Menu handler for power management
+MenuHandler6(Item, *) {
+    if (Item = "Power Saver") {
+        Run 'powercfg -s a1841308-3541-4fab-bc81-f71556f20b4a'  ; Set power saver
+    } else if (Item = "Balanced") {
+        Run 'powercfg -s 381b4222-f694-41f0-9685-ff5bb260df2e'  ; Set balanced
+    } else if (Item = "Performance") {
+        Run 'powercfg -s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c' ; Set performance
+    }
+}
+
+; Submenu handler for power management
+SubMenuHandler6(Item, *) {
+    ToolTip Item                                     ; Show tooltip
+    SetTimer RemoveToolTip, -500                     ; Remove tooltip after 500ms
+}
+
+; =============================================================================
+; HOTKEY SECTIONS OVERVIEW
+; =============================================================================
 ; 1. Special Keys - System and media control hotkeys
 ; 2. Basic Navigation - Arrow key alternatives (Alt + IJKL)
 ; 3. Tap, Press & Hold - Shortcuts with different behaviors based on press duration
@@ -35,64 +234,68 @@ Run A_WorkingDir "\Macro-Pad.ahk"
 ; 8. Controller Controls - Gamepad/controller mappings
 ; 9. Macro System - Custom macro functionality
 
-;===============================SPECIAL KEYS===================================::
+; =============================================================================
+; SECTION 1: SPECIAL KEYS
+; =============================================================================
+; System and media control hotkeys
 
 !^Tab:: {
-    Reload
+    reload
+    ; Alternative: Kill all AutoHotkey processes
     ; Run, cmd.exe /c "taskkill /f /im autohotkey.exe"
 }
 
-; r::ToolTip ThisHotkey
-
 Browser_Favorites:: {
+    ; Uncomment for voice feedback
     ; Speach := "dooooooont press this"
     ; Runwait A_WorkingDir '\voice.exe' ' -r' ' 2' ' -d' Speach,,'Hide'
     Send "^+{Esc}"
     ; MsgBox A_ThisHotKey
 }
 
-; ^Numpad1:: {
-;     TransDegree := WinGetTransparent("A")
-;     ; MsgBox TransDegree
-;     if (TransDegree) {
-;         WinSetTransparent "Off", "A"
-;     }
-;     else {
-;         WinSetTransparent 200, "A"
-;     }
-; }
+^Numpad1:: {
+    TransDegree := WinGetTransparent("A")
+    ; MsgBox TransDegree
+    if (TransDegree) {
+        WinSetTransparent "Off", "A"
+    }
+    else {
+        WinSetTransparent 200, "A"
+    }
+}
 
+; Disable various media keys
 Launch_Mail:: return
-
-;Media_Play_Pause::Return
-
 Media_Stop:: return
-
-;Media_Prev::Return
-
-;Media_Next::Return
-
 ~Volume_Up:: return
-
 ~Volume_Down:: return
-
-;Volume_Mute::Return
 
 Launch_App1:: Msgbox "Hi"
 
-;===============================END OF SPECIAL KEYS============================;;
+; =============================================================================
+; SECTION 2: BASIC NAVIGATION
+; =============================================================================
+; Arrow key alternatives using Alt + IJKL
+
 !i:: Send "{Up}"
 !k:: Send "{Down}"
 !l:: Send "{Right}"
 !j:: Send "{Left}"
 
+; Right Ctrl combinations
 >^\::AltTab
 RCtrl & RAlt::AppsKey
+
+; Caps Lock modifications
 $CapsLock::Backspace
 +CapsLock::CapsLock
 
-;===================== Tap, Press & Hold Shortcuts ======================;
+; =============================================================================
+; SECTION 3: TAP, PRESS & HOLD SHORTCUTS
+; =============================================================================
+; Shortcuts with different behaviors based on press duration
 
+; Windows key with different behaviors (commented out)
 ; ~LWin:: {
 ;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
 ;         ; Send "{Lwin}"
@@ -105,20 +308,12 @@ $CapsLock::Backspace
 ;     }
 ; }
 
-;===================== Ctrl & Shift Shortcuts ======================;
+; =============================================================================
+; SECTION 4: CTRL & SHIFT SHORTCUTS
+; =============================================================================
+; Application launchers and system functions
 
 $^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
-
-$^+e:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Audio-Downloader.py ' A_Clipboard
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run 'cmd.exe /c python D:\Programs\Python-Scripts\YouTube-Downloader.py ' A_Clipboard
-
-    }
-}
 
 $^+f:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -133,23 +328,27 @@ $^+f:: {
 $^+g:: {
     p := Morse()
     if (p = "00") {
-        Run '*RunAs cmd.exe /k pnputil /enum-devices /class Display', , "Hide" ; //To find the display;
+        ; Enable virtual display
+        Run '*RunAs cmd.exe /k pnputil /enum-devices /class Display', , "Hide"
         Run '*RunAs cmd.exe /c pnputil "/enable-device" "ROOT\UNKNOWN\0000"', , "Hide"
         ToolTip "Virtual Display Enabled"
         SetTimer RemoveToolTip, -500
     }
     else if (p = "01") {
+        ; Disable virtual display
         Run '*RunAs cmd.exe /k pnputil "/disable-device" "ROOT\UNKNOWN\0000"', , "Hide"
         ToolTip "Virtual Display Disabled"
         SetTimer RemoveToolTip, -500
     }
     else if (p = "0") {
+        ; Show IP address
         ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /c " 'ipconfig | find "IPv4"').StdOut.ReadAll()
         i := 0
         ToolTip ipadd
         SetTimer RemoveToolTip, -3000
     }
     else if (p = "1") {
+        ; Show display ID from dxgi-info
         ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /C " '"C:\Program Files\Sunshine\tools\dxgi-info.exe"').StdOut
         .ReadAll()
         i := 0
@@ -170,17 +369,48 @@ $^+g:: {
         MsgBox p
 }
 
-
 $^+q:: {
-
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        Run("https://www.youtube.com/", , "max")
+        if (WinExist("— Mozilla Firefox")) {
+            WinActivate("— Mozilla Firefox")
+            i := 1
+            while (!WinActive("YouTube ") && i < 20) {
+                Send "^{Tab}"
+                i++
+                Sleep 100
+            }
+            if (i >= 20) {
+                Run("https://www.youtube.com/", , "max")
+            }
+        }
+        else {
+            Run("https://www.youtube.com/", , "max")
+
+        }
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run(
-            '"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
-            "max")
+        if (WinExist(" - Brave")) {
+            WinActivate(" - Brave")
+            i := 1
+            while (!WinActive("YouTube ") && i < 20) {
+                Send "^{Tab}"
+                i++
+                Sleep 100
+            }
+            if (i >= 20) {
+                Run(
+                    '"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
+                    "max")
+            }
+        }
+        else {
+            Run(
+                '"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
+                "max")
+
+        }
+
     }
 }
 
@@ -212,7 +442,6 @@ $^+y:: {
 }
 
 #HotIf !WinActive("ahk_class Photoshop") and !WinActive("ahk_class Premiere Pro")
-
 $^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe",
@@ -223,9 +452,9 @@ $^+d:: {
         Run "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe"
     }
 }
-^+m:: Run "C:\Windows\System32\mblctr.exe"
-
 #HotIf
+
+^+m:: Run "C:\Windows\System32\mblctr.exe"
 
 $^+Up:: {
     global CurrentBrightness
@@ -250,12 +479,10 @@ $^+/:: {
 ^+WheelUp:: Run "C:\Windows\System32\SndVol.exe"
 ^+WheelDown:: Run "D:\Programs Files\Nahimic.lnk"
 
-;=============================== Alt & Ctrl Shortcuts =================================;
-
-^!:: {
-    if !WinExist
-        Run "C:\Users\Shamil\AppData\Roaming\AltSnap\AltSnap.exe"
-}
+; =============================================================================
+; SECTION 5: ALT & CTRL SHORTCUTS
+; =============================================================================
+; Window management and system utilities
 
 ^!b:: {
     if WinExist("Window Spy for AHKv2")
@@ -264,7 +491,7 @@ $^+/:: {
         Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
 }
 
-^!v::Run "C:\Program Files\AutoHotkey\v2\AutoHotkey.chm"
+^!v:: Run "C:\Program Files\AutoHotkey\v2\AutoHotkey.chm"
 
 ^!s:: Send "^#v"
 
@@ -278,40 +505,40 @@ $^+/:: {
     }
 }
 
-!+3:: Run "D:\Programs\AHK\Random_File_Opener.ahk"
-!+4:: Run "D:\Programs\AHK\Random_File_Copier.ahk"
+^!3:: Run "D:\Programs\AHK\Random_File_Opener.ahk"
+^!4:: Run "D:\Programs\AHK\Random_File_Copier.ahk"
 
-;================================= Ctrl & Win Shortcuts =======================================;
+^+!v:: Send "{ASC 35}Notenoughcookies21"
 
-^#s:: Send "{F20}" ; To disable windows speech recognition hotkey
+; =============================================================================
+; SECTION 6: CTRL & WIN SHORTCUTS
+; =============================================================================
+; Windows key combinations
 
-;================================= Alt Shortcuts =======================================;
+^#s:: Send "{F20}"
 
-;================================= Win Shortcuts =======================================;
+; =============================================================================
+; SECTION 7: WIN SHORTCUTS
+; =============================================================================
+; Windows key combinations for common tasks
 
 #c:: Run "D:\Programs Files\Copilot.lnk"
 
-#e::
-; {
-;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-;     ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-;     ;     if !WinExist(" - Files") {
-;     ;         Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-;     ;         GroupAdd "ExplorerGroup", " - Files"
-;     ;     }
-;     ;     else if WinActive("ahk_exe explorer.exe")
-;     ;         GroupActivate "ExplorerGroup", "r"
-;     ;     else
-;     ;         WinActivate " - Files"
-;     ;     return
-;     ; }
-;     ; else {
-;     ;     KeyWait(GetFilteredHotKey())
-;     ;     Run "C:\Program Files\WindowsApps\Files_3.8.0.0_x64__1y0xx7n9077q4\Files.App\Files.exe"
-;     ; }
-; }
-{
+#q:: {
+    Send("!{F4}")
+}
 
+#Enter:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("ahk_exe WindowsTerminal.exe", "D:\Programs Files\Terminal.lnk")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run("D:\Programs Files\Terminal.lnk")
+    }
+}
+
+#e:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication(" - File Explorer", "explorer.exe")
     }
@@ -321,7 +548,9 @@ $^+/:: {
     }
 }
 
-#s:: WinMinimize "A"
+#s:: Send "#1"
+#d:: Send "#2"
+#f:: Send "#3"
 
 #w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -333,54 +562,74 @@ $^+/:: {
     }
 }
 
+$#z:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication("Mozilla Firefox", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk"
+    }
+}
+
 $#x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication("Brave", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
+        Run("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk", , "max")
     }
 }
 
-$#z:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Microsoft​ Edge", "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run("C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe", , "max")
-    }
-}
-
-#Space::^Space
-
-;================================= Other Shortcuts =====================================;
-
-; !w:: Send "!{F4}"
-; $SC137:: Send "#{PrintScreen}" ; PrintScreen
-; #+s:: Send "#+t"
+; =============================================================================
+; SECTION 8: OTHER SHORTCUTS
+; =============================================================================
+; Miscellaneous system shortcuts
 
 ^+!d:: {
-    shutdown_timer := 0
-    Run 'cmd /c Shutdown /s /t ' shutdown_timer, , "Hide"
+    timer := 0
+    Run 'cmd /c Shutdown /s /t ' timer, , "Hide"
 }
 
+^+!f:: {
+    timer := 0
+    Run 'cmd /c Shutdown /r /t ' timer, , "Hide"
+}
+
+RunExplorer() {
+    Run("explorer.exe")
+}
+
+^+!e:: {
+    Run('cmd.exe /c taskkill /f /im explorer.exe', , "Hide")
+    SetTimer RunExplorer, -2000
+}
 
 >^Up::Volume_Up
 >^Down::Volume_Down
->^Left::Media_Play_Pause
+>^Left UP:: {
+    currentwindow := WinGetTitle("A")
+    Send "{Ctrl up}"
+    ; WinActivate("ahk_exe firefox.exe")
+    ; ControlSend "k", , "A"
+    ControlSend "k", , "ahk_exe firefox.exe"
+    WinActivate(currentwindow)
+}
 >^Right::Media_Next
 
-;========================== Context Sensitive Shortcuts =======================================;
+; =============================================================================
+; SECTION 9: CONTEXT SENSITIVE SHORTCUTS
+; =============================================================================
+; Application-specific shortcuts
 
-#HotIf WinActive("ahk_class CabinetWClass") ;Clicks the Folder path in File explorer like clicking the url in browsers
-
-^e:: Send "^l"
-
-^d:: Send "{Del}"
-
+; File Explorer specific shortcuts
+#HotIf WinActive("ahk_class CabinetWClass")          ; Only in File Explorer
+^e:: Send "^l"                                       ; Ctrl+E = Focus address bar
+^d:: Send "{Del}"                                    ; Ctrl+D = Delete
 #HotIf
+
+; Global copy/paste feedback
 ~^c:: {
     ToolTip "Copied"
     SetTimer RemoveTooltip, -250
@@ -396,11 +645,11 @@ $#z:: {
     SetTimer RemoveToolTip, -250
 }
 
-^!1:: MyMenu1.Show()
-^!2:: MyMenu2.Show()
-^!3:: MyMenu3.Show()
-^!4:: MYMenu4.Show()
-^!5:: MyMenu5.Show()
+!+1:: MyMenu1.Show()
+!+2:: MyMenu2.Show()
+!+3:: MyMenu3.Show()
+!+4:: MYMenu4.Show()
+!+5:: MyMenu5.Show()
 !+z:: MyMenu6.Show()
 
 !1::
@@ -414,7 +663,7 @@ $#z:: {
 !9::
 !0::
 !-::
-!=::Send("{F" GetFilteredHotKey() "}")
+!=:: Send("{F" GetFilteredHotKey() "}")
 
 #HotIf WinActive("ahk_class Qt5QWindowIcon")
 /:: Send "jjjjj"
@@ -422,31 +671,47 @@ $#z:: {
 9:: Send "{Ctrl Down}{WheelDown}{Ctrl Up}"
 BS::
 \:: Send "^{Right}{Right}{Right}+{Right}+{Right}+{Right}"
+
+Left:: Send "+{Left}"
+Right:: Send "+{Right}"
+
++Left:: Send "{Left}"
++Right:: Send "{Right}"
+
 >^Left:: Send "^{Left}"
 >^Right:: Send "^{Right}"
+#HotIf
+
+#HotIf WinActive("ahk_class mpv")
+Up:: Send "0"
+Down:: Send "9"
+^Right:: Send "{Up}"
+^Left:: Send "{Down}"
+^!Right:: Send "{Up 5}"
+^!Left:: Send "{Down 5}"
+#HotIf
 
 #HotIf WinActive("ahk_exe Spotify.exe")
 >^Up:: Send "^{Up}"
 >^Down:: Send "^{Down}"
+#HotIf
 
 #HotIf WinActive("ahk_exe brave.exe")
 !q:: {
-
     MouseGetPos &x, &y
     MouseClick "Left", 1755, 922, , 0
     MouseMove x, y, 0
 }
+#HotIf
 
 #HotIf WinActive("ahk_exe Code.exe")
 ^!e:: Send "^+e"
-
-; #HotIf MouseIsOver("TrayNotifyWnd1")
-; WheelUp:: ToolTip "#+m"
-; WheelDown:: ToolTip "#m"
-
 #HotIf
 
-;================================= Controller Controls =======================================;
+; =============================================================================
+; SECTION 10: CONTROLLER CONTROLS
+; =============================================================================
+; Gamepad/controller mappings (commented out)
 
 ; #HotIf GetKeyState("Joy11", "P")
 ; Joy2:: {
@@ -454,122 +719,20 @@ BS::
 ;         Send "{Media_Play_Pause}"
 ;         Current_Window := WinGetTitle("A")
 ;         WinActivate("-YouTube")
-;         ; ControlGetPos, conX, conY, conW, conH, Chrome_RenderWidgetHostHWND1, A
-;         ; ControlClick, , A, , , , %" X" (conX + 1) " Y" (conY + 1)
 ;         Send "k"
 ;         WinActivate(Current_Window)
 ;     }
 ; }
-
+;
 ; Joy1:: {
 ;     if GetKeyState("Joy11", "P") {
 ;         Send "{Media_Play_Pause}"
 ;     }
 ; }
 #HotIf
-;================================= Secret Codes =======================================;
 
-#HotIf !WinActive("ahk_class Premiere Pro")
-; `:: {
-;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-;         global Secret_Mode
-;         Secret_Mode := !Secret_Mode
-;         ToolTip "Secret Mode: " (Secret_Mode ? "ON" : "OFF")
-;         SetTimer RemoveToolTip, -500
-;     }
-;     else {
-;         KeyWait(GetFilteredHotKey())
-;         Send "{ASC 96}"
-;     }
-; }
+; =============================================================================
+; SECTION 11: SECRET CODES
+; =============================================================================
 
 #HotIf
-
-; NumLock:: {
-;     global currentMode := Mod(currentMode, 2) + 1
-;     ToolTip "Mode - " currentMode
-;     SetTimer RemoveToolTip, -1000
-;     ; ShowNumpadGUI()
-; }
-
-; ^r:: ListLines
-
-
-;================================= Macro System =======================================;
-
-; Enables macro functionality when ScrollLock is on or Macro variable is true
-/*HotIf Secret_Mode
-F1::
-F2::
-F3::
-F4::
-F5::
-F6::
-F7::
-F8::
-F9::
-F10::
-F11::
-F12::
-a::
-b::
-c::
-d::
-e::
-f::
-g::
-h::
-i::
-j::
-k::
-l::
-m::
-n::
-o::
-p::
-q::
-r::
-s::
-t::
-u::
-v::
-w::
-x::
-y::
-z::
-1::
-2::
-3::
-4::
-5::
-6::
-7::
-8::
-9::
-0::
--::
-=::
-Numpad1::
-Numpad2::
-Numpad3::
-Numpad4::
-Numpad5::
-Numpad6::
-Numpad7::
-Numpad8::
-Numpad9::
-Numpad0::
-NumpadDot::
-NumpadAdd::
-NumPadSub::
-NumpadMult::
-NumpadDiv::
-Space::
-Up::
-Down::
-Right::
-Left:: GetHotKey()
-
-*/
-
-#Hotif
