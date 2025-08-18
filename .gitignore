@@ -1,6 +1,5 @@
 Lib/Credentials.ahk
 Lib/Credentials*.ahk
 Developement/
-Random_File_Picker.ahk
-*.ini
+MacroPad/
 *.txt
