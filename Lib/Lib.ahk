@@ -49,12 +49,12 @@ GetHotKey(&tout := 300) {
     return
 }
 
-RunApplication(title, path := "", ifactive_send := "") {
+RunApplication(title, path := "", launch_mode := "", ifactive_send := "") {
     GroupName := StrReplace(StrReplace(StrReplace(StrReplace(title, " "), "."), "_"), "-") . "Group"
     if !WinExist(title) {
         if path {
             try {
-                Run path
+                Run path, , launch_mode
             }
             catch {
                 ToolTip "An error occurred while running the application: " title ", Specify a valid location!"
@@ -134,139 +134,7 @@ RemoveToolTip() {
     ToolTip ""
 }
 
-MyMenu1 := Menu()
-MySubMenu1 := Menu()
-MyMenu2 := Menu()
-MyMenu3 := Menu()
-MyMenu4 := Menu()
-MyMenu5 := Menu()
-MySubMenu5 := Menu()
-MyMenu6 := Menu()
 
-MySubMenu1.Add("AHK", SubMenuHandler1)
-MySubMenu1.Add("SE", SubMenuHandler1)
-MySubMenu1.Add("Java", SubMenuHandler1)
-MySubMenu1.Add("DS", SubMenuHandler1)
-MySubMenu1.Add("OS", SubMenuHandler1)
-MyMenu1.Add("AHK", MenuHandler1)
-MyMenu1.Add("ADB", MenuHandler1)
-MyMenu1.Add("Code", MenuHandler1)
-MyMenu1.Add("VS Code", MySubMenu1)
-MenuHandler1(Item, *) {
-    if (Item == "AHK") {
-        Run "D:\Programs\AHK"
-    } else if (Item == "ADB") {
-        Run "D:\Programs\ADB"
-    } else if (Item == "Code") {
-        Run "D:\Programs"
-    }
-}
-SubMenuHandler1(Item, *) {
-    if (Item == "AHK") {
-        Run "D:\Programs\AHK.code-workspace"
-    } else if (Item == "SE") {
-        Run "D:\Programs\TSMS.code-workspace"
-    } else if (Item == "Java") {
-        Run "D:\Programs\Java.code-workspace"
-    } else if (Item == "DS") {
-        Run "D:\Programs\Data Structure.code-workspace"
-    } else if (Item == "OS") {
-        Run "D:\Programs\Operating System.code-workspace"
-    }
-}
-
-MyMenu2.Add("Android", MenuHandler2)
-MyMenu2.Add("Setups", MenuHandler2)
-MyMenu2.Add("Downlaods", MenuHandler2)
-MyMenu2.Add("Documents", MenuHandler2)
-MyMenu2.Add("Pictures", MenuHandler2)
-MyMenu2.Add("ROM", MenuHandler2)
-MenuHandler2(Item, *) {
-    if (Item == "Downloads") {
-        Run "E:\Downloads"
-    } else if (Item == "Documents") {
-        Run "E:\Documents"
-    } else if (Item == "Pictures") {
-        Run "E:\Pictures"
-    } else if (Item == "Setups") {
-        Run "F:\Setups"
-    } else if (Item == "Android") {
-        Run "F:\Backup\Apps"
-    } else if (Item == "ROM") {
-        Run "F:\OS\Android\!POCO F6"
-    }
-}
-
-MyMenu3.Add("Anime", MenuHandler3)
-MyMenu3.Add("Movies", MenuHandler3)
-MyMenu3.Add("Shows", MenuHandler3)
-MyMenu3.Add("Games", MenuHandler3)
-MenuHandler3(Item, *) {
-    if (Item = "Movies") {
-        Run "F:\Movies"
-    }
-    else if (Item = "Anime") {
-        Run "F:\Anime"
-    } else if (Item = "Shows") {
-        Run "F:\Shows"
-    } else {
-        ToolTip Item
-        SetTimer RemoveTooltip, -500
-    }
-}
-
-MyMenu4.Add("C", MenuHandler4)
-MyMenu4.Add("D", MenuHandler4)
-MyMenu4.Add("E", MenuHandler4)
-MyMenu4.Add("S", MenuHandler4)
-; MyMenu5.Add("Drives", MySubMenu5)
-MenuHandler4(Item, *) {
-    Run(Item ":\")
-}
-SubMenuHandler4(Item, *) {
-    ToolTip Item
-    SetTimer RemoveTooltip, -500
-}
-
-MyMenu5.Add("USB", MenuHandler5)
-MyMenu5.Add("Enable TCPIP", MenuHandler5)
-MyMenu5.Add("TCPIP", MenuHandler5)
-MyMenu5.Add("OTG", MenuHandler5)
-MenuHandler5(Item, *) {
-    if (Item = "USB") {
-        Run "D:\Programs\ADB\scrcpy-USB.vbs"
-    }
-    else if (Item = "Enable TCPIP") {
-        Run "D:\Programs\ADB\scrcpy-enable-TCPIP.vbs"
-    }
-    else if (Item = "TCPIP") {
-        Run "D:\Programs\ADB\scrcpy-TCPIP.vbs"
-    }
-    else if (Item = "OTG") {
-        Run "D:\Programs\ADB\scrcpy-OTG.vbs"
-    }
-    else {
-        ToolTip Item
-        SetTimer RemoveTooltip, -500
-    }
-}
-
-MyMenu6.Add("Power Saver", MenuHandler6)
-MyMenu6.Add("Balanced", MenuHandler6)
-MyMenu6.Add("Performance", MenuHandler6)
-MenuHandler6(Item, *) {
-    if (Item = "Power Saver") {
-        Run 'powercfg -s a1841308-3541-4fab-bc81-f71556f20b4a'
-    } else if (Item = "Balanced") {
-        Run 'powercfg -s 381b4222-f694-41f0-9685-ff5bb260df2e'
-    } else if (Item = "Performance") {
-        Run 'powercfg -s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c'
-    }
-}
-SubMenuHandler6(Item, *) {
-    ToolTip Item
-    SetTimer RemoveTooltip, -500
-}
 
 MouseIsOver(WinTitle) {
     try {
