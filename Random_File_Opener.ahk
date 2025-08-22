@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "J:\Backup\F\To Sort"
+global SourceFolder := "J:\Backup\F\New"
 global DestinationFolder := "J:\Backup\F\Sorted"
 global FileList := []
 global TotalFiles := 0

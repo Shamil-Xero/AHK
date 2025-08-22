@@ -113,17 +113,17 @@ MyMenu2.Add("ROM", MenuHandler2)                     ; Android ROMs
 ; Menu handler for file locations
 MenuHandler2(Item, *) {
     if (Item == "Downloads") {
-        Run "E:\Downloads"                           ; Open Downloads drive
+        Run "A:\Downloads"                           ; Open Downloads drive
     } else if (Item == "Documents") {
-        Run "E:\Documents"                           ; Open Documents drive
+        Run "A:\Documents"                           ; Open Documents drive
     } else if (Item == "Pictures") {
-        Run "E:\Pictures"                            ; Open Pictures drive
+        Run "A:\Pictures"                            ; Open Pictures drive
     } else if (Item == "Setups") {
-        Run "F:\Setups"                              ; Open Setups drive
+        Run "E:\Setups"                              ; Open Setups drive
     } else if (Item == "Android") {
-        Run "F:\Backup\Apps"                         ; Open Android apps backup
+        Run "E:\Backup\Apps"                         ; Open Android apps backup
     } else if (Item == "ROM") {
-        Run "F:\OS\Android\!POCO F6"                 ; Open Android ROMs folder
+        Run "E:\OS\Android\!POCO F6"                 ; Open Android ROMs folder
     }
 }
 
@@ -138,12 +138,12 @@ MyMenu3.Add("Games", MenuHandler3)                   ; Games folder
 ; Menu handler for media locations
 MenuHandler3(Item, *) {
     if (Item = "Movies") {
-        Run "F:\Movies"                              ; Open Movies folder
+        Run "E:\Movies"                              ; Open Movies folder
     }
     else if (Item = "Anime") {
-        Run "F:\Anime"                               ; Open Anime folder
+        Run "E:\Anime"                               ; Open Anime folder
     } else if (Item = "Shows") {
-        Run "F:\Shows"                               ; Open TV Shows folder
+        Run "E:\Shows"                               ; Open TV Shows folder
     } else {
         ToolTip Item                                 ; Show tooltip for unknown items
         SetTimer RemoveTooltip, -500                 ; Remove tooltip after 500ms
@@ -400,13 +400,13 @@ $^+q:: {
             }
             if (i >= 20) {
                 Run(
-                    '"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
+                    '"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', ,
                     "max")
             }
         }
         else {
             Run(
-                '"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk" "https://www.youtube.com/"', ,
+                '"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', ,
                 "max")
 
         }
@@ -444,12 +444,12 @@ $^+y:: {
 #HotIf !WinActive("ahk_class Photoshop") and !WinActive("ahk_class Premiere Pro")
 $^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Visual Studio Code", "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe",
+        RunApplication("Visual Studio Code", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk",
             "^{Tab}")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\Users\Shamil\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk"
     }
 }
 #HotIf
@@ -564,21 +564,21 @@ $^+/:: {
 
 $#z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Mozilla Firefox", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk")
+        RunApplication("Mozilla Firefox", "D:\Programs Files\Firefox.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk"
+        Run "D:\Programs Files\Firefox.lnk"
     }
 }
 
 $#x:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Brave", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk")
+        RunApplication("Brave", "D:\Programs Files\Brave.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk", , "max")
+        Run("D:\Programs Files\Brave.lnk", , "max")
     }
 }
 
