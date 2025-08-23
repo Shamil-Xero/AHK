@@ -444,12 +444,12 @@ $^+y:: {
 #HotIf !WinActive("ahk_class Photoshop") and !WinActive("ahk_class Premiere Pro")
 $^+d:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Visual Studio Code", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk",
+        RunApplication("Visual Studio Code", "D:\Programs Files\Visual Studio Code.lnk",
             "^{Tab}")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk"
+        Run "D:\Programs Files\Visual Studio Code.lnk"
     }
 }
 #HotIf

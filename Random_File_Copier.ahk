@@ -2,7 +2,7 @@
 #SingleInstance Off
 
 global SourceFolder := "J:\Backup\F\Sorted"
-global DestinationFolder := "F:\Synced\Sync\.Delete"
+global DestinationFolder := "E:\Synced\Sync\.Delete"
 global FileList := []
 global TotalFiles := 0
 global FileCount := 0
