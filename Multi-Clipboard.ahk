@@ -1,7 +1,9 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-global clipboardSlots := Map()
+; Disable spell check in VSCode for this file
+; // cspell:disable
+
 global maxSlots := 9
 global clipboardFolder := A_WorkingDir . "\clipboard"
 
@@ -12,7 +14,7 @@ if !DirExist(clipboardFolder) {
 
 ShowTooltip(message) {
     ToolTip(message)
-    SetTimer(() => ToolTip(), -1000)
+    SetTimer(() => ToolTip(), -3000)
 }
 
 CopyToSlot(slotNumber) {
@@ -24,16 +26,25 @@ CopyToSlot(slotNumber) {
     Send("^c")
 
     ; Wait for clipboard to contain data
-    if !ClipWait(1) {
+    if !ClipWait(1, 1) {
         A_Clipboard := oldClipboard
         ShowTooltip("Nothing to copy!")
         return
     }
 
-    ; Store in slot
-    clipboardSlots[slotNumber] := A_Clipboard
-    ; Save to file
-    SaveSlotToFile(slotNumber, A_Clipboard)
+    ; Save clipboard to file
+    slotFile := clipboardFolder . "\clipboard" . slotNumber . ".clip"
+    try {
+        ; Delete any existing file and then use FileAppend
+        if FileExist(slotFile) {
+            FileDelete(slotFile)
+        }
+        FileAppend(ClipboardAll(), slotFile)
+        ShowTooltip("Copied to slot " . slotNumber)
+    } catch Error as e {
+        ShowTooltip("Error saving to slot " . slotNumber . ": " . e.Message)
+    }
+
     ; Restore original clipboard
     A_Clipboard := oldClipboard
 
@@ -49,16 +60,25 @@ CutToSlot(slotNumber) {
     Send("^x")
 
     ; Wait for clipboard to contain data
-    if !ClipWait(1) {
+    if !ClipWait(1, 1) {
         A_Clipboard := oldClipboard
         ShowTooltip("Nothing to cut!")
         return
     }
 
-    ; Store in slot
-    clipboardSlots[slotNumber] := A_Clipboard
-    ; Save to file
-    SaveSlotToFile(slotNumber, A_Clipboard)
+    ; Save clipboard to file
+    slotFile := clipboardFolder . "\clipboard" . slotNumber . ".clip"
+    try {
+        ; Delete any existing file and then use FileAppend
+        if FileExist(slotFile) {
+            FileDelete(slotFile)
+        }
+        FileAppend(ClipboardAll(), slotFile)
+        ShowTooltip("Cut to slot " . slotNumber)
+    } catch Error as e {
+        ShowTooltip("Error saving to slot " . slotNumber . ": " . e.Message)
+    }
+
     ; Restore original clipboard
     A_Clipboard := oldClipboard
 
@@ -66,108 +86,75 @@ CutToSlot(slotNumber) {
 }
 
 PasteFromSlot(slotNumber) {
-    if !clipboardSlots.Has(slotNumber) {
+    slotFile := clipboardFolder . "\clipboard" . slotNumber . ".clip"
+
+    if !FileExist(slotFile) {
         ShowTooltip("Slot " . slotNumber . " is empty!")
         return
     }
 
-    ; Backup current clipboard
-    oldClipboard := A_Clipboard
+    try {
+        ; Read clipboard data from file
+        ClipData := FileRead(slotFile, "RAW")
 
-    ; Set clipboard to slot content
-    A_Clipboard := clipboardSlots[slotNumber]
+        ; Backup current clipboard
+        oldClipboard := A_Clipboard
 
-    ; Paste
-    Send("^v")
+        ; Set clipboard to slot content
+        A_Clipboard := ClipboardAll(ClipData)
 
-    ; Restore original clipboard after a short delay
-    SetTimer(() => A_Clipboard := oldClipboard, -500)
+        ; Paste
+        Send("^v")
 
-    ShowTooltip("Pasted from slot " . slotNumber)
+        ; Restore original clipboard after a short delay
+        SetTimer(() => A_Clipboard := oldClipboard, -500)
+
+        ShowTooltip("Pasted from slot " . slotNumber)
+    } catch Error as e {
+        ShowTooltip("Error pasting from slot " . slotNumber . ": " . e.Message)
+    }
 }
 
 ClearAllSlots() {
-    clipboardSlots.Clear()
-    ; Clear all files
-    ClearAllSlotsFromFiles()
-    ShowTooltip("All slots cleared!")
-}
-
-; Load all slots from individual files
-LoadSlotsFromFiles() {
     try {
         loop maxSlots {
-            slotFile := clipboardFolder . "\clipboard" . A_Index . ".txt"
-            if FileExist(slotFile) {
-                content := FileRead(slotFile, "UTF-8")
-                if (content != "") {
-                    clipboardSlots[A_Index] := content
-                }
-            }
-        }
-    } catch Error as e {
-        ; Files might not exist or be corrupted, continue without loading
-        ShowTooltip("Error loading slots: " . e.Message)
-    }
-}
-
-; Save a specific slot to individual file
-SaveSlotToFile(slotNumber, content) {
-    slotFile := clipboardFolder . "\clipboard" . slotNumber . ".txt"
-    try {
-        FileDelete(slotFile)  ; Delete existing file first
-    }
-    try {
-        FileAppend(content, slotFile, "UTF-8")
-    } catch Error as e {
-        ShowTooltip("Error saving slot " . slotNumber . " to file: " . e.Message)
-    }
-}
-
-; Clear all slots from individual files
-ClearAllSlotsFromFiles() {
-    try {
-        loop maxSlots {
-            slotFile := clipboardFolder . "\clipboard" . A_Index . ".txt"
+            slotFile := clipboardFolder . "\clipboard" . A_Index . ".clip"
             if FileExist(slotFile) {
                 FileDelete(slotFile)
             }
         }
+        ShowTooltip("All slots cleared!")
     } catch Error as e {
-        ; Files might not exist, that's okay
-        ShowTooltip("Error clearing files: " . e.Message)
+        ShowTooltip("Error clearing slots: " . e.Message)
     }
 }
 
-; Load slots on startup
-LoadSlotsFromFiles()
+^Numpad1:: CopyToSlot(1)
+^Numpad2:: CopyToSlot(2)
+^Numpad3:: CopyToSlot(3)
+^Numpad4:: CopyToSlot(4)
+^Numpad5:: CopyToSlot(5)
+^Numpad6:: CopyToSlot(6)
+^Numpad7:: CopyToSlot(7)
+^Numpad8:: CopyToSlot(8)
+^Numpad9:: CopyToSlot(9)
 
-; ^Numpad1:: CopyToSlot(1)
-; ^Numpad2:: CopyToSlot(2)
-; ^Numpad3:: CopyToSlot(3)
-; ^Numpad4:: CopyToSlot(4)
-; ^Numpad5:: CopyToSlot(5)
-; ^Numpad6:: CopyToSlot(6)
-; ^Numpad7:: CopyToSlot(7)
-; ^Numpad8:: CopyToSlot(8)
-; ^Numpad9:: CopyToSlot(9)
+!Numpad1:: CutToSlot(1)
+!Numpad2:: CutToSlot(2)
+!Numpad3:: CutToSlot(3)
+!Numpad4:: CutToSlot(4)
+!Numpad5:: CutToSlot(5)
+!Numpad6:: CutToSlot(6)
+!Numpad7:: CutToSlot(7)
+!Numpad8:: CutToSlot(8)
+!Numpad9:: CutToSlot(9)
 
-; !Numpad1:: CutToSlot(1)
-; !Numpad2:: CutToSlot(2)
-; !Numpad3:: CutToSlot(3)
-; !Numpad4:: CutToSlot(4)
-; !Numpad5:: CutToSlot(5)
-; !Numpad6:: CutToSlot(6)
-; !Numpad7:: CutToSlot(7)
-; !Numpad8:: CutToSlot(8)
-; !Numpad9:: CutToSlot(9)
-
-; ^!Numpad1:: PasteFromSlot(1)
-; ^!Numpad2:: PasteFromSlot(2)
-; ^!Numpad3:: PasteFromSlot(3)
-; ^!Numpad4:: PasteFromSlot(4)
-; ^!Numpad5:: PasteFromSlot(5)
-; ^!Numpad6:: PasteFromSlot(6)
-; ^!Numpad7:: PasteFromSlot(7)
-; ^!Numpad8:: PasteFromSlot(8)
-; ^!Numpad9:: PasteFromSlot(9)
+^!Numpad1:: PasteFromSlot(1)
+^!Numpad2:: PasteFromSlot(2)
+^!Numpad3:: PasteFromSlot(3)
+^!Numpad4:: PasteFromSlot(4)
+^!Numpad5:: PasteFromSlot(5)
+^!Numpad6:: PasteFromSlot(6)
+^!Numpad7:: PasteFromSlot(7)
+^!Numpad8:: PasteFromSlot(8)
+^!Numpad9:: PasteFromSlot(9)
