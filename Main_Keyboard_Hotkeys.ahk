@@ -313,8 +313,6 @@ $CapsLock::Backspace
 ; =============================================================================
 ; Application launchers and system functions
 
-$^+a:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
-
 $^+f:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         Run "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.21.3231.0_x64__8wekyb3d8bbwe\WindowsTerminal.exe"
@@ -441,19 +439,6 @@ $^+y:: {
     }
 }
 
-#HotIf !WinActive("ahk_class Photoshop") and !WinActive("ahk_class Premiere Pro")
-$^+d:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Visual Studio Code", "D:\Programs Files\Visual Studio Code.lnk",
-            "^{Tab}")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run "D:\Programs Files\Visual Studio Code.lnk"
-    }
-}
-#HotIf
-
 ^+m:: Run "C:\Windows\System32\mblctr.exe"
 
 $^+Up:: {
@@ -515,14 +500,36 @@ $^+/:: {
 ; =============================================================================
 ; Windows key combinations
 
-^#s:: Send "{F20}"
+; ^LWin:: {
+;     Send "{Win}"
+; }
 
 ; =============================================================================
 ; SECTION 7: WIN SHORTCUTS
 ; =============================================================================
 ; Windows key combinations for common tasks
 
-#c:: Run "D:\Programs Files\Copilot.lnk"
+$#d:: {
+    ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+    RunApplication("Visual Studio Code", "D:\Programs Files\Visual Studio Code.lnk", "^{Tab}")
+    ; }
+    ; else {
+    ;     KeyWait(GetFilteredHotKey())
+    ;     Run "D:\Programs Files\Visual Studio Code.lnk"
+    ; }
+}
+
+#e:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        RunApplication(" - File Explorer", "explorer.exe")
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run "explorer.exe"
+    }
+}
+
+#g:: RunApplication("Spotify Free", "C:\Users\Shamil\AppData\Roaming\Spotify\Spotify.exe")
 
 #q:: {
     Send("!{F4}")
@@ -538,19 +545,6 @@ $^+/:: {
     }
 }
 
-#e:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication(" - File Explorer", "explorer.exe")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run "explorer.exe"
-    }
-}
-
-#s:: Send "#1"
-#d:: Send "#2"
-#f:: Send "#3"
 
 #w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -562,24 +556,24 @@ $^+/:: {
     }
 }
 
-$#z:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Mozilla Firefox", "D:\Programs Files\Firefox.lnk")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run "D:\Programs Files\Firefox.lnk"
-    }
+$#s:: {
+    ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+    RunApplication("Mozilla Firefox", "D:\Programs Files\Firefox.lnk")
+    ; }
+    ; else {
+    ;     KeyWait(GetFilteredHotKey())
+    ;     Run "D:\Programs Files\Firefox.lnk"
+    ; }
 }
 
-$#x:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("Brave", "D:\Programs Files\Brave.lnk")
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run("D:\Programs Files\Brave.lnk", , "max")
-    }
+#f:: {
+    ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+    RunApplication("Brave", "D:\Programs Files\Brave.lnk")
+    ; }
+    ; else {
+    ;     KeyWait(GetFilteredHotKey())
+    ;     Run("D:\Programs Files\Brave.lnk", , "max")
+    ; }
 }
 
 ; =============================================================================
