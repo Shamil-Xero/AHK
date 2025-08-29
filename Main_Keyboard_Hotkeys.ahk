@@ -17,7 +17,7 @@ Persistent
 SetTitleMatchMode 2
 SendMode "Input"
 SetCapsLockState "Off"
-SetNumLockState "AlwaysOn"
+SetNumLockState "On"
 SetScrollLockState "Off"
 
 ; Disable spell check in VSCode for this file
@@ -32,7 +32,7 @@ global keyboardIntercepted := ""
 ; =============================================================================
 ; LIBRARY INCLUDES
 ; =============================================================================
-#Include <Lib>
+#Include Lib\Lib.ahk
 #Include "Lib\Credentials.ahk"
 
 ; =============================================================================
@@ -51,134 +51,148 @@ Run "D:\Programs\AHK\MacroPad\Macro-Pad.ahk"
 
 ; Main menu for development tools
 MyMenu1 := Menu()
-MySubMenu1 := Menu()
 MyMenu2 := Menu()
+MySubMenu2 := Menu()
 MyMenu3 := Menu()
 MyMenu4 := Menu()
 MyMenu5 := Menu()
-MySubMenu5 := Menu()
 MyMenu6 := Menu()
+MyMenu7 := Menu()
 
 ; =============================================================================
-; MENU 1: DEVELOPMENT TOOLS
+; MENU 1: Code workspace
 ; =============================================================================
-; Add VS Code workspace submenu items
-MySubMenu1.Add("AHK", SubMenuHandler1)
-MySubMenu1.Add("SE", SubMenuHandler1)
-MySubMenu1.Add("Java", SubMenuHandler1)
-MySubMenu1.Add("DS", SubMenuHandler1)
-MySubMenu1.Add("OS", SubMenuHandler1)
-
+; Add VS Code workspace menu items
 MyMenu1.Add("AHK", MenuHandler1)
 MyMenu1.Add("ADB", MenuHandler1)
-MyMenu1.Add("Code", MenuHandler1)
-MyMenu1.Add("VS Code", MySubMenu1)
+MyMenu1.Add("Python", MenuHandler1)
+MyMenu1.Add("Manim", MenuHandler1)
+MyMenu1.Add("ML", MenuHandler1)
+MyMenu1.Add("NW", MenuHandler1)
 
-; Menu handler for development tools
+; Menu handler for workspaces
 MenuHandler1(Item, *) {
     if (Item == "AHK") {
-        Run "D:\Programs\AHK"
+        Run("D:\Programs\AHK.code-workspace")
     } else if (Item == "ADB") {
-        Run "D:\Programs\ADB"
-    } else if (Item == "Code") {
-        Run "D:\Programs"
-    }
-}
-
-; Submenu handler for VS Code workspaces
-SubMenuHandler1(Item, *) {
-    if (Item == "AHK") {
-        Run "D:\Programs\AHK.code-workspace"
-    } else if (Item == "SE") {
-        Run "D:\Programs\TSMS.code-workspace"
-    } else if (Item == "Java") {
-        Run "D:\Programs\Java.code-workspace"
-    } else if (Item == "DS") {
-        Run "D:\Programs\Data Structure.code-workspace"
-    } else if (Item == "OS") {
-        Run "D:\Programs\Operating System.code-workspace"
+        Run("D:\Programs\ADB.code-workspace")
+    } else if (Item == "Python") {
+        Run("D:\Programs\Python.code-workspace")
+    } else if (Item == "Manim") {
+        Run("D:\Programs\Manim.code-workspace")
+    } else if (Item == "ML") {
+        Run("D:\Programs\ML.code-workspace")
+    } else if (Item == "NW") {
+        Run("D:\Programs\NW.code-workspace")
     }
 }
 
 ; =============================================================================
-; MENU 2: FILE LOCATIONS
+; MENU 2: Frequently Used Folders
 ; =============================================================================
-MyMenu2.Add("Android", MenuHandler2)                 ; Android apps backup
-MyMenu2.Add("Setups", MenuHandler2)                  ; Software installations
-MyMenu2.Add("Downlaods", MenuHandler2)               ; Downloads folder
-MyMenu2.Add("Documents", MenuHandler2)               ; Documents folder
-MyMenu2.Add("Pictures", MenuHandler2)                ; Pictures folder
-MyMenu2.Add("ROM", MenuHandler2)                     ; Android ROMs
+MySubMenu2.Add("Android", SubMenuHandler2)
+
+MyMenu2.Add("AHK", MenuHandler2)
+MyMenu2.Add("ADB", MenuHandler2)
+MyMenu2.Add("Python", MenuHandler2)
+MyMenu2.Add("Setups", MenuHandler2)
+MyMenu2.Add("OS", MySubMenu2)
 
 ; Menu handler for file locations
 MenuHandler2(Item, *) {
-    if (Item == "Downloads") {
-        Run "A:\Downloads"                           ; Open Downloads drive
-    } else if (Item == "Documents") {
-        Run "A:\Documents"                           ; Open Documents drive
-    } else if (Item == "Pictures") {
-        Run "A:\Pictures"                            ; Open Pictures drive
+    if (Item == "AHK") {
+        Run("D:\Programs\AHK")
+    } else if (Item == "ADB") {
+        Run("D:\Programs\ADB")
+    } else if (Item == "Python") {
+        Run("D:\Programs\Python-Scripts")
     } else if (Item == "Setups") {
-        Run "E:\Setups"                              ; Open Setups drive
-    } else if (Item == "Android") {
-        Run "E:\Backup\Apps"                         ; Open Android apps backup
-    } else if (Item == "ROM") {
-        Run "E:\OS\Android\!POCO F6"                 ; Open Android ROMs folder
+        Run("E:\Setups")
+    } else if (Item == "OS") {
+        Run("E:\OS")
+    }
+}
+
+SubMenuHandler2(Item, *) {
+    if (Item == "Android") {
+        Run("E:\OS\Android")
+    } else if (Item == "Linux") {
+        Run("E:\OS\Linux")
+    } else if (Item == "Windows") {
+        Run("E:\OS\Windows")
     }
 }
 
 ; =============================================================================
-; MENU 3: MEDIA LOCATIONS
+; MENU 3: User Folders
 ; =============================================================================
-MyMenu3.Add("Anime", MenuHandler3)                   ; Anime folder
-MyMenu3.Add("Movies", MenuHandler3)                  ; Movies folder
-MyMenu3.Add("Shows", MenuHandler3)                   ; TV Shows folder
-MyMenu3.Add("Games", MenuHandler3)                   ; Games folder
+MyMenu3.Add("Documents", MenuHandler3)
+MyMenu3.Add("Downlaods", MenuHandler3)
+MyMenu3.Add("Pictures", MenuHandler3)
+MyMenu3.Add("Videos", MenuHandler3)
+
+; Menu handler for file locations
+MenuHandler3(Item, *) {
+    if (Item == "Documents") {
+        Run("A:\Documents")
+    } else if (Item == "Downloads") {
+        Run("A:\Downloads")
+    } else if (Item == "Pictures") {
+        Run("A:\Pictures")
+    } else if (Item == "Videos") {
+        Run("A:\Videos")
+    }
+}
+
+; =============================================================================
+; MENU 4: MEDIA LOCATIONS
+; =============================================================================
+MyMenu4.Add("Anime", MenuHandler4)
+MyMenu4.Add("Hollywood", MenuHandler4)
+MyMenu4.Add("Other Movies", MenuHandler4)
+MyMenu4.Add("Shows", MenuHandler4)
+MyMenu4.Add("Games", MenuHandler4)
 
 ; Menu handler for media locations
-MenuHandler3(Item, *) {
-    if (Item = "Movies") {
-        Run "E:\Movies"                              ; Open Movies folder
-    }
-    else if (Item = "Anime") {
-        Run "E:\Anime"                               ; Open Anime folder
+MenuHandler4(Item, *) {
+    if (Item = "Anime") {
+        Run "E:\Anime"
+    } else if (Item = "Hollywood") {
+        Run "E:\Movies\Hollywood"
+    } else if (Item = "Other Movies") {
+        Run "E:\Movies\Others"
     } else if (Item = "Shows") {
-        Run "E:\Shows"                               ; Open TV Shows folder
-    } else {
-        ToolTip Item                                 ; Show tooltip for unknown items
-        SetTimer RemoveTooltip, -500                 ; Remove tooltip after 500ms
+        Run "E:\Shows"
+    } else if (Item = "Games") {
+        Run "D:\Games"
     }
 }
 
 ; =============================================================================
-; MENU 4: DRIVE ACCESS
+; MENU 5: DRIVE ACCESS
 ; =============================================================================
-MyMenu4.Add("C", MenuHandler4)
-MyMenu4.Add("D", MenuHandler4)
-MyMenu4.Add("E", MenuHandler4)
-MyMenu4.Add("S", MenuHandler4)
+MyMenu5.Add("A: Vault", MenuHandler5)
+MyMenu5.Add("C: Windows", MenuHandler5)
+MyMenu5.Add("D: Programs", MenuHandler5)
+MyMenu5.Add("E: Media", MenuHandler5)
+MyMenu5.Add("F: GDrive", MenuHandler5)
+MyMenu5.Add("G: Linux", MenuHandler5)
 
 ; Menu handler for drive access
-MenuHandler4(Item, *) {
+MenuHandler5(Item, *) {
     Run(Item ":\")
 }
 
-; Submenu handler for drive operations
-SubMenuHandler4(Item, *) {
-    ToolTip Item                                     ; Show tooltip
-    SetTimer RemoveTooltip, -500                     ; Remove tooltip after 500ms
-}
-
 ; =============================================================================
-; MENU 5: ANDROID/ADB TOOLS
+; MENU 6: ANDROID/ADB TOOLS
 ; =============================================================================
-MyMenu5.Add("USB", MenuHandler5)                     ; USB connection mode
-MyMenu5.Add("Enable TCPIP", MenuHandler5)            ; Enable TCP/IP mode
-MyMenu5.Add("TCPIP", MenuHandler5)                   ; TCP/IP connection mode
-MyMenu5.Add("OTG", MenuHandler5)                     ; OTG connection mode
+MyMenu6.Add("USB", MenuHandler6)                     ; USB connection mode
+MyMenu6.Add("Enable TCPIP", MenuHandler6)            ; Enable TCP/IP mode
+MyMenu6.Add("TCPIP", MenuHandler6)                   ; TCP/IP connection mode
+MyMenu6.Add("OTG", MenuHandler6)                     ; OTG connection mode
 
 ; Menu handler for Android/ADB tools
-MenuHandler5(Item, *) {
+MenuHandler6(Item, *) {
     if (Item = "USB") {
         Run "D:\Programs\ADB\scrcpy-USB.vbs"        ; Launch USB scrcpy
     }
@@ -198,14 +212,14 @@ MenuHandler5(Item, *) {
 }
 
 ; =============================================================================
-; MENU 6: POWER MANAGEMENT
+; MENU 7: POWER MANAGEMENT
 ; =============================================================================
-MyMenu6.Add("Power Saver", MenuHandler6)             ; Power saver mode
-MyMenu6.Add("Balanced", MenuHandler6)                ; Balanced power mode
-MyMenu6.Add("Performance", MenuHandler6)             ; High performance mode
+MyMenu7.Add("Power Saver", MenuHandler7)             ; Power saver mode
+MyMenu7.Add("Balanced", MenuHandler7)                ; Balanced power mode
+MyMenu7.Add("Performance", MenuHandler7)             ; High performance mode
 
 ; Menu handler for power management
-MenuHandler6(Item, *) {
+MenuHandler7(Item, *) {
     if (Item = "Power Saver") {
         Run 'powercfg -s a1841308-3541-4fab-bc81-f71556f20b4a'  ; Set power saver
     } else if (Item = "Balanced") {
@@ -213,12 +227,6 @@ MenuHandler6(Item, *) {
     } else if (Item = "Performance") {
         Run 'powercfg -s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c' ; Set performance
     }
-}
-
-; Submenu handler for power management
-SubMenuHandler6(Item, *) {
-    ToolTip Item                                     ; Show tooltip
-    SetTimer RemoveToolTip, -500                     ; Remove tooltip after 500ms
 }
 
 ; =============================================================================
@@ -283,8 +291,8 @@ Launch_App1:: Msgbox "Hi"
 !j:: Send "{Left}"
 
 ; Right Ctrl combinations
->^\::AltTab
-RCtrl & RAlt::AppsKey
+; >^\::AltTab
+; RCtrl & RAlt::AppsKey
 
 ; Caps Lock modifications
 $CapsLock::Backspace
@@ -294,6 +302,9 @@ $CapsLock::Backspace
 ; SECTION 3: TAP, PRESS & HOLD SHORTCUTS
 ; =============================================================================
 ; Shortcuts with different behaviors based on press duration
+
+<!RShift::Enter
+<^RShift::Space
 
 ; Windows key with different behaviors (commented out)
 ; ~LWin:: {
@@ -347,7 +358,8 @@ $^+g:: {
     }
     else if (p = "1") {
         ; Show display ID from dxgi-info
-        ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /C " '"C:\Program Files\Sunshine\tools\dxgi-info.exe"').StdOut
+        ipadd := ComObject("WScript.Shell").Exec(A_ComSpec " /C " '"C:\Program Files\Sunshine\tools\dxgi-info.exe"'
+        ).StdOut
         .ReadAll()
         i := 0
         loop parse, ipadd, "`n" ":" {
@@ -367,52 +379,62 @@ $^+g:: {
         MsgBox p
 }
 
-$^+q:: {
+$^+w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         if (WinExist("— Mozilla Firefox")) {
             WinActivate("— Mozilla Firefox")
-            i := 1
-            while (!WinActive("YouTube ") && i < 20) {
+            WinWaitActive("— Mozilla Firefox")
+            tab := WinGetTitle("A")
+            while (!WinActive("YouTube ")) {
                 Send "^{Tab}"
-                i++
                 Sleep 100
+                if (tab == WinGetTitle("A")) {
+                    break
+                }
             }
-            if (i >= 20) {
+            if (!WinActive("YouTube ")) {
                 Run("https://www.youtube.com/", , "max")
             }
         }
         else {
             Run("https://www.youtube.com/", , "max")
-
         }
     }
     else {
         KeyWait(GetFilteredHotKey())
-        if (WinExist(" - Brave")) {
-            WinActivate(" - Brave")
-            i := 1
-            while (!WinActive("YouTube ") && i < 20) {
-                Send "^{Tab}"
-                i++
-                Sleep 100
-            }
-            if (i >= 20) {
-                Run(
-                    '"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', ,
-                    "max")
-            }
-        }
-        else {
-            Run(
-                '"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', ,
-                "max")
-
-        }
-
+        Run("https://www.youtube.com/", , "max")
     }
 }
 
-$^+w:: {
+$^+e:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        if (WinExist("Brave")) {
+
+            WinActivate("Brave")
+            WinWaitActive("Brave")
+            tab := WinGetTitle("A")
+            while (!WinActive("YouTube ")) {
+                Send "^{Tab}"
+                Sleep 100
+                if (tab == WinGetTitle("A")) {
+                    break
+                }
+            }
+            if (!WinActive("YouTube ")) {
+                Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+            }
+        }
+        else {
+            Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+        }
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+    }
+}
+
+$^+q:: {
     SendInput "^c"
     sleep 10
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -500,10 +522,6 @@ $^+/:: {
 ; =============================================================================
 ; Windows key combinations
 
-; ^LWin:: {
-;     Send "{Win}"
-; }
-
 ; =============================================================================
 ; SECTION 7: WIN SHORTCUTS
 ; =============================================================================
@@ -537,14 +555,19 @@ $#d:: {
 
 #Enter:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("ahk_exe WindowsTerminal.exe", "D:\Programs Files\Terminal.lnk")
+        if WinExist("Administrator: Command Prompt") || WinExist("Administrator: Windows PowerShell") {
+            WinActivate()
+            Send("{Escape}")
+            return
+        }
+        ; RunApplication("ahk_exe WindowsTerminal.exe", "D:\Programs Files\Terminal.lnk")
+        Run '*RunAs cmd.exe'
     }
     else {
         KeyWait(GetFilteredHotKey())
         Run("D:\Programs Files\Terminal.lnk")
     }
 }
-
 
 #w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -602,14 +625,16 @@ RunExplorer() {
 
 >^Up::Volume_Up
 >^Down::Volume_Down
->^Left UP:: {
-    currentwindow := WinGetTitle("A")
-    Send "{Ctrl up}"
-    ; WinActivate("ahk_exe firefox.exe")
-    ; ControlSend "k", , "A"
-    ControlSend "k", , "ahk_exe firefox.exe"
-    WinActivate(currentwindow)
-}
+>^Left::Media_Play_Pause
+<^Space::Media_Play_Pause
+; {
+;     currentwindow := WinGetTitle("A")
+;     Send "{Ctrl up}"
+;     ; WinActivate("ahk_exe firefox.exe")
+;     ; ControlSend "k", , "A"
+;     ControlSend "k", , "ahk_exe firefox.exe"
+;     WinActivate(currentwindow)
+; }
 >^Right::Media_Next
 
 ; =============================================================================
@@ -642,9 +667,10 @@ RunExplorer() {
 !+1:: MyMenu1.Show()
 !+2:: MyMenu2.Show()
 !+3:: MyMenu3.Show()
-!+4:: MYMenu4.Show()
+!+4:: MyMenu4.Show()
 !+5:: MyMenu5.Show()
-!+z:: MyMenu6.Show()
+!+6:: MyMenu6.Show()
+!+z:: MyMenu7.Show()
 
 !1::
 !2::
@@ -660,11 +686,15 @@ RunExplorer() {
 !=:: Send("{F" GetFilteredHotKey() "}")
 
 #HotIf WinActive("ahk_class Qt5QWindowIcon")
-/:: Send "jjjjj"
+/:: Send "jjjjjv"
 0:: Send "{Ctrl Down}{WheelUp}{Ctrl Up}"
 9:: Send "{Ctrl Down}{WheelDown}{Ctrl Up}"
++/::
+NumpadDot::
 BS::
 \:: Send "^{Right}{Right}{Right}+{Right}+{Right}+{Right}"
+Insert::
+Numpad0:: Send "{Space}"
 
 Left:: Send "+{Left}"
 Right:: Send "+{Right}"
