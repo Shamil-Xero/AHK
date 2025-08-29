@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
+#Include Lib\Lib.ahk
 
 ; Disable spell check in VSCode for this file
 ; // cspell:disable
@@ -10,11 +11,6 @@ global clipboardFolder := A_WorkingDir . "\clipboard"
 ; Create clipboard folder if it doesn't exist
 if !DirExist(clipboardFolder) {
     DirCreate(clipboardFolder)
-}
-
-ShowTooltip(message) {
-    ToolTip(message)
-    SetTimer(() => ToolTip(), -3000)
 }
 
 CopyToSlot(slotNumber) {
@@ -129,32 +125,32 @@ ClearAllSlots() {
     }
 }
 
-^Numpad1:: CopyToSlot(1)
-^Numpad2:: CopyToSlot(2)
-^Numpad3:: CopyToSlot(3)
-^Numpad4:: CopyToSlot(4)
-^Numpad5:: CopyToSlot(5)
-^Numpad6:: CopyToSlot(6)
-^Numpad7:: CopyToSlot(7)
-^Numpad8:: CopyToSlot(8)
-^Numpad9:: CopyToSlot(9)
+; ^Numpad1:: CopyToSlot(1)
+; ^Numpad2:: CopyToSlot(2)
+; ^Numpad3:: CopyToSlot(3)
+; ^Numpad4:: CopyToSlot(4)
+; ^Numpad5:: CopyToSlot(5)
+; ^Numpad6:: CopyToSlot(6)
+; ^Numpad7:: CopyToSlot(7)
+; ^Numpad8:: CopyToSlot(8)
+; ^Numpad9:: CopyToSlot(9)
 
-!Numpad1:: CutToSlot(1)
-!Numpad2:: CutToSlot(2)
-!Numpad3:: CutToSlot(3)
-!Numpad4:: CutToSlot(4)
-!Numpad5:: CutToSlot(5)
-!Numpad6:: CutToSlot(6)
-!Numpad7:: CutToSlot(7)
-!Numpad8:: CutToSlot(8)
-!Numpad9:: CutToSlot(9)
+; !Numpad1:: CutToSlot(1)
+; !Numpad2:: CutToSlot(2)
+; !Numpad3:: CutToSlot(3)
+; !Numpad4:: CutToSlot(4)
+; !Numpad5:: CutToSlot(5)
+; !Numpad6:: CutToSlot(6)
+; !Numpad7:: CutToSlot(7)
+; !Numpad8:: CutToSlot(8)
+; !Numpad9:: CutToSlot(9)
 
-^!Numpad1:: PasteFromSlot(1)
-^!Numpad2:: PasteFromSlot(2)
-^!Numpad3:: PasteFromSlot(3)
-^!Numpad4:: PasteFromSlot(4)
-^!Numpad5:: PasteFromSlot(5)
-^!Numpad6:: PasteFromSlot(6)
-^!Numpad7:: PasteFromSlot(7)
-^!Numpad8:: PasteFromSlot(8)
-^!Numpad9:: PasteFromSlot(9)
+; ^!Numpad1:: PasteFromSlot(1)
+; ^!Numpad2:: PasteFromSlot(2)
+; ^!Numpad3:: PasteFromSlot(3)
+; ^!Numpad4:: PasteFromSlot(4)
+; ^!Numpad5:: PasteFromSlot(5)
+; ^!Numpad6:: PasteFromSlot(6)
+; ^!Numpad7:: PasteFromSlot(7)
+; ^!Numpad8:: PasteFromSlot(8)
+; ^!Numpad9:: PasteFromSlot(9)
