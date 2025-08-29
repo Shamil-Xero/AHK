@@ -10,9 +10,9 @@ DetectHiddenWindows true
 ;========================== Variables =================================;
 global Brightness_Increments := 5
 global CurrentBrightness := GetCurrentBrightNess()
-WorkingDir := A_WorkingDir
-Secret_Mode := False
-p := 0
+; WorkingDir := A_WorkingDir
+; Secret_Mode := False
+global p := ""
 mytick := 0
 
 A_HotkeyInterval := 2000
@@ -27,7 +27,21 @@ Morse(timeout := 300) {
         t := A_TickCount
         KeyWait key
         Pattern .= (A_TickCount - t) > timeout
-        if !KeyWait(key, "DT" tout) {
+        if !KeyWait(key, "D T" tout) {
+            return Pattern
+        }
+    }
+}
+
+Morse2(timeout := 300) {
+    global p
+    tout := timeout / 1000
+    t := A_TickCount
+    p .= "0"
+    loop {
+        if ((A_TickCount - t) > timeout) {
+            Pattern := p
+            p := ""
             return Pattern
         }
     }
@@ -130,11 +144,14 @@ ChangeBrightness(brightness, timeout := 1) {
 ; 	Return
 ; }
 
+ShowTooltip(message, timeout := 2000) {
+    ToolTip(message)
+    SetTimer(() => ToolTip(), -timeout)
+}
+
 RemoveToolTip() {
     ToolTip ""
 }
-
-
 
 MouseIsOver(WinTitle) {
     try {
