@@ -1,7 +1,7 @@
 Lib/Credentials.ahk
 Lib/Credentials*.ahk
 Developement/
+Deprecated/
+clipboard/
 MacroPad/
 *.txt
-clipboard/
-Deprecated/
