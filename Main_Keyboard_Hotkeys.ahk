@@ -17,7 +17,7 @@ Persistent
 SetTitleMatchMode 2
 SendMode "Input"
 SetCapsLockState "Off"
-SetNumLockState "On"
+SetNumLockState "Off"
 SetScrollLockState "Off"
 
 ; Disable spell check in VSCode for this file
@@ -65,6 +65,7 @@ MyMenu7 := Menu()
 ; Add VS Code workspace menu items
 MyMenu1.Add("AHK", MenuHandler1)
 MyMenu1.Add("ADB", MenuHandler1)
+MyMenu1.Add("C++", MenuHandler1)
 MyMenu1.Add("Python", MenuHandler1)
 MyMenu1.Add("Manim", MenuHandler1)
 MyMenu1.Add("ML", MenuHandler1)
@@ -76,6 +77,8 @@ MenuHandler1(Item, *) {
         Run("D:\Programs\AHK.code-workspace")
     } else if (Item == "ADB") {
         Run("D:\Programs\ADB.code-workspace")
+    } else if (Item == "C++") {
+        Run("D:\Programs\C++.code-workspace")
     } else if (Item == "Python") {
         Run("D:\Programs\Python.code-workspace")
     } else if (Item == "Manim") {
@@ -94,6 +97,7 @@ MySubMenu2.Add("Android", SubMenuHandler2)
 
 MyMenu2.Add("AHK", MenuHandler2)
 MyMenu2.Add("ADB", MenuHandler2)
+MyMenu2.Add("C++", MenuHandler2)
 MyMenu2.Add("Python", MenuHandler2)
 MyMenu2.Add("Setups", MenuHandler2)
 MyMenu2.Add("OS", MySubMenu2)
@@ -104,6 +108,8 @@ MenuHandler2(Item, *) {
         Run("D:\Programs\AHK")
     } else if (Item == "ADB") {
         Run("D:\Programs\ADB")
+    } else if (Item == "C++") {
+        Run("D:\Programs\C++")
     } else if (Item == "Python") {
         Run("D:\Programs\Python-Scripts")
     } else if (Item == "Setups") {
@@ -156,13 +162,13 @@ MyMenu4.Add("Games", MenuHandler4)
 ; Menu handler for media locations
 MenuHandler4(Item, *) {
     if (Item = "Anime") {
-        Run "E:\Anime"
+        Run "E:\Shows\Anime"
     } else if (Item = "Hollywood") {
         Run "E:\Movies\Hollywood"
     } else if (Item = "Other Movies") {
         Run "E:\Movies\Others"
     } else if (Item = "Shows") {
-        Run "E:\Shows"
+        Run "E:\Shows\Web Series"
     } else if (Item = "Games") {
         Run "D:\Games"
     }
@@ -303,9 +309,6 @@ $CapsLock::Backspace
 ; =============================================================================
 ; Shortcuts with different behaviors based on press duration
 
-<!RShift::Enter
-<^RShift::Space
-
 ; Windows key with different behaviors (commented out)
 ; ~LWin:: {
 ;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -381,9 +384,9 @@ $^+g:: {
 
 $^+w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        if (WinExist("— Mozilla Firefox")) {
-            WinActivate("— Mozilla Firefox")
-            WinWaitActive("— Mozilla Firefox")
+        if (WinExist("— Vivaldi")) {
+            WinActivate("— Vivaldi")
+            WinWaitActive("— Vivaldi")
             tab := WinGetTitle("A")
             while (!WinActive("YouTube ")) {
                 Send "^{Tab}"
@@ -406,33 +409,33 @@ $^+w:: {
     }
 }
 
-$^+e:: {
-    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        if (WinExist("Brave")) {
+; $^+e:: {
+;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+;         if (WinExist("Brave")) {
 
-            WinActivate("Brave")
-            WinWaitActive("Brave")
-            tab := WinGetTitle("A")
-            while (!WinActive("YouTube ")) {
-                Send "^{Tab}"
-                Sleep 100
-                if (tab == WinGetTitle("A")) {
-                    break
-                }
-            }
-            if (!WinActive("YouTube ")) {
-                Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
-            }
-        }
-        else {
-            Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
-        }
-    }
-    else {
-        KeyWait(GetFilteredHotKey())
-        Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
-    }
-}
+;             WinActivate("Brave")
+;             WinWaitActive("Brave")
+;             tab := WinGetTitle("A")
+;             while (!WinActive("YouTube ")) {
+;                 Send "^{Tab}"
+;                 Sleep 100
+;                 if (tab == WinGetTitle("A")) {
+;                     break
+;                 }
+;             }
+;             if (!WinActive("YouTube ")) {
+;                 Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+;             }
+;         }
+;         else {
+;             Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+;         }
+;     }
+;     else {
+;         KeyWait(GetFilteredHotKey())
+;         Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+;     }
+; }
 
 $^+q:: {
     SendInput "^c"
@@ -579,19 +582,22 @@ $#d:: {
     }
 }
 
-$#s:: {
+#s:: {
     ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-    RunApplication("Mozilla Firefox", "D:\Programs Files\Firefox.lnk")
+    RunApplication("Opera", "D:\Programs Files\Opera GX.lnk")
+    ; WinActivate("ahk_exe opera.exe")
+    ; wintitle := WinGetTitle("A")
+    ; MsgBox(wintitle)
     ; }
     ; else {
     ;     KeyWait(GetFilteredHotKey())
-    ;     Run "D:\Programs Files\Firefox.lnk"
+    ;     Run "D:\Programs Files\Vivaldi.lnk"
     ; }
 }
 
 #f:: {
     ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-    RunApplication("Brave", "D:\Programs Files\Brave.lnk")
+    RunApplication("Brave", "D:\Programs Files\Brave")
     ; }
     ; else {
     ;     KeyWait(GetFilteredHotKey())
@@ -626,7 +632,7 @@ RunExplorer() {
 >^Up::Volume_Up
 >^Down::Volume_Down
 >^Left::Media_Play_Pause
-<^Space::Media_Play_Pause
+; <^Space::Media_Play_Pause
 ; {
 ;     currentwindow := WinGetTitle("A")
 ;     Send "{Ctrl up}"
@@ -685,7 +691,22 @@ RunExplorer() {
 !-::
 !=:: Send("{F" GetFilteredHotKey() "}")
 
+RAlt::Space
+NumpadClear::Down
+NumpadHome:: Send("\")
+^[:: Send("\")
+^]:: Send("|")
+
+<!RShift::Enter
+<^RShift::Space
+
+#HotIf WinActive("Satisfactory")
+XButton2::Space
+#HotIf
+
 #HotIf WinActive("ahk_class Qt5QWindowIcon")
+z:: Send "+{Left}"
+x:: Send "+{Right}"
 /:: Send "jjjjjv"
 0:: Send "{Ctrl Down}{WheelUp}{Ctrl Up}"
 9:: Send "{Ctrl Down}{WheelDown}{Ctrl Up}"
@@ -694,12 +715,18 @@ NumpadDot::
 BS::
 \:: Send "^{Right}{Right}{Right}+{Right}+{Right}+{Right}"
 Insert::
-Numpad0:: Send "{Space}"
+NumpadIns:: {
+    Send "{Space}"
+}
 
+NumpadLeft::
 Left:: Send "+{Left}"
+NumpadRight::
 Right:: Send "+{Right}"
 
++NumpadLeft::
 +Left:: Send "{Left}"
++NumpadRight::
 +Right:: Send "{Right}"
 
 >^Left:: Send "^{Left}"

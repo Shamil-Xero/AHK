@@ -1,13 +1,15 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "J:\Backup\F\New"
-global DestinationFolder := "J:\Backup\F\Sorted"
+global SourceFolder := "J:\Backup\Wondershare Converter\To Sort"
+global DestinationFolder := "J:\Backup\Wondershare Converter\Sorted"
+global SyncFolder := "E:\Synced\Sync\.Delete"
 global FileList := []
 global TotalFiles := 0
 global FileCount := 0
 global CurrentIndex := 0
 global MoveList := []
+global CopyList := []
 global DeleteList := []
 global SkipList := []
 global CurrentFileObj := ""
@@ -37,7 +39,7 @@ InitializeFileList() {
 
 GetFileCount() {
     global
-    ib := InputBox("Enter the Number of Files`n(Total: " TotalFiles ")", "Files", "w300 h120", "10")
+    ib := InputBox("Enter the Number of Files`n(Total: " TotalFiles ")", "Random File Opener", "w300 h120", "10")
     if ib.Result = "Cancel"
         ExitApp
     return Integer(ib.value)
@@ -168,12 +170,38 @@ FormatList(list) {
 
 ProcessMoveDeleteLists() {
     global
+    copied := []
     moved := []
     deleted := []
-    msg := "Move files (" . MoveList.Length . "):`n" . FormatList(MoveList) . "`nDelete files (" . DeleteList.Length .
-    "):`n" . FormatList(DeleteList) . "`nSkip files (" . SkipList.Length . "):`n" . FormatList(SkipList)
+    msg := "Copy files (" . CopyList.Length . "):`n" . FormatList(CopyList) . "`nMove files (" . MoveList.Length .
+    "):`n" . FormatList(MoveList) . "`nDelete files (" . DeleteList.Length .
+    "):`n" . FormatList(DeleteList) . "`nSkip files (" . SkipList.Length . "):`n" . FormatList(SkipList) "`nTotal File Count : " MoveList
+    .Length + DeleteList.Length + SkipList.Length
     result := MsgBox(msg "`n Do you want to proceed with this action?", "OKCancel")
     if (result == "OK") {
+        ; Delete files
+        for idx, filePath in DeleteList {
+            try {
+                FileDelete(filePath)
+                deleted.Push(filePath)
+                sleep 100
+            } catch as e {
+                MsgBox "Error deleting: " . filePath . "`n" . e.Message
+                Sleep(1000)
+            }
+        }
+        ; Copy files
+        for idx, filePath in CopyList {
+            try {
+                DirCreate SyncFolder
+                FileCopy(filePath, SyncFolder "\" . GetFileName(filePath), 1)
+                copied.Push(filePath)
+                sleep 100
+            } catch as e {
+                MsgBox "Error copying: " . filePath . "`n" . e.Message
+                Sleep(1000)
+            }
+        }
         ; Move files
         for idx, filePath in MoveList {
             try {
@@ -183,17 +211,6 @@ ProcessMoveDeleteLists() {
                 sleep 100
             } catch as e {
                 MsgBox "Error moving: " . filePath . "`n" . e.Message
-                Sleep(1000)
-            }
-        }
-        ; Delete files
-        for idx, filePath in DeleteList {
-            try {
-                FileDelete(filePath)
-                deleted.Push(filePath)
-                sleep 100
-            } catch as e {
-                MsgBox "Error deleting: " . filePath . "`n" . e.Message
                 Sleep(1000)
             }
         }
@@ -207,22 +224,11 @@ ProcessMoveDeleteLists() {
     ExitApp
 }
 
-ToMoveList() {
-    global
-    ; ToolTip "To Move:`n" . FormatList(MoveList)
-    SetTimer RemoveToolTip, -1500
-}
-
-ToDeleteList() {
-    global
-    ; ToolTip "To Delete:`n" . FormatList(DeleteList)
-    SetTimer RemoveToolTip, -1500
-}
-
 ; Hotkey implementations
 
 Home:: ShowFileInfo()
 
+NumpadDiv::
 Delete:: {
     global
     if (WaitingForInput) {
@@ -234,22 +240,32 @@ Delete:: {
     }
 }
 
+NumpadMult::
 PgUp:: {
     global
     if (WaitingForInput) {
         CloseFile()
         DeleteList.Push(FilePath)
-        ; SetTimer ToDeleteList, -1500
         WaitingForInput := false
     }
 }
 
+NumpadSub::
 PgDn:: {
     global
     if (WaitingForInput) {
         CloseFile()
         MoveList.Push(FilePath)
-        ; SetTimer ToMoveList, -1500
+        WaitingForInput := false
+    }
+}
+
++PgDn:: {
+    global
+    if (WaitingForInput) {
+        CloseFile()
+        CopyList.Push(FilePath)
+        MoveList.Push(FilePath)
         WaitingForInput := false
     }
 }

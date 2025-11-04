@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "J:\Backup\F\Sorted"
+global SourceFolder := "J:\Backup\Wondershare Converter\Sorted"
 global DestinationFolder := "E:\Synced\Sync\.Delete"
 global FileList := []
 global TotalFiles := 0
@@ -25,7 +25,7 @@ InitializeFileList() {
 
 GetFileCount() {
     global
-    ib := InputBox("Enter the Number of Files`n(Total: " TotalFiles ")", "Files", "w300 h120", "10")
+    ib := InputBox("Enter the Number of Files`n(Total: " TotalFiles ")", "Random File Copier", "w300 h120", "10")
     if ib.Result = "Cancel"
         ExitApp
     return Integer(ib.value)
