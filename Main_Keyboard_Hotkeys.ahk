@@ -501,6 +501,8 @@ $^+/:: {
         Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
 }
 
+^!n:: Run("D:\Programs\AHK\Create_Script.ahk")
+
 ^!v:: Run "C:\Program Files\AutoHotkey\v2\AutoHotkey.chm"
 
 ^!s:: Send "^#v"
@@ -584,7 +586,7 @@ $#d:: {
 
 #s:: {
     ; if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-    RunApplication("Opera", "D:\Programs Files\Opera GX.lnk")
+    RunApplication("Vivaldi", "D:\Programs Files\Vivaldi.lnk")
     ; WinActivate("ahk_exe opera.exe")
     ; wintitle := WinGetTitle("A")
     ; MsgBox(wintitle)
