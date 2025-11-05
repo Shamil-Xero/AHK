@@ -80,7 +80,7 @@ MenuHandler1(Item, *) {
     } else if (Item == "C++") {
         Run("D:\Programs\C++.code-workspace")
     } else if (Item == "Python") {
-        Run("D:\Programs\Python.code-workspace")
+        Run("D:\Programs\Python-Scripts.code-workspace")
     } else if (Item == "Manim") {
         Run("D:\Programs\Manim.code-workspace")
     } else if (Item == "ML") {
