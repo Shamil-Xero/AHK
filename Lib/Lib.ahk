@@ -69,6 +69,14 @@ RunApplication(title, path := "", launch_mode := "", ifactive_send := "") {
         if path {
             try {
                 Run path, , launch_mode
+                if (path == "explorer.exe") {
+                    loop 10 {
+                        try {
+                            WinClose("Microsoft Visual C++ Runtime Library")
+                        }
+                        sleep 100
+                    }
+                }
             }
             catch {
                 ToolTip "An error occurred while running the application: " title ", Specify a valid location!"
