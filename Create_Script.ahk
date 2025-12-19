@@ -2,20 +2,26 @@
 #SingleInstance Force
 
 ; === CONFIGURATION ===
-defaultFolder := "D:\Programs\AHK\Developement"                                  ; Folder where new script will be created
-defaultFileName := "NewScript.ahk"                          ; Default name (will auto-increment if exists)
-editor := "D:\Programs Files\Visual Studio Code.lnk"        ; Leave blank to open in default editor (Notepad)
+if (A_Args.Length < 1) {
+    A_Args.Push(A_ScriptDir)
+}
+
+if (A_Args.Length < 2) {
+    A_Args.Push("NewScript.ahk")
+}
+
+if (A_Args.Length < 3) {
+    A_Args.Push("notepad.exe")
+}
+defaultFolder := A_Args[1]                            ; Folder where new script will be created
+defaultFileName := A_Args[2]                          ; Default name (will auto-increment if exists)
+editor := A_Args[3]                                   ; Leave blank to open in default editor (Notepad)
 
 ; === TEMPLATE CONTENT ===
 template := "
 (
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-
-; --- Script Info ---
-; Author: %A_UserName%
-; Created: %A_YYYY%-%A_MM%-%A_DD%
-; Description: [Enter description here]
 
 ; --- Hotkeys ---
 ; Example: Press F1 to show a message
