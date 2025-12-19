@@ -1,36 +1,41 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "J:\Backup\Wondershare Converter\To Sort"
-global DestinationFolder := "J:\Backup\Wondershare Converter\Sorted"
-global SyncFolder := "E:\Synced\Sync\.Delete"
+global SourceFolder := "F:\Backup\Wondershare Converter\To Sort"
+global DestinationFolder := "F:\Backup\Wondershare Converter\Sorted"
+global SyncFolder := "D:\Synced\Sync\.Delete"
+
 global FileList := []
+global ReviewList := []
+
 global TotalFiles := 0
 global FileCount := 0
 global CurrentIndex := 0
+
 global MoveList := []
 global CopyList := []
 global DeleteList := []
 global SkipList := []
-global CurrentFileObj := ""
+
 global CurrentFilePid := 0
 global WaitingForInput := false
-global FileSizeMB := 0
+
 global FilePath := ""
 global FileName := ""
-
-global ReviewList := []
-
-global ReviewResults := [] ; Holds objects: {file: path, action: "move"|"delete"|"skip"}
+global FileSizeMB := 0
 
 RemoveToolTip() {
     ToolTip ""
 }
 
+; ----------------------------------------
+; Build master file list
+; ----------------------------------------
 InitializeFileList() {
     global
     FileList := []
     TotalFiles := 0
+
     loop files, SourceFolder "\*.*", "R" {
         FileList.Push(A_LoopFileFullPath)
         TotalFiles++
@@ -39,73 +44,96 @@ InitializeFileList() {
 
 GetFileCount() {
     global
-    ib := InputBox("Enter the Number of Files`n(Total: " TotalFiles ")", "Random File Opener", "w300 h120", "10")
-    if ib.Result = "Cancel"
+    ib := InputBox(
+        "Enter the Number of Files`n(Total: " TotalFiles ")",
+        "Random File Opener",
+        "w300 h120",
+        "10"
+    )
+    if (ib.Result = "Cancel")
         ExitApp
-    return Integer(ib.value)
+    return Integer(ib.Value)
 }
 
+; ----------------------------------------
+; Build random review list WITH file sizes
+; ----------------------------------------
 BuildRandomReviewList(count) {
     global
     local tempList := FileList.Clone()
     local review := []
+
     loop count {
-        if (tempList.Length == 0)
+        if (tempList.Length = 0)
             break
+
         n := Random(1, tempList.Length)
-        review.Push(tempList[n])
+        path := tempList[n]
+
+        sizeMB := FileGetSize(path, "M")
+
+        review.Push({
+            Path: path,
+            Name: GetFileName(path),
+            SizeMB: sizeMB
+        })
+
         tempList.RemoveAt(n)
     }
     return review
 }
 
-GetFileName(FullPath) {
-    loop parse FullPath, '\' {
-        FileName := A_LoopField
-    }
-    return FileName
+GetFileName(fullPath) {
+    SplitPath fullPath, &name
+    return name
 }
 
+; ----------------------------------------
+; UI helpers
+; ----------------------------------------
 ShowFileInfo() {
     global
-    if (FileSizeMB >= 1000) {
-        FileSizeGB := FileSizeMB / 1024
-        ToolTip "(" . (CurrentIndex + 1) . "/" . FileCount . ") " . FileName . "`n`nFile Size: " . Round(FileSizeGB, 2) .
-        " GB"
+
+    if (FileSizeMB >= 1024) {
+        size := Round(FileSizeMB / 1024, 2) " GB"
     } else {
-        ToolTip "(" . (CurrentIndex + 1) . "/" . FileCount . ") " . FileName . "`n`nFile Size: " . Round(FileSizeMB, 1) .
-        " MB"
+        size := Round(FileSizeMB, 1) " MB"
     }
+
+    ToolTip
+    (
+        "(" (CurrentIndex + 1) "/" FileCount ") " FileName
+        "`n`nFile Size: " size
+    )
+
     SetTimer RemoveToolTip, -2000
-    try {
-        WinActivate("ahk_pid " CurrentFilePid)
-    }
+    try WinActivate("ahk_pid " CurrentFilePid)
 }
 
-ProcessFile(FilePath) {
+ProcessFile(fileObj) {
     global
-    if (FilePath == "" || !FileExist(FilePath)) {
-        ToolTip "File doesn't exist or path is empty"
+
+    FilePath := fileObj.Path
+    FileName := fileObj.Name
+    FileSizeMB := fileObj.SizeMB
+
+    if (!FileExist(FilePath)) {
+        ToolTip "File not found!"
         SetTimer RemoveToolTip, -2000
         return false
     }
-    FileName := GetFileName(FilePath)
-    CurrentFileObj := FileOpen(FilePath, "r")
-    FileSizeMB := CurrentFileObj.Length / 1048576
+♠
     ShowFileInfo()
+    sleep 50
+
     try {
         Run(FilePath, , , &CurrentFilePid)
-        Sleep(1000)
+        Sleep 800
         WinActivate("ahk_pid " CurrentFilePid)
         WaitingForInput := true
         return true
-    }
-    catch as e {
-        ToolTip "Error opening file: " . e.Message . "`n`nPress any key to continue..."
-        if (CurrentFileObj) {
-            CurrentFileObj.Close()
-            CurrentFileObj := ""
-        }
+    } catch as e {
+        ToolTip "Error opening file:`n" e.Message
         SetTimer RemoveToolTip, -3000
         return false
     }
@@ -113,53 +141,49 @@ ProcessFile(FilePath) {
 
 CloseFile() {
     global
-    try {
-        WinClose("ahk_pid " CurrentFilePid)
-    }
-    catch as e {
-        Tooltip "Cannot find window: " . e.Message
-        SetTimer RemoveToolTip, -2000
-    }
-    if (CurrentFileObj) {
-        CurrentFileObj.Close()
-        CurrentFileObj := ""
-    }
+    try WinClose("ahk_pid " CurrentFilePid)
 }
 
+; ----------------------------------------
+; Main logic
+; ----------------------------------------
 Main() {
     global
+
     InitializeFileList()
-    if (TotalFiles == 0) {
-        ToolTip "No Files Found in: " . SourceFolder
+    if (TotalFiles = 0) {
+        ToolTip "No files found!"
         SetTimer RemoveToolTip, -3000
         return
     }
+
     FileCount := GetFileCount()
-    if (FileCount > TotalFiles) {
+    if (FileCount > TotalFiles)
         FileCount := TotalFiles
-    }
+
     ReviewList := BuildRandomReviewList(FileCount)
+
     CurrentIndex := 0
     loop FileCount {
-        FilePath := ReviewList[CurrentIndex + 1]
-        if (ProcessFile(FilePath)) {
-            while (WaitingForInput) {
-                Sleep(100)
-            }
+        fileObj := ReviewList[CurrentIndex + 1]
+
+        if (ProcessFile(fileObj)) {
+            while (WaitingForInput)
+                Sleep 100
         }
         CurrentIndex++
     }
-    ; After review, process actions
-    Sleep 1000
-    ToolTip "Processing move/delete actions..."
-    SetTimer RemoveToolTip, -2000
+
     ProcessMoveDeleteLists()
 }
 
+; ----------------------------------------
+; Summary + processing
+; ----------------------------------------
 FormatList(list) {
     out := ""
     for idx, file in list {
-        out .= GetFileName(file) . "`n"
+        out .= GetFileName(file) "`n"
         if (idx >= 10) {
             out .= "..."
             break
@@ -170,78 +194,53 @@ FormatList(list) {
 
 ProcessMoveDeleteLists() {
     global
-    copied := []
-    moved := []
-    deleted := []
-    msg := "Copy files (" . CopyList.Length . "):`n" . FormatList(CopyList) . "`nMove files (" . MoveList.Length .
-    "):`n" . FormatList(MoveList) . "`nDelete files (" . DeleteList.Length .
-    "):`n" . FormatList(DeleteList) . "`nSkip files (" . SkipList.Length . "):`n" . FormatList(SkipList) "`nTotal File Count : " MoveList
-    .Length + DeleteList.Length + SkipList.Length
-    result := MsgBox(msg "`n Do you want to proceed with this action?", "OKCancel")
-    if (result == "OK") {
-        ; Delete files
-        for idx, filePath in DeleteList {
-            try {
-                FileDelete(filePath)
-                deleted.Push(filePath)
-                sleep 100
-            } catch as e {
-                MsgBox "Error deleting: " . filePath . "`n" . e.Message
-                Sleep(1000)
-            }
-        }
-        ; Copy files
-        for idx, filePath in CopyList {
-            try {
-                DirCreate SyncFolder
-                FileCopy(filePath, SyncFolder "\" . GetFileName(filePath), 1)
-                copied.Push(filePath)
-                sleep 100
-            } catch as e {
-                MsgBox "Error copying: " . filePath . "`n" . e.Message
-                Sleep(1000)
-            }
-        }
-        ; Move files
-        for idx, filePath in MoveList {
-            try {
-                DirCreate DestinationFolder
-                FileMove(filePath, DestinationFolder "\" . GetFileName(filePath), 1)
-                moved.Push(filePath)
-                sleep 100
-            } catch as e {
-                MsgBox "Error moving: " . filePath . "`n" . e.Message
-                Sleep(1000)
-            }
-        }
-        ToolTip "Processing completed..."
-        Sleep(2000)
+
+    msg :=
+    (
+        "Copy (" CopyList.Length "):`n" FormatList(CopyList)
+        "`nMove (" MoveList.Length "):`n" FormatList(MoveList)
+        "`nDelete (" DeleteList.Length "):`n" FormatList(DeleteList)
+        "`nSkip (" SkipList.Length "):`n" FormatList(SkipList)
+    )
+
+    if (MsgBox(msg "`nProceed?", "Confirm", "OKCancel") = "Cancel")
+        ExitApp
+
+    for _, f in DeleteList
+        FileDelete f
+
+    for _, f in CopyList {
+        DirCreate SyncFolder
+        FileCopy f, SyncFolder "\" GetFileName(f), 1
     }
-    else {
-        ToolTip "File actions cancelled..."
-        Sleep(2000)
+
+    for _, f in MoveList {
+        DirCreate DestinationFolder
+        FileMove f, DestinationFolder "\" GetFileName(f), 1
     }
+
+    ToolTip "Processing completed!"
+    Sleep 2000
     ExitApp
 }
 
-; Hotkey implementations
+; ----------------------------------------
+; Hotkeys
+; ----------------------------------------
+Home::ShowFileInfo()
 
-Home:: ShowFileInfo()
-
-NumpadDiv::
-Delete:: {
+Delete::
+NumpadDiv:: {
     global
     if (WaitingForInput) {
         CloseFile()
         SkipList.Push(FilePath)
-        ToolTip "Skipped:`n" . FormatList(SkipList)
-        SetTimer RemoveToolTip, -1500
         WaitingForInput := false
     }
 }
 
-NumpadMult::
-PgUp:: {
+PgUp::
+NumpadMult:: {
     global
     if (WaitingForInput) {
         CloseFile()
@@ -250,8 +249,8 @@ PgUp:: {
     }
 }
 
-NumpadSub::
-PgDn:: {
+PgDn::
+NumpadSub:: {
     global
     if (WaitingForInput) {
         CloseFile()
@@ -260,7 +259,8 @@ PgDn:: {
     }
 }
 
-+PgDn:: {
++PgDn::
++NumpadSub:: {
     global
     if (WaitingForInput) {
         CloseFile()
@@ -270,7 +270,6 @@ PgDn:: {
     }
 }
 
-^Esc:: ExitApp
+^Esc::ExitApp
 
-; Start the main process
 Main()

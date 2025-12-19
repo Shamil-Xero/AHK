@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Off
 
-global SourceFolder := "J:\Backup\Wondershare Converter\Sorted"
+global SourceFolder := "F:\Backup\Wondershare Converter\Sorted"
 global DestinationFolder := "E:\Synced\Sync\.Delete"
 global FileList := []
 global TotalFiles := 0

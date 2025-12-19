@@ -15,6 +15,7 @@
 TraySetIcon A_WorkingDir "`\Lib\AutoHotKeyV2.png"
 Persistent
 SetTitleMatchMode 2
+CoordMode "Mouse", "Screen"
 SendMode "Input"
 SetCapsLockState "Off"
 SetNumLockState "Off"
@@ -43,6 +44,7 @@ Run "D:\Programs\AHK\MacroPad\Macro-Pad.ahk"
 
 ; Uncomment to run Minimize_To_Tray script with admin privileges
 ; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"
+Run('C:\ProgramData\chocolatey\bin\syncthing.exe --no-console --no-browser', , "Hide")
 
 ; =============================================================================
 ; CONTEXT MENU SYSTEM
@@ -113,19 +115,19 @@ MenuHandler2(Item, *) {
     } else if (Item == "Python") {
         Run("D:\Programs\Python-Scripts")
     } else if (Item == "Setups") {
-        Run("E:\Setups")
+        Run("D:\Setups")
     } else if (Item == "OS") {
-        Run("E:\OS")
+        Run("D:\OS")
     }
 }
 
 SubMenuHandler2(Item, *) {
     if (Item == "Android") {
-        Run("E:\OS\Android")
+        Run("D:\OS\Android")
     } else if (Item == "Linux") {
-        Run("E:\OS\Linux")
+        Run("D:\OS\Linux")
     } else if (Item == "Windows") {
-        Run("E:\OS\Windows")
+        Run("D:\OS\Windows")
     }
 }
 
@@ -162,13 +164,13 @@ MyMenu4.Add("Games", MenuHandler4)
 ; Menu handler for media locations
 MenuHandler4(Item, *) {
     if (Item = "Anime") {
-        Run "E:\Shows\Anime"
+        Run "D:\Shows\Anime"
     } else if (Item = "Hollywood") {
-        Run "E:\Movies\Hollywood"
+        Run "D:\Movies\Hollywood"
     } else if (Item = "Other Movies") {
-        Run "E:\Movies\Others"
+        Run "D:\Movies\Others"
     } else if (Item = "Shows") {
-        Run "E:\Shows\Web Series"
+        Run "D:\Shows\Web Series"
     } else if (Item = "Games") {
         Run "D:\Games"
     }
@@ -284,6 +286,8 @@ Media_Stop:: return
 ~Volume_Up:: return
 ~Volume_Down:: return
 
+; Esc::Escape
+
 Launch_App1:: Msgbox "Hi"
 
 ; =============================================================================
@@ -384,9 +388,18 @@ $^+g:: {
 
 $^+w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        if (WinExist("— Vivaldi")) {
-            WinActivate("— Vivaldi")
-            WinWaitActive("— Vivaldi")
+        if (!WinExist("Vivaldi")) {
+            Run("https://www.youtube.com/", , "max")
+            return
+        }
+        if (!WinActive("Vivaldi")) {
+            WinActivate("Vivaldi")
+            WinWaitActive("Vivaldi")
+            if (WinActive("YouTube ")) {
+                return
+            }
+        }
+        if (!WinActive("YouTube ")) {
             tab := WinGetTitle("A")
             while (!WinActive("YouTube ")) {
                 Send "^{Tab}"
@@ -395,13 +408,17 @@ $^+w:: {
                     break
                 }
             }
-            if (!WinActive("YouTube ")) {
-                Run("https://www.youtube.com/", , "max")
+            return
+        }
+        tab := WinGetTitle("A")
+        loop {
+            Send "^{Tab}"
+            Sleep 100
+            if (tab == WinGetTitle("A")) {
+                break
             }
-        }
-        else {
-            Run("https://www.youtube.com/", , "max")
-        }
+        } until (WinActive("YouTube"))
+        return
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -409,33 +426,45 @@ $^+w:: {
     }
 }
 
-; $^+e:: {
-;     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-;         if (WinExist("Brave")) {
-
-;             WinActivate("Brave")
-;             WinWaitActive("Brave")
-;             tab := WinGetTitle("A")
-;             while (!WinActive("YouTube ")) {
-;                 Send "^{Tab}"
-;                 Sleep 100
-;                 if (tab == WinGetTitle("A")) {
-;                     break
-;                 }
-;             }
-;             if (!WinActive("YouTube ")) {
-;                 Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
-;             }
-;         }
-;         else {
-;             Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
-;         }
-;     }
-;     else {
-;         KeyWait(GetFilteredHotKey())
-;         Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
-;     }
-; }
+$^+e:: {
+    if (KeyWait(GetFilteredHotKey(), "T0.3")) {
+        if (!WinExist("Brave")) {
+            Run("https://www.youtube.com/", , "max")
+            return
+        }
+        if (!WinActive("Brave")) {
+            WinActivate("Brave")
+            WinWaitActive("Brave")
+            if (WinActive("YouTube ")) {
+                return
+            }
+        }
+        if (!WinActive("YouTube ")) {
+            tab := WinGetTitle("A")
+            while (!WinActive("YouTube ")) {
+                Send "^{Tab}"
+                Sleep 100
+                if (tab == WinGetTitle("A")) {
+                    break
+                }
+            }
+            return
+        }
+        tab := WinGetTitle("A")
+        loop {
+            Send "^{Tab}"
+            Sleep 100
+            if (tab == WinGetTitle("A")) {
+                break
+            }
+        } until (WinActive("YouTube"))
+        return
+    }
+    else {
+        KeyWait(GetFilteredHotKey())
+        Run('"D:\Programs Files\Brave.lnk" "https://www.youtube.com/"', , "max")
+    }
+}
 
 $^+q:: {
     SendInput "^c"
@@ -494,6 +523,17 @@ $^+/:: {
 ; =============================================================================
 ; Window management and system utilities
 
+#SuspendExempt
+
+^!s:: {
+    DetectHiddenWindows true
+
+    WM_COMMAND := 0x0111
+    ID_FILE_SUSPEND := 65404  ; Tray → Suspend Hotkeys
+
+    PostMessage WM_COMMAND, ID_FILE_SUSPEND,,, "ahk_class AutoHotkey"
+}
+
 ^!b:: {
     if WinExist("Window Spy for AHKv2")
         WinActivate("Window Spy for AHKv2")
@@ -501,11 +541,11 @@ $^+/:: {
         Run "C:\Program Files\AutoHotkey\WindowSpy.ahk"
 }
 
-^!n:: Run("D:\Programs\AHK\Create_Script.ahk")
+^!n:: Run('"D:\Programs\AHK\Create_Script.ahk" "D:\Programs\AHK\Developement" "New_Script.ahk" "D:\Programs Files\Visual Studio Code.lnk"')
 
 ^!v:: Run "C:\Program Files\AutoHotkey\v2\AutoHotkey.chm"
 
-^!s:: Send "^#v"
+; ^!s:: Send "^#v"
 
 ^!z:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
@@ -545,10 +585,11 @@ $#d:: {
 #e:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
         RunApplication(" - File Explorer", "explorer.exe")
+        ; RunApplication(" - File Pilot", "C:\Us☻ers\Shamil\AppData\Local\Voidstar\FilePilot\FPilot.exe")
     }
     else {
         KeyWait(GetFilteredHotKey())
-        Run "explorer.exe"
+        Run "C:\Users\Shamil\AppData\Local\Voidstar\FilePilot\FPilot.exe"
     }
 }
 
@@ -576,7 +617,7 @@ $#d:: {
 
 #w:: {
     if (KeyWait(GetFilteredHotKey(), "T0.3")) {
-        RunApplication("WhatsApp", "D:\Programs Files\WhatsApp.lnk")
+        Run("D:\Programs Files\WhatsApp.lnk")
     }
     else {
         KeyWait(GetFilteredHotKey())
@@ -634,7 +675,7 @@ RunExplorer() {
 >^Up::Volume_Up
 >^Down::Volume_Down
 >^Left::Media_Play_Pause
-; <^Space::Media_Play_Pause
+<!Space::Media_Play_Pause
 ; {
 ;     currentwindow := WinGetTitle("A")
 ;     Send "{Ctrl up}"
@@ -743,6 +784,12 @@ Down:: Send "9"
 ^!Right:: Send "{Up 5}"
 ^!Left:: Send "{Down 5}"
 #HotIf
+
+!Numpad4::Left
+!Numpad6::Right
+!Numpad8::Up
+!Numpad2::Down
+!Numpad5::Down
 
 #HotIf WinActive("ahk_exe Spotify.exe")
 >^Up:: Send "^{Up}"
