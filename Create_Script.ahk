@@ -27,6 +27,13 @@ template := "
 ; Example: Press F1 to show a message
 F1::MsgBox('Hello from your new script!')
 
+#SuspendExempt
+^!s::Suspend  ; Ctrl+Alt+S to Suspend/Resume script
+#SuspendExempt False
+
+^Esc::ExitApp  ; Ctrl+Esc to exit script
+
+
 ; --- End of Template ---
 )"
 
