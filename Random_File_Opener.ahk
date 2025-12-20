@@ -122,7 +122,6 @@ ProcessFile(fileObj) {
         SetTimer RemoveToolTip, -2000
         return false
     }
-♠
     ShowFileInfo()
     sleep 50
 
