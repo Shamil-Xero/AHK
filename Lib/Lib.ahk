@@ -113,6 +113,23 @@ GetDeviceID(Devices, Name) {
     return
 }
 
+IsDeviceConnected(instanceId) {
+    ; Create a temporary PowerShell script file
+    scriptFile := A_Temp "\check_device.ps1"
+    scriptContent :=
+        '$d = Get-PnpDevice -InstanceId "' instanceId '" -ErrorAction SilentlyContinue`n' .
+        'if ($d -and $d.Status -eq "OK") { exit 0 } else { exit 1 }'
+
+    try FileDelete scriptFile
+    FileAppend scriptContent, scriptFile
+
+    exitcode := RunWait('powershell -NoProfile -ExecutionPolicy Bypass -File "' scriptFile '"', , "Hide")
+
+    try FileDelete scriptFile
+
+    return (exitcode = 0)
+}
+
 SetDefaultEndpoint(DeviceID) {
     IPolicyConfig := ComObject("{870af99c-171d-4f9e-af0d-e63df40c2bc9}", "{F8679F50-850A-41CF-9C72-430F290290C8}")
     DllCall(NumGet(NumGet(IPolicyConfig + 0, "UPtr") + 13 * A_PtrSize, "UPtr"), "UPtr", IPolicyConfig, "UPtr", &

@@ -40,7 +40,10 @@ global keyboardIntercepted := ""
 ; AUTOSTART SCRIPTS
 ; =============================================================================
 ; Launch MacroPad script automatically
-Run "D:\Programs\AHK\MacroPad\Macro-Pad.ahk"
+MacroPadInstanceId := "USB\VID_1EA7&PID_0066\6&16bea02a&0&2"
+
+if IsDeviceConnected(MacroPadInstanceId)
+    Run "D:\Programs\AHK\MacroPad\Macro-Pad.ahk"
 
 ; Uncomment to run Minimize_To_Tray script with admin privileges
 ; Run "*RunAs " A_WorkingDir "\Minimize_To_Tray.ahk"

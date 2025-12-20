@@ -27,6 +27,17 @@ template := "
 ; Example: Press F1 to show a message
 F1::MsgBox('Hello from your new script!')
 
+
+
+
+; Add your hotkeys and code here
+
+
+
+
+
+
+
 #SuspendExempt
 ^!s::Suspend  ; Ctrl+Alt+S to Suspend/Resume script
 #SuspendExempt False
