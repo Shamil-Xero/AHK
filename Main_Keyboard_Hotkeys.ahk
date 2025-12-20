@@ -524,15 +524,9 @@ $^+/:: {
 ; Window management and system utilities
 
 #SuspendExempt
-
-^!s:: {
-    DetectHiddenWindows true
-
-    WM_COMMAND := 0x0111
-    ID_FILE_SUSPEND := 65404  ; Tray → Suspend Hotkeys
-
-    PostMessage WM_COMMAND, ID_FILE_SUSPEND,,, "ahk_class AutoHotkey"
-}
+^!s::Suspend  ; Ctrl+Alt+S
+#SuspendExempt False
+    
 
 ^!b:: {
     if WinExist("Window Spy for AHKv2")
